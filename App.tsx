@@ -1,14 +1,17 @@
 import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
+import {NavigationContainer} from '@react-navigation/native';
+import Navigation from './src/navigation/StackNavigation';
 
-export default function componentName() {
+export default function App() {
   useEffect(() => {
-    SplashScreen.hide();
-  }, [2000]);
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 2000);
+  }, []);
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}>
-      <Text style={{marginTop: 30}}>...APP.......</Text>
-    </View>
+    <NavigationContainer>
+      <Navigation />
+    </NavigationContainer>
   );
 }
