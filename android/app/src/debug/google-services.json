@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185450433832",
+    "project_id": "highrollerclub-b349e",
+    "storage_bucket": "highrollerclub-b349e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185450433832:android:fdb3542df25a388130d41d",
+        "android_client_info": {
+          "package_name": "com.highrollerclub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfW_qCqx9dUr05UQ7wpdH7plp1dmNgnF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
