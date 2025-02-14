@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import {
   View,
   TextInput,
@@ -10,41 +10,79 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
-import {signInWithPhoneNumber} from 'firebase/auth';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
 
 const height = Dimensions.get('window').height;
 
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [verificationId, setVerificationId] = useState(null);
+
   const navigation = useNavigation<any>();
+
+  // Add this function to request SMS permissions
+  // const requestSMSPermission = async () => {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       const permissions = [
+  //         PermissionsAndroid.PERMISSIONS.READ_SMS,
+  //         PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
+  //         PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+  //         PermissionsAndroid.PERMISSIONS.READ_PHONE_NUMBERS,
+  //       ];
+
+  //       const granted = await PermissionsAndroid.requestMultiple(permissions);
+
+  //       const allPermissionsGranted = Object.values(granted).every(
+  //         permission => permission === PermissionsAndroid.RESULTS.GRANTED,
+  //       );
+
+  //       if (allPermissionsGranted) {
+  //         console.log('All permissions granted');
+  //         return true;
+  //       } else {
+  //         console.log('Permissions denied');
+  //         // Show a message to user about why permissions are needed
+  //         Toast.show({
+  //           type: 'info',
+  //           text2: 'Permissions are required for auto OTP detection',
+  //           visibilityTime: 3000,
+  //         });
+  //         return false;
+  //       }
+  //     } catch (err) {
+  //       console.warn(err);
+  //       return false;
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   requestSMSPermission();
+  // }, []);
 
   const sendOTP = async () => {
     try {
-      const phoneNumberWithCountryCode = `+91${phoneNumber}`;
-
-      console.log('NUMBER : ', phoneNumberWithCountryCode);
-
-      // Send OTP
-      const confirmation = await auth().signInWithPhoneNumber(
-        phoneNumberWithCountryCode,
-        true,
-      );
-
-    console.log("Confirmation ; ",confirmation?.verificationId);
-
-      setVerificationId(confirmation.verificationId);
-
-      Alert.alert('OTP Sent', 'Please check your SMS');
-
-      // Navigate to OTP Verification screen with verificationId
-      navigation.navigate('OTPVerification', {
-        verificationId: confirmation.verificationId,
+      const response = await axios.post('http://20.40.40.110:9111/login', {
+        phone: phoneNumber,
       });
+
+      if (response.status === 200) {
+        Toast.show({
+          type: 'success',
+          text2: 'OTP has been sent!!',
+          visibilityTime: 1000,
+        });
+        navigation.navigate('OTPVerification', {
+          mobile: phoneNumber,
+        });
+      }
     } catch (error) {
-      console.error('OTP Send Error:', error);
-      // Alert.alert('Error', error.message);
+      console.log('Error : ', error);
+      Toast.show({
+        type: 'info',
+        text2: 'Invalid Phone Number !! ',
+      });
     }
   };
 

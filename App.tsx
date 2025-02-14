@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/navigation/StackNavigation';
+import {AuthProvider} from './src/auth-context';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   useEffect(() => {
@@ -11,7 +13,10 @@ export default function App() {
   }, []);
   return (
     <NavigationContainer>
-      <Navigation />
+      <AuthProvider>
+        <Navigation />
+        <Toast />
+      </AuthProvider>
     </NavigationContainer>
   );
 }
