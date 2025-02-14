@@ -2,21 +2,26 @@ import React from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 
 import {styles} from './dashboard-styles';
+import {useNavigation} from '@react-navigation/native';
 
 export default function DashBoardScreen() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={styles.title}>Live</Text>
         <View style={styles.totalMatchContainer}>
           <Text style={styles.title}>2</Text>
         </View>
       </View>
-      {/* <FlatList
+      <FlatList
         data={[1, 1, 2, 2, 3]}
+        showsVerticalScrollIndicator={false}
         renderItem={() => (
-          <TouchableOpacity style={styles.cardContainer}>
+          <TouchableOpacity
+            style={styles.cardContainer}
+            onPress={() => navigation.navigate('Question')}>
             <View style={styles.cardHeader}>
               <Text style={styles.cardText}>ChhattisgarhT20</Text>
               <View
@@ -66,7 +71,7 @@ export default function DashBoardScreen() {
             </View>
           </TouchableOpacity>
         )}
-      /> */}
+      />
     </View>
   );
 }
