@@ -1,10 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import profileReducer from '../features/profile/profileSlice';
+import matchReducer from '../features/matches/liveMatchesSlice';
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
     counter: counterReducer,
+    match: matchReducer,
   },
 });
 

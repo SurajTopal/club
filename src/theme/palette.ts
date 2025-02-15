@@ -21,6 +21,7 @@ export const palette = {
   funBlueLight: 'hsla(0,0%,100%,.4)',
   greenBlue: '#00B680', //"rgb( 0, 182, 128)"
   greenWhite: '#EAEAEA', //"rgb(234,234,234)"
+  ghostWhite: '#F7F8FA',
   lavenderGrey: '#BEC6D6', // "rgb(190,198,214)"
   lightBlack: '#0000001a', //"rgba(0,0,0,0.1)"
   lightBlue: 'rgba(61,135,241,0.3)',

@@ -125,10 +125,10 @@ const MatchCard = ({match}) => (
           />
         </View>
       </View>
-      <Text style={styles.cardText}>/</Text>
+      {/* <Text style={styles.cardText}>/</Text>
       <View>
         <Text style={styles.cardText}>{match.trades}</Text>
-      </View>
+      </View> */}
     </View>
     <Text style={styles.questionText}>{match.question}</Text>
     <View style={styles.buttonContainer}>

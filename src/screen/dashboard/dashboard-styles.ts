@@ -1,3 +1,4 @@
+import {AppColors} from '../../theme';
 import {StyleSheet, Dimensions} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -7,6 +8,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 20,
+  },
+  emptyContainer: {
+    height: height * 0.7,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: AppColors.palette.dodgerBlue,
   },
   title: {
     fontSize: 16,
@@ -57,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width * 0.15,
-    marginBottom:height*0.01
+    marginBottom: height * 0.01,
   },
   subTitle: {
     fontSize: 16,

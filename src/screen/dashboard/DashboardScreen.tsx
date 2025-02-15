@@ -1,11 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {fetchLiveMatchesDetails} from '../../features/matches/liveMatchesSlice';
 
 import {styles} from './dashboard-styles';
-import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function DashBoardScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [matchList, setMatchList] = useState([]);
+
+  const liveMatchesList = useSelector(state => state.match);
+
+  console.log('LIVE MATHC data : ', liveMatchesList);
+
+  useEffect(() => {
+    dispatch(fetchLiveMatchesDetails());
+  }, []);
+
+  useEffect(() => {
+    if (liveMatchesList) {
+      setMatchList(liveMatchesList?.data);
+    }
+  }, [liveMatchesList]);
 
   return (
     <View style={styles.container}>
@@ -16,14 +34,19 @@ export default function DashBoardScreen() {
         </View>
       </View>
       <FlatList
-        data={[1, 1, 2, 2, 3]}
+        data={matchList}
         showsVerticalScrollIndicator={false}
-        renderItem={() => (
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>There is no Live Matches</Text>
+          </View>
+        )}
+        renderItem={({item}) => (
           <TouchableOpacity
             style={styles.cardContainer}
             onPress={() => navigation.navigate('Question')}>
             <View style={styles.cardHeader}>
-              <Text style={styles.cardText}>ChhattisgarhT20</Text>
+              <Text style={styles.cardText}>{item?.seriesName || ''}</Text>
               <View
                 style={{
                   borderRadius: 5,
@@ -43,22 +66,22 @@ export default function DashBoardScreen() {
                     source={require('../../assets/icons/profile.png')}
                     style={{height: 25, width: 25}}
                   />
-                  <Text style={styles.subTitle}>RAD</Text>
+                  <Text style={styles.subTitle}>{item?.team1?.teamSName}</Text>
                 </View>
-                <Text style={styles.cardText}>Rajnandgaon</Text>
+                <Text style={styles.cardText}>{item?.team1?.teamName}</Text>
               </View>
               <View style={styles.liveContainer}>
                 <Text style={styles.liveText}>LIVE</Text>
               </View>
               <View style={styles.cardSubMiddleContainer}>
                 <View style={styles.cardMatchContainer}>
-                  <Text style={styles.subTitle}>UTK</Text>
+                  <Text style={styles.subTitle}>{item?.team2?.teamSName}</Text>
                   <Image
                     source={require('../../assets/icons/profile.png')}
                     style={{height: 25, width: 25}}
                   />
                 </View>
-                <Text style={styles.cardText}>Uttrakhand</Text>
+                <Text style={styles.cardText}>{item?.team2?.teamName}</Text>
               </View>
             </View>
             <View style={styles.cardFooter}>

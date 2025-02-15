@@ -33,6 +33,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
         setAuthToken(token);
+        console.log("TOKEN",token);
         setIsSignIn(true); // User is signed in if the token exists
       } else {
         setIsSignIn(false);
