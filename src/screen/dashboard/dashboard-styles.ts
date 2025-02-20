@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: width * 0.15,
+    width: width * 0.20,
     marginBottom: height * 0.01,
   },
   subTitle: {

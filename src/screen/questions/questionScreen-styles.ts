@@ -15,6 +15,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: AppColors.primary,
   },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: AppColors.bgColor,
+    height: height * 0.8,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: AppColors.palette.dodgerBlue,
+  },
   cardContainer: {
     borderRadius: 12,
     borderColor: AppColors.palette.greenWhite,

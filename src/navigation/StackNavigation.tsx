@@ -6,41 +6,76 @@ import DashBoardScreen from '../screen/dashboard/DashboardScreen';
 import Leaderboard from '../screen/leaderboard/Leaderboard';
 import LoginScreen from '../screen/login/LoginScreen';
 import SplashScreen from 'react-native-splash-screen';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {useAuth} from '../auth-context';
-import { useLayoutEffect} from 'react';
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchWalletBalance} from '../features/wallet/walletBalanceSlice';
+import {AppColors} from '../theme';
+import AddOrderScreen from '../screen/addOrder/AddOrderScreen';
 
 const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
 const DashboardStack = () => {
+  const {signOut} = useAuth();
+  const [walletBalance, setWalletBalance] = useState(0);
+  const dispatch = useDispatch();
+
+  const fetchBalance = useSelector(state => state.walletBalance);
+
+  useEffect(() => {
+    dispatch(fetchWalletBalance());
+  }, []);
+
+  useEffect(() => {
+    const balance = fetchBalance?.data?.balance;
+
+    if (balance?.MainWalletBalance >= 0 && balance?.WinningWalletBalance >= 0) {
+      setWalletBalance(
+        balance?.MainWalletBalance + balance?.WinningWalletBalance,
+      );
+    }
+  }, [fetchBalance]);
+  console.log('Walllet Balance ;;;;', fetchBalance);
+
   return (
     <Stack.Navigator screenOptions={{headerShown: true}}>
-      <Stack.Screen name="Dashboard" component={DashBoardScreen} />
+      <Stack.Screen
+        name="Dashboard"
+        component={DashBoardScreen}
+        options={({navigation}) => ({
+          headerShown: true,
+          headerRight: () => (
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                width: 50,
+              }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: AppColors.palette.greenBlue,
+                }}>
+                ₹{walletBalance.toString()}
+              </Text>
+            </View>
+          ),
+        })}
+      />
       <Stack.Screen name="Question" component={QuestionScreens} />
+      <Stack.Screen name="AddOrder" component={AddOrderScreen} />
       {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
     </Stack.Navigator>
   );
 };
 
 function MyTabs() {
-  const {signOut} = useAuth();
-
   return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="Home"
-        component={DashboardStack}
-        options={({navigation}) => ({
-          headerShown: false,
-          headerRight: () => (
-            <TouchableOpacity onPress={signOut} style={{marginRight: 20}}>
-              <Text>Logout</Text>
-            </TouchableOpacity>
-          ),
-        })}
-      />
+    <Tab.Navigator screenOptions={{headerShown: false}}>
+      <Tab.Screen name="Home" component={DashboardStack} />
       <Tab.Screen name="Leaderboard" component={Leaderboard} />
     </Tab.Navigator>
   );
@@ -73,7 +108,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return !isSignIn ? <AppStack /> : <AuthStack />;
+  return isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 export default Navigation;

@@ -2,11 +2,18 @@ import {configureStore} from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import profileReducer from '../features/profile/profileSlice';
 import matchReducer from '../features/matches/liveMatchesSlice';
+import liveMatchesQuestionReducer from '../features/matches/liveMatchesQuestionSlice';
+import fetchWalletBalanceReducer from '../features/wallet/walletBalanceSlice';
+import addOrderReducer from '../features/addOrder/addOrderSlice';
+
 export const store = configureStore({
   reducer: {
     profile: profileReducer,
     counter: counterReducer,
     match: matchReducer,
+    liveQuestion: liveMatchesQuestionReducer,
+    walletBalance: fetchWalletBalanceReducer,
+    addOrder: addOrderReducer,
   },
 });
 

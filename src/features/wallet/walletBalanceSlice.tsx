@@ -1,24 +1,27 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const fetchLiveMatchesDetails = createAsyncThunk(
-  'match/fetchLiveMatchesDetails',
+export const fetchWalletBalance = createAsyncThunk(
+  'wallet/fetchWalletBalance',
   async (_, thunkAPI) => {
+
+    console.log("Fetch Wallet ");
+
     try {
       const token = await AsyncStorage.getItem('authToken');
+
       const response = await axios.get(
-        `http://20.40.40.110:9112/client/matches`,
+        `http://20.40.40.110:8090/wallet/getBalance`,
         {
           headers: {
             Authorization: token,
           },
         },
       );
-      
-      // console.log('Response : ', response);
 
       if (response.status === 200) {
+        console.log("RESPONSE BALQNCE : ",response);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(
@@ -26,6 +29,8 @@ export const fetchLiveMatchesDetails = createAsyncThunk(
         );
       }
     } catch (error) {
+
+        console.log("cfetch valance ",error);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
@@ -42,22 +47,21 @@ const initialState = {
   errorMessage: '',
 };
 
-const matchSlice = createSlice({
-  name: 'match',
+const walletBalanceSlice = createSlice({
+  name: 'wallet',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchLiveMatchesDetails.pending, state => {
+    builder.addCase(fetchWalletBalance.pending, state => {
       state.isLoading = true;
       state.isError = false;
       state.errorMessage = '';
     });
-    builder.addCase(fetchLiveMatchesDetails.fulfilled, (state, action) => {
-      console.log('ACtion : ', action);
+    builder.addCase(fetchWalletBalance.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
     });
-    builder.addCase(fetchLiveMatchesDetails.rejected, (state, action) => {
+    builder.addCase(fetchWalletBalance.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.errorMessage = action.payload || 'An unknown error occurred';
@@ -65,4 +69,4 @@ const matchSlice = createSlice({
   },
 });
 
-export default matchSlice.reducer;
+export default walletBalanceSlice.reducer;

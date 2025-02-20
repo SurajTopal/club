@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {fetchLiveMatchesDetails} from '../../features/matches/liveMatchesSlice';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {styles} from './dashboard-styles';
-import {useDispatch, useSelector} from 'react-redux';
 
 export default function DashBoardScreen() {
   const navigation = useNavigation();
@@ -12,8 +12,6 @@ export default function DashBoardScreen() {
   const [matchList, setMatchList] = useState([]);
 
   const liveMatchesList = useSelector(state => state.match);
-
-  console.log('LIVE MATHC data : ', liveMatchesList);
 
   useEffect(() => {
     dispatch(fetchLiveMatchesDetails());
@@ -30,7 +28,7 @@ export default function DashBoardScreen() {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={styles.title}>Live</Text>
         <View style={styles.totalMatchContainer}>
-          <Text style={styles.title}>2</Text>
+          <Text style={styles.title}>{matchList?.length || 0}</Text>
         </View>
       </View>
       <FlatList
@@ -44,7 +42,11 @@ export default function DashBoardScreen() {
         renderItem={({item}) => (
           <TouchableOpacity
             style={styles.cardContainer}
-            onPress={() => navigation.navigate('Question')}>
+            onPress={() =>
+              navigation.navigate('Question', {
+                matchId: item?.matchId,
+              })
+            }>
             <View style={styles.cardHeader}>
               <Text style={styles.cardText}>{item?.seriesName || ''}</Text>
               <View
