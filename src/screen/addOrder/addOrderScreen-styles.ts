@@ -1,4 +1,3 @@
-import {fonts} from './../../../node_modules/@react-navigation/native/src/theming/fonts';
 import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
 
