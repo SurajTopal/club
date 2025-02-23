@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {AppColors} from '../../theme';
 import {View, Text, TouchableOpacity} from 'react-native';
-
+import ExitOrderModal from '../../components/ExitOrderModal/ExitOrderModal';
 
 import {styles} from './myQuestionScreen-styles';
 
 export default function MyQuestionScreen() {
   const [activeTab, setActiveTab] = useState('Active');
-  const [isOpen, setIsOpen] = useState();
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -94,7 +94,6 @@ export default function MyQuestionScreen() {
             </View>
           </View>
         )}
-      
       </View>
 
       {activeTab === 'Active' && (
@@ -118,7 +117,10 @@ export default function MyQuestionScreen() {
                 <Text style={styles.orderLossValue}>2.20L</Text>
               </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsVisible(true);
+              }}>
               <Text style={styles.sellText}>Sell</Text>
             </TouchableOpacity>
           </View>
@@ -150,7 +152,7 @@ export default function MyQuestionScreen() {
         </View>
       )}
 
-    
+      <ExitOrderModal isVisible={isVisible} setIsVisible={setIsVisible} />
     </View>
   );
 }

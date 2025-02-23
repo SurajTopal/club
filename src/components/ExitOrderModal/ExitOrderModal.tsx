@@ -1,70 +1,127 @@
-// import React, {useCallback, useRef} from 'react';
-// import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-// import {GestureHandlerRootView} from 'react-native-gesture-handler';
-// import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import Slider from '@react-native-community/slider';
+import {BottomSheet, Switch} from 'react-native-elements';
+import {AppColors} from '../../theme';
 
-// const ExitOrderModal = () => {
-//   // Reference for BottomSheet
-//   const bottomSheetRef = useRef<BottomSheet>(null);
+import {styles} from './exitOrderModal-styles';
 
-//   // Function to open BottomSheet
-//   const openBottomSheet = () => {
-//     bottomSheetRef.current?.expand();
-//   };
+export default function ExitOrderModal(props) {
+  const {isVisible, setIsVisible} = props;
 
-//   // Handle sheet changes
-//   const handleSheetChanges = useCallback((index: number) => {
-//     console.log('handleSheetChanges', index);
-//   }, []);
+  const [checked, setChecked] = useState(false);
 
-//   return (
-//     <GestureHandlerRootView style={styles.container}>
-//       {/* Button to Open Bottom Sheet */}
-//       <TouchableOpacity style={styles.button} onPress={openBottomSheet}>
-//         <Text style={styles.buttonText}>Open Bottom Sheet</Text>
-//       </TouchableOpacity>
+  const [price, setPrice] = useState(1.6); // Default price
+  const minPrice = 0.2;
+  const maxPrice = 9.8;
+  const step = 0.5; // Price change step
 
-//       {/* Bottom Sheet */}
-//       <BottomSheet
-//         ref={bottomSheetRef}
-//         index={-1}
-//         snapPoints={['25%', '50%']}
-//         onChange={handleSheetChanges}>
-//         <BottomSheetView style={styles.contentContainer}>
-//           <Text style={styles.sheetText}>Awesome 🎉</Text>
-//         </BottomSheetView>
-//       </BottomSheet>
-//     </GestureHandlerRootView>
-//   );
-// };
+  const decreasePrice = () => {
+    setPrice(prevPrice => Math.max(prevPrice - step, minPrice));
+  };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'grey',
-//   },
-//   button: {
-//     backgroundColor: '#6200EA',
-//     paddingVertical: 12,
-//     paddingHorizontal: 24,
-//     borderRadius: 8,
-//   },
-//   buttonText: {
-//     color: 'white',
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//   },
-//   contentContainer: {
-//     flex: 1,
-//     padding: 36,
-//     alignItems: 'center',
-//   },
-//   sheetText: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//   },
-// });
+  const increasePrice = () => {
+    setPrice(prevPrice => Math.min(prevPrice + step, maxPrice));
+  };
 
-// export default ExitOrderModal;
+  return (
+    <BottomSheet isVisible={isVisible}>
+      <View>
+        <TouchableOpacity
+          onPress={() => setIsVisible(false)}
+          style={{padding: 10, backgroundColor: 'pink', alignSelf: 'flex-end'}}>
+          <Text>X</Text>
+        </TouchableOpacity>
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.questionText}>
+              Afghanistan to win to match vs South Africa ?
+            </Text>
+          </View>
+          <View style={styles.tradeContainer}>
+            <View style={styles.tradeLeftContainer}>
+              <Text style={styles.tradeAmount}>Yes | ₹3.2</Text>
+              <Text style={styles.quantity}>2.0 Qty</Text>
+            </View>
+            <View style={styles.tradeRightContainer}>
+              <View>
+                <Text style={styles.amount}>₹3.20L</Text>
+                <Text style={styles.investedCurrentText}>Invested</Text>
+              </View>
+              <View>
+                <Text style={styles.amount}>₹1.60L</Text>
+                <Text style={styles.investedCurrentText}>Current</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.sellContainer}>
+            <Text style={styles.label}>Sell price</Text>
+            <Text style={styles.availableQty}>
+              20,421.10 quantities available
+            </Text>
+            <View style={styles.priceContainer}>
+              {/* Minus Button */}
+              <TouchableOpacity onPress={decreasePrice} style={styles.button}>
+                <Text style={styles.buttonText}>-</Text>
+              </TouchableOpacity>
+
+              {/* Slider */}
+              <Slider
+                style={styles.slider}
+                minimumValue={minPrice}
+                maximumValue={maxPrice}
+                step={step}
+                value={price}
+                onValueChange={value => setPrice(value)}
+                minimumTrackTintColor={AppColors.palette.greenBlue}
+                maximumTrackTintColor="#E0E0E0"
+                thumbTintColor={AppColors.palette.greenBlue}
+              />
+
+              {/* Plus Button */}
+              <TouchableOpacity onPress={increasePrice} style={styles.button}>
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Total Amount */}
+            <Text style={styles.total}>Total: ₹{price.toFixed(2)}</Text>
+          </View>
+
+          <View style={styles.footerContainer}>
+            <View style={styles.footerSubContainer}>
+              <Switch
+                value={checked}
+                onValueChange={value => setChecked(value)}
+              />
+              <View style={{marginLeft: 10}}>
+                <Text style={styles.instantSellText}>Instant Sell</Text>
+                <Text style={styles.footerText}>
+                  Sell all your opinions at current market price. 1% commission
+                  applies.
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => {}}
+              style={{
+                padding: 10,
+                margin: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 8,
+                backgroundColor: AppColors.palette.dodgerBlue,
+              }}>
+              <Text style={{fontSize: 16, color: AppColors.bgColor}}>
+                Sell Yes
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={styles.walletText}>Wallet Balance : ₹2900</Text>
+          </View>
+        </View>
+      </View>
+    </BottomSheet>
+  );
+}
