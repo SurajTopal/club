@@ -7,14 +7,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: AppColors.palette.ghostWhite,
+    justifyContent: 'space-between',
+  },
+  topContainer: {
+    padding: 20,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    backgroundColor: AppColors.palette.dodgerBlue,
+    elevation: 3,
   },
   amountText: {
-    color: AppColors.palette.blackEel,
+    color: AppColors.bgColor,
     fontSize: 22,
     fontWeight: '600',
   },
   totalBalanceText: {
-    color: AppColors.palette.osloGrey,
+    color: AppColors.palette.greenWhite,
     fontSize: 15,
     fontWeight: '600',
   },
@@ -34,7 +42,7 @@ const styles = StyleSheet.create({
     color: AppColors.palette.blackEel,
   },
   rechargeButton: {
-    backgroundColor: AppColors.palette.black,
+    backgroundColor: AppColors.palette.dodgerBlue,
     paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 8,
@@ -49,7 +57,6 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 15,
     borderRadius: 15,
-    marginBottom: height * 0.1,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: AppColors.bgColor,
@@ -59,7 +66,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 12,
     borderRadius: 10,
-    borderBottomWidth: 1,
+    backgroundColor: AppColors.bgColor,
+    borderTopWidth: 1,
+    borderColor: AppColors.palette.greenWhite,
+    borderStyle: 'dashed',
   },
   icon: {
     width: 30,

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Slider from '@react-native-community/slider';
 import {BottomSheet, Switch} from 'react-native-elements';
 import {AppColors} from '../../theme';
@@ -26,17 +27,20 @@ export default function ExitOrderModal(props) {
 
   return (
     <BottomSheet isVisible={isVisible}>
-      <View>
-        <TouchableOpacity
-          onPress={() => setIsVisible(false)}
-          style={{padding: 10, backgroundColor: 'pink', alignSelf: 'flex-end'}}>
-          <Text>X</Text>
-        </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.headerContainer}>
             <Text style={styles.questionText}>
               Afghanistan to win to match vs South Africa ?
             </Text>
+            <TouchableOpacity
+              onPress={() => setIsVisible(false)}
+              style={{padding: 10, alignSelf: 'flex-end'}}>
+              <Icon
+                name="closecircle"
+                size={25}
+                color={AppColors.palette.blackEel}
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.tradeContainer}>
             <View style={styles.tradeLeftContainer}>
@@ -62,7 +66,11 @@ export default function ExitOrderModal(props) {
             <View style={styles.priceContainer}>
               {/* Minus Button */}
               <TouchableOpacity onPress={decreasePrice} style={styles.button}>
-                <Text style={styles.buttonText}>-</Text>
+                <Icon
+                  name="minuscircle"
+                  size={25}
+                  color={AppColors.palette.greenBlue}
+                />
               </TouchableOpacity>
 
               {/* Slider */}
@@ -80,7 +88,11 @@ export default function ExitOrderModal(props) {
 
               {/* Plus Button */}
               <TouchableOpacity onPress={increasePrice} style={styles.button}>
-                <Text style={styles.buttonText}>+</Text>
+                <Icon
+                  name="pluscircle"
+                  size={25}
+                  color={AppColors.palette.greenBlue}
+                />
               </TouchableOpacity>
             </View>
 
@@ -121,7 +133,6 @@ export default function ExitOrderModal(props) {
             <Text style={styles.walletText}>Wallet Balance : ₹2900</Text>
           </View>
         </View>
-      </View>
     </BottomSheet>
   );
 }

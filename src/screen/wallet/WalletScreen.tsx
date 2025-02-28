@@ -1,23 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {View, Text, TouchableOpacity, FlatList, Image} from 'react-native';
+import {Icon} from 'react-native-elements';
 
 import {styles} from './walletScreen-styles';
 
 export default function WalletScreen() {
   const [walletBalance, setWalletBalance] = useState(0);
-  const [depositBalance, setDepositBalance] = useState();
+  const [depositBalance, setDepositBalance] = useState(0);
+  const [winningBalance, setWinningBalance] = useState(0);
 
   const fetchBalance = useSelector(state => state.walletBalance);
 
   useEffect(() => {
     const balance = fetchBalance?.data?.balance;
-
     if (balance?.MainWalletBalance >= 0 && balance?.WinningWalletBalance >= 0) {
       setDepositBalance(balance?.MainWalletBalance);
       setWalletBalance(
         balance?.MainWalletBalance + balance?.WinningWalletBalance,
       );
+      setWinningBalance(balance?.WinningWalletBalance);
     }
   }, [fetchBalance]);
 
@@ -27,7 +29,6 @@ export default function WalletScreen() {
     kyc: 'https://img.icons8.com/ios/50/verified-account.png',
   };
 
-  // Quick Actions Data
   const quickActions = [
     {
       id: '1',
@@ -55,28 +56,28 @@ export default function WalletScreen() {
 
   const QuickActions = () => {
     return (
-      <FlatList
-        data={quickActions}
-        keyExtractor={item => item.id}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={[styles.actionItem, index === 0 && {borderTopWidth: 1}]}
-            onPress={item.onPress}>
-            <Image source={{uri: item.icon}} style={styles.icon} />
-            <View style={styles.textContainer}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-            </View>
-            {item.amount && <Text style={styles.amount}>{item.amount}</Text>}
-          </TouchableOpacity>
-        )}
-      />
+      <View>
+        <FlatList
+          data={quickActions}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <TouchableOpacity style={styles.actionItem} onPress={item.onPress}>
+              <Image source={{uri: item.icon}} style={styles.icon} />
+              <View style={styles.textContainer}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+              </View>
+              {item.amount && <Text style={styles.amount}>{item.amount}</Text>}
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     );
   };
 
   return (
     <View style={styles.container}>
-      <View style={{padding: 20}}>
+      <View style={styles.topContainer}>
         <Text style={styles.amountText}>₹ {walletBalance}</Text>
         <Text style={styles.totalBalanceText}>Total balance</Text>
 
@@ -96,23 +97,22 @@ export default function WalletScreen() {
           <View style={styles.subContainer}>
             <View>
               <Text>Winnnings</Text>
-              <Text style={styles.depositAmount}>₹0</Text>
+              <Text style={styles.depositAmount}>₹{winningBalance}</Text>
             </View>
             <TouchableOpacity onPress={() => {}} style={styles.rechargeButton}>
               <Text style={styles.rechargeText}>Widthdraw</Text>
             </TouchableOpacity>
           </View>
         </View>
-
+                            
         <View style={styles.promotionalContainer}>
           <View>
             <Text>Promotional</Text>
             <Text>₹ 0</Text>
           </View>
-          <View style={{backgroundColor: 'red', height: 10, width: 10}} />
+          <Icon name="chevron-right" type="entypo" />
         </View>
       </View>
-
       <QuickActions />
     </View>
   );

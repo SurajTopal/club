@@ -1,20 +1,24 @@
-import {Width} from './../../../node_modules/csstype/index.d';
 import {StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    overflow:'hidden',
+    elevation:3,
     backgroundColor: AppColors.palette.ghostWhite,
   },
   headerContainer: {
     padding: 20,
     backgroundColor: AppColors.bgColor,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   questionText: {
     fontSize: 20,
     fontWeight: '700',
+    flex: 1,
   },
   tradeContainer: {
     flexDirection: 'row',
@@ -79,12 +83,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
-    backgroundColor: AppColors.palette.greenBlue,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
+    padding: 5,
   },
   buttonText: {
     fontSize: 24,
