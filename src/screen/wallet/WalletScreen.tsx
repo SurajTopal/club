@@ -1,6 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
 import {View, Text, TouchableOpacity, FlatList, Image} from 'react-native';
+import {fetchWalletBalance} from '../../features/wallet/walletBalanceSlice';
+import History from '../../components/History/History';
+import {useDispatch, useSelector} from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import AddMoneyModal from './AddMoneyModal';
 import {Icon} from 'react-native-elements';
 
 import {styles} from './walletScreen-styles';
@@ -9,17 +12,24 @@ export default function WalletScreen() {
   const [walletBalance, setWalletBalance] = useState(0);
   const [depositBalance, setDepositBalance] = useState(0);
   const [winningBalance, setWinningBalance] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchWalletBalance());
+  }, []);
 
   const fetchBalance = useSelector(state => state.walletBalance);
 
   useEffect(() => {
     const balance = fetchBalance?.data?.balance;
-    if (balance?.MainWalletBalance >= 0 && balance?.WinningWalletBalance >= 0) {
-      setDepositBalance(balance?.MainWalletBalance);
-      setWalletBalance(
-        balance?.MainWalletBalance + balance?.WinningWalletBalance,
-      );
-      setWinningBalance(balance?.WinningWalletBalance);
+    const winAmount = fetchBalance?.data?.winningBalance;
+    if (balance >= 0 && winAmount >= 0) {
+      setDepositBalance(balance);
+      setWalletBalance(balance + winAmount);
+      setWinningBalance(winAmount);
     }
   }, [fetchBalance]);
 
@@ -35,7 +45,7 @@ export default function WalletScreen() {
       title: 'Transaction History',
       description: 'For all balance debits & credits',
       icon: icons.transaction,
-      onPress: () => console.log('Transaction History Clicked'),
+      onPress: () => setIsHistoryModalVisible(true),
     },
     {
       id: '2',
@@ -87,7 +97,11 @@ export default function WalletScreen() {
               <Text>Deposit</Text>
               <Text style={styles.depositAmount}>₹ {depositBalance}</Text>
             </View>
-            <TouchableOpacity onPress={() => {}} style={styles.rechargeButton}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsVisible(true);
+              }}
+              style={styles.rechargeButton}>
               <Text style={styles.rechargeText}>Recharge</Text>
             </TouchableOpacity>
           </View>
@@ -104,7 +118,7 @@ export default function WalletScreen() {
             </TouchableOpacity>
           </View>
         </View>
-                            
+
         <View style={styles.promotionalContainer}>
           <View>
             <Text>Promotional</Text>
@@ -114,6 +128,11 @@ export default function WalletScreen() {
         </View>
       </View>
       <QuickActions />
+      <AddMoneyModal isVisible={isVisible} setIsVisible={setIsVisible} />
+      <History
+        setIsVisible={setIsHistoryModalVisible}
+        isVisible={isHistoryModalVisible}
+      />
     </View>
   );
 }

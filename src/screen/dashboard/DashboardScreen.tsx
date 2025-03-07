@@ -48,8 +48,8 @@ export default function DashBoardScreen() {
               })
             }>
             <View style={styles.cardHeader}>
-              <Text style={styles.cardText}>{item?.seriesName || ''}</Text>
-              <View
+              <Text style={styles.cardTitle}>{item?.seriesName || ''}</Text>
+              {/* <View
                 style={{
                   borderRadius: 5,
                   alignItems: 'center',
@@ -59,7 +59,7 @@ export default function DashBoardScreen() {
                   source={require('../../assets/icons/profile.png')}
                   style={{height: 25, width: 25}}
                 />
-              </View>
+              </View> */}
             </View>
             <View style={styles.cardMiddleContainer}>
               <View style={styles.cardSubMiddleContainer}>
@@ -70,7 +70,9 @@ export default function DashBoardScreen() {
                   />
                   <Text style={styles.subTitle}>{item?.team1?.teamSName}</Text>
                 </View>
-                <Text style={styles.cardText}>{item?.team1?.teamName}</Text>
+                <Text numberOfLines={1} style={styles.cardText}>
+                  {item?.team1?.teamName}
+                </Text>
               </View>
               <View style={styles.liveContainer}>
                 <Text style={styles.liveText}>LIVE</Text>
@@ -83,12 +85,14 @@ export default function DashBoardScreen() {
                     style={{height: 25, width: 25}}
                   />
                 </View>
-                <Text style={styles.cardText}>{item?.team2?.teamName}</Text>
+                <Text numberOfLines={1} style={styles.cardText}>
+                  {item?.team2?.teamName}
+                </Text>
               </View>
             </View>
             <View style={styles.cardFooter}>
               <View style={styles.cardSubFooter}>
-                <Text>UTK: 82/0 (6)</Text>
+                <Text style={styles.scoreText}>UTK: 82/0 (6)</Text>
               </View>
               <Text numberOfLines={1} style={styles.matchInfo}>
                 Uttarakhand need 49 runs in 14.0 remaining

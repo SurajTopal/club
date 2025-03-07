@@ -5,6 +5,7 @@ import matchReducer from '../features/matches/liveMatchesSlice';
 import liveMatchesQuestionReducer from '../features/matches/liveMatchesQuestionSlice';
 import fetchWalletBalanceReducer from '../features/wallet/walletBalanceSlice';
 import addOrderReducer from '../features/addOrder/addOrderSlice';
+import fetchTransactionReducer from '../features/wallet/transactionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     liveQuestion: liveMatchesQuestionReducer,
     walletBalance: fetchWalletBalanceReducer,
     addOrder: addOrderReducer,
+    transaction: fetchTransactionReducer,
   },
 });
 

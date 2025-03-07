@@ -2,17 +2,15 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const fetchWalletBalance = createAsyncThunk(
-  'wallet/fetchWalletBalance',
+export const fetchTransaction = createAsyncThunk(
+  'wallet/fetchTransaction',
   async (_, thunkAPI) => {
-
-    console.log("Fetch Wallet ");
-
+   
     try {
       const token = await AsyncStorage.getItem('authToken');
 
       const response = await axios.get(
-        `http://20.40.40.110:8090/wallet/getBalance`,
+        `http://20.40.40.110:8090/transactions?page=1`,
         {
           headers: {
             Authorization: token,
@@ -21,16 +19,16 @@ export const fetchWalletBalance = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log("RESPONSE BALANCE : ",response);
+        console.log('History : ', response);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(
           `Unexpected response status: ${response.status}`,
         );
       }
-    } catch (error) {
 
-        console.log("cfetch valance ",error);
+    } catch (error) {
+      console.log('error in fetch transaction ', error);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
@@ -47,21 +45,21 @@ const initialState = {
   errorMessage: '',
 };
 
-const walletBalanceSlice = createSlice({
-  name: 'wallet',
+const transactionSlice = createSlice({
+  name: 'transaction',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(fetchWalletBalance.pending, state => {
+    builder.addCase(fetchTransaction.pending, state => {
       state.isLoading = true;
       state.isError = false;
       state.errorMessage = '';
     });
-    builder.addCase(fetchWalletBalance.fulfilled, (state, action) => {
+    builder.addCase(fetchTransaction.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
     });
-    builder.addCase(fetchWalletBalance.rejected, (state, action) => {
+    builder.addCase(fetchTransaction.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.errorMessage = action.payload || 'An unknown error occurred';
@@ -69,4 +67,4 @@ const walletBalanceSlice = createSlice({
   },
 });
 
-export default walletBalanceSlice.reducer;
+export default transactionSlice.reducer;

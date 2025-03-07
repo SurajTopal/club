@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addOrderDetails} from '../../features/addOrder/addOrderSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -18,10 +19,95 @@ export default function AddOrderScreen(props) {
   console.log('Question Details : ', questionDetails);
 
   const dispatch = useDispatch();
-  const {yesPrice, noPrice, Question, QuestionId, slide} = questionDetails;
+  const {Question, QuestionId, slide} = questionDetails;
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
+  const [connected, setConnected] = useState(false);
+  const [yesPrice, setYesPrice] = useState(null);
+  const [noPrice, setNoPrice] = useState(null);
+  const websocketRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
   const [selectedButton, setSelectedButton] = useState(null);
   const navigation = useNavigation();
+
+  const connectWebSocket = async () => {
+    const token = await AsyncStorage.getItem('authToken');
+
+    try {
+      // Create WebSocket instance with custom headers
+      const ws = new WebSocket(
+        `ws://20.40.40.110:9000/ws?questionId=${QuestionId}`,
+        [],
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        },
+      );
+
+      // Connection opened
+      ws.onopen = () => {
+        console.log('WebSocket Connection Established');
+        setConnected(true);
+        setConnectionStatus('Connected');
+        // setMessages(prev => [
+        //   ...prev,
+        //   {text: 'Connected to server', type: 'system'},
+        // ]);
+      };
+
+      // Listen for messages
+      ws.onmessage = event => {
+        console.log('Message received:', JSON.parse(event.data));
+
+        if (event.data) {
+          const questionInfo = JSON.parse(event.data);
+
+          console.log('Yes and no ...', questionInfo);
+
+          setYesPrice(questionInfo?.yesPrice);
+          setNoPrice(questionInfo?.noPrice);
+          // console.log('questionINFOOOO--------', questionInfo);
+        }
+        // setMessages(prev => [...prev, {text: event.data, type: 'received'}]);
+      };
+
+      // Listen for errors
+      ws.onerror = error => {
+        console.log('WebSocket Error:', error);
+        setConnectionStatus(`Error: ${error.message || 'Unknown error'}`);
+        // setMessages(prev => [
+        //   ...prev,
+        //   {text: `Error: ${error.message || 'Unknown error'}`, type: 'error'},
+        // ]);
+      };
+
+      // Connection closed
+      ws.onclose = event => {
+        console.log('WebSocket Connection Closed:', event.code, event.reason);
+        setConnected(false);
+        setConnectionStatus(
+          `Disconnected: ${event.reason || 'Connection closed'}`,
+        );
+        // setMessages(prev => [
+        //   ...prev,
+        //   {
+        //     text: `Disconnected: ${event.reason || 'Connection closed'}`,
+        //     type: 'system',
+        //   },
+        // ]);
+      };
+
+      websocketRef.current = ws;
+    } catch (error) {
+      console.error('Failed to connect WebSocket:', error);
+      setConnectionStatus(`Connection Failed: ${error.message}`);
+      // setMessages(prev => [
+      //   ...prev,
+      //   {text: `Connection Failed: ${error.message}`, type: 'error'},
+      // ]);
+    }
+  };
 
   const [price, setPrice] = useState(0.5);
   const minPrice = 0.5;
@@ -36,6 +122,7 @@ export default function AddOrderScreen(props) {
 
   const setCurrentPrice = option => {
     if (option === 'Yes') {
+      console.log('YES PRICE ', yesPrice);
       setPrice(yesPrice);
       setSelectedButton('Yes');
     } else {
@@ -45,8 +132,19 @@ export default function AddOrderScreen(props) {
   };
 
   useEffect(() => {
-    setCurrentPrice(slide);
+    connectWebSocket();
+
+    return () => {
+      if (websocketRef.current) {
+        console.log('Closing WebSocket connection...');
+        websocketRef.current.close();
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    setCurrentPrice(slide);
+  }, [yesPrice, noPrice]);
 
   // Handle Price Increment
   const increasePrice = () => {
@@ -93,7 +191,7 @@ export default function AddOrderScreen(props) {
                 styles.buttonTitle,
                 selectedButton !== 'Yes' && styles.blackButtonTitle,
               ]}>
-              Yes ₹{questionDetails?.yesPrice}
+              Yes ₹{yesPrice}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -109,7 +207,7 @@ export default function AddOrderScreen(props) {
                 styles.buttonTitle,
                 selectedButton !== 'No' && styles.blackButtonTitle,
               ]}>
-              No ₹{questionDetails?.noPrice}
+              No ₹{noPrice}
             </Text>
           </TouchableOpacity>
         </View>
@@ -128,7 +226,7 @@ export default function AddOrderScreen(props) {
           </View>
           <View style={styles.selectPriceContainer}>
             <Text style={styles.selectPriceText}>Select Price</Text>
-            <Text style={styles.selectPriceText}>₹{price.toFixed(1)}</Text>
+            <Text style={styles.selectPriceText}>₹{price?.toFixed(1)}</Text>
           </View>
 
           <View style={styles.controlContainer}>

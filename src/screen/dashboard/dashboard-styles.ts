@@ -34,24 +34,31 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   cardContainer: {
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 5,
     borderRadius: 14,
-    borderColor: 'lightgrey',
     borderWidth: 1,
+    borderColor: AppColors.palette.greenWhite,
     marginTop: 15,
   },
   cardHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: AppColors.palette.greenWhite,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 10,
   },
   cardText: {
+    fontSize: 14,
+    color: 'black',
+    width: width * 0.34,
+    fontWeight: '400',
+  },
+  cardTitle: {
     fontSize: 15,
     color: 'black',
-    fontWeight: '200',
+    fontWeight: '600',
   },
   cardMiddleContainer: {
     paddingTop: 10,
@@ -62,12 +69,13 @@ const styles = StyleSheet.create({
   cardSubMiddleContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    width: width * 0.35,
   },
   cardMatchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: width * 0.20,
+    width: width * 0.25,
     marginBottom: height * 0.01,
   },
   subTitle: {
@@ -75,20 +83,21 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   liveContainer: {
-    borderWidth: 1,
-    borderColor: 'darkgreen',
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: AppColors.palette.dodgerBlue,
     paddingHorizontal: 20,
     paddingVertical: 2,
     borderRadius: 5,
   },
   liveText: {
-    fontSize: 14,
-    fontWeight: 200,
-    color: 'green',
+    fontSize: 13,
+    fontWeight: 500,
+    color: AppColors.palette.dodgerBlue,
     alignSelf: 'center',
   },
   cardFooter: {
-    backgroundColor: 'skyblue',
+    backgroundColor: AppColors.palette.dodgerBlue,
     padding: 10,
     marginTop: 10,
     flexDirection: 'row',
@@ -97,14 +106,19 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   cardSubFooter: {
-    backgroundColor: 'lightblue',
+    backgroundColor: AppColors.palette.darkSkyBlue,
     padding: 3,
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  scoreText: {
+    fontSize: 14,
+    color: AppColors.bgColor,
+  },
   matchInfo: {
     width: width * 0.5,
+    color: AppColors.bgColor,
   },
 });
 

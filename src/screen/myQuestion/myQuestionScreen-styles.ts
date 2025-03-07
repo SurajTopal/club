@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   liveContainer: {
-    backgroundColor: AppColors.palette.zircon,
+    backgroundColor: AppColors.palette.dodgerBlue,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   liveText: {
     fontSize: 15,
     fontWeight: '500',
-    color: AppColors.palette.blackEel,
+    color: AppColors.bgColor,
   },
   activeBottomTabContainer: {
     borderTopWidth: 1,
@@ -100,17 +100,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 10,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: AppColors.palette.greenWhite,
   },
   matchContainer: {
     padding: 5,
-    backgroundColor: AppColors.palette.zircon,
+    backgroundColor: AppColors.palette.dodgerBlue,
     width: width * 0.3,
     alignItems: 'center',
     borderRadius: 5,
   },
   matchText: {
     fontSize: 15,
-    color: AppColors.palette.blackEel,
+    color: AppColors.bgColor,
     fontWeight: '600',
   },
   question: {

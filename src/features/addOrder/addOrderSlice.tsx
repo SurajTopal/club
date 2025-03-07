@@ -42,8 +42,6 @@ export const addOrderDetails = createAsyncThunk<
       BookProfitPrice: Number(bookProfilePrice),
     };
 
-    console.log('Data Form : ', dataForm);
-
     const response = await axios.post(
       `http://20.40.40.110:9000/addOrder`,
       dataForm,
@@ -55,10 +53,12 @@ export const addOrderDetails = createAsyncThunk<
       },
     );
 
-    console.log('RESPONSE >', response);
-
     if (response.status === 200) {
-      Toast.show({text1: 'Order Placed successfully!!', type: 'success'});
+      Toast.show({
+        text1: 'Order Placed successfully!!',
+        type: 'success',
+        visibilityTime: 2000,
+      });
       console.log('Order Created successfully:', response);
       navigation.goBack();
     } else {

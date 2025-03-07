@@ -100,7 +100,7 @@ export default function MyQuestionScreen() {
         <View style={styles.orderCardContainer}>
           <View style={styles.matchContainer}>
             <Text style={styles.matchText}>
-              AFG<Text>vs</Text>SA
+              AFG<Text style={{color: AppColors.palette.blackEel}}> vs </Text>SA
             </Text>
           </View>
           <Text style={styles.question}>
