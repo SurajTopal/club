@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import MatchCard from '../../components/UpcomingMatchesCard/UpcomingMatchesCard';
+import {liveMatchFetch} from '../../features/matches/liveMatchSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {styles} from './homeScreen-styles';
 
@@ -60,11 +62,26 @@ const matchData = [
 ];
 
 export default function HomeScreen() {
+  const [liveMatchList, setLiveMatchList] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(liveMatchFetch());
+  }, []);
+
+  const liveMatches = useSelector(state => state?.liveMatch);
+
+  useEffect(() => {
+    if (liveMatches.data?.data) {
+      setLiveMatchList(liveMatches?.data?.data);
+    }
+  }, [liveMatches]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Upcoming Matches</Text>
       <FlatList
-        data={matchData}
+        data={liveMatchList}
         renderItem={({item}) => <MatchCard match={item} />}
       />
     </View>

@@ -1,11 +1,16 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
+
+const {width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
     backgroundColor: AppColors.palette.black,
+  },
+  subContainer: {
+    padding: 20,
+    flex: 1,
   },
   title: {
     color: AppColors.bgColor,
@@ -13,77 +18,35 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     alignSelf: 'center',
   },
-  cardContainer: {
-    backgroundColor: '#1C1C1C',
-    padding: 16,
-    marginVertical: 8,
-    borderRadius: 10,
-  },
-  headerContainer: {
+  groupButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-  },
-  playerImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  playerDetails: {
-    flex: 1,
-  },
-  playerName: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  formContainer: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  formText: {
-    color: AppColors.bgColor,
-    marginRight: 6,
-    fontSize: 14,
-  },
-  betContainer: {
-    marginTop: 12,
-    flexDirection: 'row',
+    padding: 3,
+    borderRadius: 15,
+    alignSelf: 'center',
+    width: width * 0.85,
+    marginVertical: 20,
     justifyContent: 'space-between',
-  },
-  betText: {
-    color: AppColors.palette.osloGrey,
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  betRunText: {
-    color: AppColors.bgColor,
-    fontWeight: '600',
-    fontSize: 15,
+    backgroundColor: AppColors.palette.osloGrey,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    borderRadius: 10,
-    overflow: 'hidden',
-    borderWidth: 0.7,
-    borderColor: AppColors.palette.osloGrey,
-  },
-  optionButton: {
-    backgroundColor: '#2A2A2A',
-    paddingVertical: 5,
-    paddingHorizontal: 20,
+    padding: 5,
+    flex: 1,
     alignItems: 'center',
+    borderRadius: 15,
   },
-  optionText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
+  buttonTitle: {
+    fontSize: 15,
+    color: AppColors.palette.blackEel,
+    fontWeight: '600',
   },
-  pointsText: {
-    color: '#bbb',
-    marginTop: 5,
-    fontSize: 10,
+  activeButtonContainer: {
+    backgroundColor: AppColors.palette.blackEel,
+  },
+  activeButtonTitle: {
+    fontSize: 15,
+    color: AppColors.palette.lightLimeGreen,
+    fontWeight: '600',
   },
 });
 

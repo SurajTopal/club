@@ -13,7 +13,7 @@ const MatchCard = ({match}) => {
   return (
     <TouchableOpacity
       style={styles.cardContainer}
-      onPress={() => navigation.navigate('Contest')}>
+      onPress={() => navigation.navigate('Contest', {matchId: match.id})}>
       <View style={styles.topRow}>
         <Text style={styles.timer}>
           {moment(match?.start_time).format('hh:mm A')}

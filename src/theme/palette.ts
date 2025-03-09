@@ -23,6 +23,7 @@ export const palette = {
   greenWhite: '#EAEAEA', //"rgb(234,234,234)"
   ghostWhite: '#F7F8FA',
   lavenderGrey: '#BEC6D6', // "rgb(190,198,214)"
+  lightLimeGreen: '#C3FD61',
   lightBlack: '#0000001a', //"rgba(0,0,0,0.1)"
   lightBlue: 'rgba(61,135,241,0.3)',
   lightCoral: '#F4777C', //"rgb(244 ,119, 124)"
@@ -32,6 +33,7 @@ export const palette = {
   mintFrost: '#C5FFED',
   mistyRose: '#FFE3E4', //"rgb( 255, 227, 228)"
   nobel: '#B3B3B3', //"rgb(179, 179, 179)"
+  nightBlack: '#1C1C1C',
   nobelLight: 'rgba(179,179, 179, 0.1)',
   onyx: '#121212', //rgb(18,18,18)
   orangeDark: '#f80', //"rgb(255 ,136, 0)"

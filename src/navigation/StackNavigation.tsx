@@ -1,4 +1,5 @@
 import OTPVerificationScreen from '../screen/otpVerificationScreen/OTPVerificationScreen';
+import BatBallQuestionScreen from '../screen/batBallQuestion/BatBallQuestionScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {fetchWalletBalance} from '../features/wallet/walletBalanceSlice';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -9,18 +10,17 @@ import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import QuestionScreens from '../screen/questions/QuestionsScreen';
 import DashBoardScreen from '../screen/dashboard/DashboardScreen';
 import AddOrderScreen from '../screen/addOrder/AddOrderScreen';
+import CaptainScreen from '../screen/captain/CaptainScreen';
+import ContestScreen from '../screen/contest/ContestScreen';
 import WalletScreen from '../screen/wallet/WalletScreen';
 import {useNavigation} from '@react-navigation/native';
 import LoginScreen from '../screen/login/LoginScreen';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
+import HomeScreen from '../screen/home/HomeScreen';
 import {Icon} from 'react-native-elements';
 import {useAuth} from '../auth-context';
 import {AppColors} from '../theme';
-import HomeScreen from '../screen/home/HomeScreen';
-import ContestScreen from '../screen/contest/ContestScreen';
-import BatBallQuestionScreen from '../screen/batBallQuestion/BatBallQuestionScreen';
-import CaptainScreen from '../screen/captain/CaptainScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -197,9 +197,9 @@ const DashboardStack = () => {
           </View>
         ),
       }}>
-      <Stack.Screen name="Captain" component={CaptainScreen} />
-      <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
+      <Stack.Screen name="Captain" component={CaptainScreen} />
       <Stack.Screen name="Contest" component={ContestScreen} />
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
       <Stack.Screen name="Wallet" component={WalletScreen} />
@@ -257,9 +257,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     flexDirection: 'row',
     paddingHorizontal: 20,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    backgroundColor: AppColors.palette.dodgerBlue,
+    backgroundColor: '#1C1C1C',
+    elevation: 2,
     justifyContent: 'space-between',
   },
   tabButton: {

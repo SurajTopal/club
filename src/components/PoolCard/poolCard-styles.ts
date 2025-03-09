@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   progressBar: {
-    width: '100%',
-    height: 40,
+    marginTop: 10,
   },
   spotRow: {
     flexDirection: 'row',

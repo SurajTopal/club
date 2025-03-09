@@ -7,34 +7,60 @@ import {AppColors} from '../../theme';
 
 import {styles} from './poolCard-styles';
 
-const {width} = Dimensions.get('window');
 
-const PoolCard = () => {
-  const totalSpots = 2000;
-  const remainingSpots = 1422;
+const PoolCard = props => {
+  const {contestInfo, index} = props;
+  const {
+    id,
+    match_id,
+    title,
+    entry_fee,
+    current_entry_fee,
+    current_pool_size,
+    max_pool_size,
+    first_price,
+    total_spots,
+    min_spots,
+    filled_spots,
+    is_spawnable,
+    start_time,
+    end_time,
+    created_at,
+    brand_id,
+    total_allowed_team,
+    total_winners,
+    category_id,
+    is_active,
+    has_ended,
+  } = contestInfo;
+
+  const totalSpots = total_spots;
+  const remainingSpots = totalSpots - filled_spots;
   const progress = (totalSpots - remainingSpots) / totalSpots;
+  const winnerPercentage = (total_winners / total_spots) * 100;
 
   const navigation = useNavigation();
-
-  console.log('progress', progress);
 
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('BatBallQuestion')}>
+      onPress={() =>
+        navigation.navigate('BatBallQuestion', {matchId: match_id})
+      }>
       {/* Pool Type and Discount */}
       <View style={styles.headerRow}>
         <View style={styles.flexRow}>
           <Icon name="line-chart" size={14} color="lightgreen" />
-          <Text style={styles.flexiblePool}> Flexible pool</Text>
+          <Text style={styles.flexiblePool}>{title}</Text>
         </View>
         <Text style={styles.discount}>
-          <Text style={styles.strikeThrough}>₹75</Text> ₹65
+          <Text style={styles.strikeThrough}>₹{entry_fee}</Text> ₹
+          {current_entry_fee}
         </Text>
       </View>
 
       {/* Pool Amount */}
-      <Text style={styles.poolAmount}>₹1.26 Lakhs</Text>
+      <Text style={styles.poolAmount}>₹{max_pool_size}</Text>
 
       {/* Prize Details */}
       <View style={styles.prizeRow}>
@@ -44,7 +70,7 @@ const PoolCard = () => {
             {borderRightWidth: 1, borderColor: AppColors.palette.osloGrey},
           ]}>
           <Text style={styles.subText}>1st Prize</Text>
-          <Text style={styles.valueText}>₹300</Text>
+          <Text style={styles.valueText}>₹{first_price}</Text>
         </View>
         <View
           style={[
@@ -53,13 +79,14 @@ const PoolCard = () => {
           ]}>
           <Text style={styles.subText}>Winners</Text>
           <Text style={styles.valueText}>
-            <Icon name="trophy" size={14} color="white" /> 21%
+            <Icon name="trophy" size={14} color="white" /> {winnerPercentage}%
           </Text>
         </View>
         <View style={styles.prizeItem}>
           <Text style={styles.subText}>Teams</Text>
           <Text style={styles.valueText}>
-            <Icon name="users" size={14} color="white" /> up to 11
+            <Icon name="users" size={14} color="white" /> up to{' '}
+            {total_allowed_team}
           </Text>
         </View>
       </View>
@@ -78,8 +105,8 @@ const PoolCard = () => {
 
       {/* Spots Left */}
       <View style={styles.spotRow}>
-        <Text style={styles.leftText}>1,343 Left</Text>
-        <Text style={styles.totalSpots}>Spots: 2,000</Text>
+        <Text style={styles.leftText}>{total_spots - filled_spots} Left</Text>
+        <Text style={styles.totalSpots}>Spots: {total_spots}</Text>
       </View>
     </TouchableOpacity>
   );

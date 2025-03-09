@@ -6,6 +6,9 @@ import liveMatchesQuestionReducer from '../features/matches/liveMatchesQuestionS
 import fetchWalletBalanceReducer from '../features/wallet/walletBalanceSlice';
 import addOrderReducer from '../features/addOrder/addOrderSlice';
 import fetchTransactionReducer from '../features/wallet/transactionSlice';
+import liveMatchReducer from '../features/matches/liveMatchSlice';
+import contestReducer from '../features/contest/contestSlice';
+import playerQuestionReducer from '../features/playerQuestion/playerQuestionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +19,9 @@ export const store = configureStore({
     walletBalance: fetchWalletBalanceReducer,
     addOrder: addOrderReducer,
     transaction: fetchTransactionReducer,
+    liveMatch: liveMatchReducer,
+    allContest: contestReducer,
+    playerQuestion: playerQuestionReducer,
   },
 });
 

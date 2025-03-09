@@ -1,16 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import PoolCard from '../../components/PoolCard/PoolCard';
+import {contestFetch} from '../../features/contest/contestSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {styles} from './contestScreen-styles';
 
-export default function ContestScreen() {
+export default function ContestScreen(props) {
+  const {
+    route: {
+      params: {matchId},
+    },
+  } = props;
+
+  const [contestList, setContestList] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(contestFetch(matchId));
+  }, []);
+
+  const contestReducer = useSelector(state => state.allContest);
+
+  useEffect(() => {
+    if (contestReducer?.data?.data) {
+      setContestList(contestReducer?.data?.data);
+    }
+  }, [contestReducer]);
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>All Contest</Text>
       <FlatList
-        data={[1, 3, 3, 4, 4, 4]}
-        renderItem={() => <PoolCard />}
+        data={contestList}
+        removeClippedSubviews={false}
+        keyExtractor={item => item?.id}
+        renderItem={({item, index}) => (
+          <PoolCard contestInfo={item} index={index} />
+        )}
         contentContainerStyle={{paddingBottom: 20}}
       />
     </View>

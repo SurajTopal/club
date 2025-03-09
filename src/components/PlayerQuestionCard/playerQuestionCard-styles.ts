@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
   betContainer: {
     marginTop: 12,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   betText: {
@@ -57,9 +58,9 @@ const styles = StyleSheet.create({
   },
   yesButton: {
     backgroundColor: '#2A2A2A',
-    paddingVertical: 5,
     paddingHorizontal: 20,
     borderTopLeftRadius: 10,
+    justifyContent: 'center',
     borderBottomLeftRadius: 10,
     borderWidth: 1,
     borderColor: AppColors.palette.osloGrey,
@@ -67,9 +68,9 @@ const styles = StyleSheet.create({
   },
   noButton: {
     backgroundColor: '#2A2A2A',
-    paddingVertical: 5,
     paddingHorizontal: 20,
     borderTopRightRadius: 10,
+    justifyContent: 'center',
     borderBottomRightRadius: 10,
     borderWidth: 1,
     borderColor: AppColors.palette.osloGrey,
@@ -77,12 +78,11 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   pointsText: {
     color: '#bbb',
-    marginTop: 5,
     fontSize: 10,
   },
 });
