@@ -7,10 +7,43 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.palette.black,
     padding: 20,
   },
+  captainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: '5%',
+    paddingBottom: '5%',
+  },
+  captainSubContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  captainTitle: {
+    color: AppColors.palette.osloGrey,
+    fontSize: 15,
+    fontWeight: '400',
+  },
   title: {
-    fontSize: 18,
+    color: AppColors.palette.lightLimeGreen,
+    fontSize: 20,
+    marginRight: 10,
+    fontWeight: '600',
+  },
+  captainSubTitle: {
     color: AppColors.bgColor,
-    marginBottom: 10,
+    fontSize: 15,
+    fontWeight: '400',
+  },
+  saveButton: {
+    padding: 10,
+    backgroundColor: AppColors.palette.lightLimeGreen,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: AppColors.palette.black,
   },
 });
 

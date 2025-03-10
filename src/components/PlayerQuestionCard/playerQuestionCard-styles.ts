@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
+
   },
   playerImage: {
     width: 40,
@@ -36,7 +37,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   betContainer: {
-    marginTop: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -44,12 +44,29 @@ const styles = StyleSheet.create({
   betText: {
     color: AppColors.palette.osloGrey,
     fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 2,
   },
   betRunText: {
     color: AppColors.bgColor,
     fontWeight: '600',
     fontSize: 15,
+  },
+  dividerContainer: {
+    marginVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  divider: {
+    borderWidth: 0.2,
+    borderColor: AppColors.palette.osloGrey,
+    flex: 1,
+    borderStyle: 'dashed',
+  },
+  orText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: AppColors.bgColor,
+    paddingHorizontal: 10,
   },
   buttonContainer: {
     flexDirection: 'row',

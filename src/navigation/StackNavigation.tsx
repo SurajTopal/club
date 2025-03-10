@@ -17,8 +17,8 @@ import {useNavigation} from '@react-navigation/native';
 import LoginScreen from '../screen/login/LoginScreen';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import HomeScreen from '../screen/home/HomeScreen';
 import {Icon} from 'react-native-elements';
+import HomeScreen from '../screen/home/HomeScreen';
 import {useAuth} from '../auth-context';
 import {AppColors} from '../theme';
 
@@ -199,7 +199,11 @@ const DashboardStack = () => {
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
-      <Stack.Screen name="Captain" component={CaptainScreen} />
+      <Stack.Screen
+        name="Captain"
+        component={CaptainScreen}
+        options={{title: 'Select C & VC'}}
+      />
       <Stack.Screen name="Contest" component={ContestScreen} />
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
       <Stack.Screen name="Wallet" component={WalletScreen} />

@@ -1,57 +1,55 @@
-import React from 'react';
-import {View, Text, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import CaptainCard from '../../components/CaptainCard/CaptainCard';
 
 import {styles} from './captainScreen-styles';
 
-const playersData = [
-  {
-    id: '1',
-    image: 'https://example.com/player1.jpg',
-    name: 'J RODRIGUES',
-    question: '42 runs or more?',
-    points: 82,
-  },
-  {
-    id: '2',
-    image: 'https://example.com/player2.jpg',
-    name: 'V KOHLI',
-    question: '50 runs or more?',
-    points: 100,
-  },
-  {
-    id: '3',
-    image: 'https://example.com/player3.jpg',
-    name: 'R SHARMA',
-    question: '60 runs or more?',
-    points: 120,
-  },
-  {
-    id: '4',
-    image: 'https://example.com/player4.jpg',
-    name: 'S SMITH',
-    question: '30 runs or more?',
-    points: 75,
-  },
-  {
-    id: '5',
-    image: 'https://example.com/player5.jpg',
-    name: 'D WARNER',
-    question: '35 runs or more?',
-    points: 85,
-  },
-];
+export default function CaptainScreen(props) {
+  const {
+    route: {
+      params: {questionList},
+    },
+  } = props;
 
-export default function CaptainScreen() {
+  console.log("Question List : : : : : : : : :",questionList);
+
+  const [captainViceCaptain, setCaptainViceCaptain] = useState([]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select C & VC</Text>
+      <View style={styles.captainContainer}>
+        <View style={styles.captainSubContainer}>
+          <Text style={styles.title}>C</Text>
+          <View>
+            <Text style={styles.captainTitle}>Captain gets</Text>
+            <Text style={styles.captainSubTitle}>2x {`(double) Point`}</Text>
+          </View>
+        </View>
+        <View style={styles.captainSubContainer}>
+          <Text style={styles.title}>VC</Text>
+          <View>
+            <Text style={styles.captainTitle}>Vice Captain gets</Text>
+            <Text style={styles.captainSubTitle}>1.5x Point</Text>
+          </View>
+        </View>
+      </View>
       <FlatList
-        data={playersData}
+        data={questionList}
         numColumns={2}
+        removeClippedSubviews={false}
         // contentContainerStyle={{borderWidth: 1, borderColor: 'red'}}
-        renderItem={({item, index}) => <CaptainCard player={item} index={index}/>}
+        renderItem={({item, index}) => (
+          <CaptainCard
+            player={item}
+            index={index}
+            captainViceCaptain={captainViceCaptain}
+            setCaptainViceCaptain={setCaptainViceCaptain}
+          />
+        )}
       />
+      <TouchableOpacity style={styles.saveButton}>
+        <Text style={styles.saveText}>Save</Text>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -32,10 +32,27 @@ const styles = StyleSheet.create({
   },
   footerCard: {
     backgroundColor: AppColors.palette.nightBlack,
-    flex: 1,
+    width: width * 0.36,
     borderRadius: 10,
     marginBottom: 10,
     flexDirection: 'row',
+  },
+  dummyCard: {
+    flexDirection: 'row',
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    backgroundColor: '#1C1C1C',
+    width: width * 0.36,
+    marginBottom: 10,
+    justifyContent: 'center',
+  },
+  number: {
+    fontSize: 16,
+    color: AppColors.bgColor,
+    fontWeight: '500',
+    marginLeft: 10,
   },
   footerSubCard: {
     padding: 4,

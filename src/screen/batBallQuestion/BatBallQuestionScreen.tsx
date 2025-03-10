@@ -2,31 +2,11 @@ import React, {act, useEffect, useState} from 'react';
 import {View, FlatList, Text, TouchableOpacity} from 'react-native';
 import PlayerQuestionCard from '../../components/PlayerQuestionCard/PlayerQuestionCard';
 import {playerQuestionFetch} from '../../features/playerQuestion/playerQuestionSlice';
+import PlayerBottomSheet from '../../components/PlayerBottomSheet/PlayerBottomSheet';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {styles} from './batBallQuestionScreen-styles';
-import PlayerBottomSheet from '../../components/PlayerBottomSheet/PlayerBottomSheet';
-
-const playersData = [
-  {
-    name: 'Jess Jonassen',
-    image: require('../../assets/icons/profile.png'),
-    form: ['DNB', '5', '61*', 'DNB', '61*'],
-    bets: [
-      {runs: 14, yesPoints: 25, noPoints: 75},
-      {runs: 44, yesPoints: 84, noPoints: 16},
-    ],
-  },
-  {
-    name: 'Player Two',
-    image: require('../../assets/icons/profile.png'),
-    form: ['10', '30', '45', 'DNB', '50'],
-    bets: [
-      {runs: 20, yesPoints: 40, noPoints: 60},
-      {runs: 50, yesPoints: 70, noPoints: 30},
-    ],
-  },
-];
+import {useNavigation} from '@react-navigation/native';
 
 const BatBallQuestionScreen = props => {
   const {
@@ -37,7 +17,9 @@ const BatBallQuestionScreen = props => {
 
   const [activeTab, setActiveTab] = useState('Batters');
   const [playerQuestionList, setPlayerQuestionList] = useState([]);
+  const [questionList, setQuestionList] = useState([]);
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,6 +36,9 @@ const BatBallQuestionScreen = props => {
 
   console.log('Player List : ', playerQuestionList);
 
+  const handleNextButton = () => {
+    navigation.navigate('Captain', {questionList: questionList});
+  };
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -92,10 +77,20 @@ const BatBallQuestionScreen = props => {
           data={playerQuestionList}
           removeClippedSubviews={false}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => <PlayerQuestionCard player={item} />}
+          renderItem={({item}) => (
+            <PlayerQuestionCard
+              player={item}
+              setQuestionList={setQuestionList}
+              questionList={questionList}
+            />
+          )}
         />
       </View>
-      <PlayerBottomSheet />
+      <PlayerBottomSheet
+        questionList={questionList}
+        setQuestionList={setQuestionList}
+        handleNextButton={handleNextButton}
+      />
     </View>
   );
 };
