@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   discount: {
-    color: 'lightgreen',
+    color: AppColors.palette.lightLimeGreen,
     fontSize: 14,
     fontWeight: 'bold',
   },

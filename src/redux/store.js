@@ -9,6 +9,7 @@ import fetchTransactionReducer from '../features/wallet/transactionSlice';
 import liveMatchReducer from '../features/matches/liveMatchSlice';
 import contestReducer from '../features/contest/contestSlice';
 import playerQuestionReducer from '../features/playerQuestion/playerQuestionSlice';
+import winningReducer from '../features/winningList/winningSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     liveMatch: liveMatchReducer,
     allContest: contestReducer,
     playerQuestion: playerQuestionReducer,
+    winning: winningReducer,
   },
 });
 

@@ -82,6 +82,7 @@ export default function HomeScreen() {
       <Text style={styles.title}>Upcoming Matches</Text>
       <FlatList
         data={liveMatchList}
+        showsVerticalScrollIndicator={false}
         renderItem={({item}) => <MatchCard match={item} />}
       />
     </View>

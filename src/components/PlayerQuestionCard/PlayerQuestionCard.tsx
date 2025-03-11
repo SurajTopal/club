@@ -27,12 +27,14 @@ const PlayerQuestionCard = props => {
   }
 
   const handlePlayerSelection = (info, option) => {
+    console.log('INFO HAIA', player);
+
     const questionInfo = {
       name: player.player_name,
       question: info.question_text,
       questionId: info.question_id,
       option: option,
-      playerId: info.player_id,
+      playerId: player?.player_id,
       point: option === 'Yes' ? info.yes_points : info.no_points,
     };
 
@@ -78,7 +80,7 @@ const PlayerQuestionCard = props => {
   };
 
   return (
-    <View style={styles.cardContainer}>
+    <View style={styles.cardContainer} key={player?.player_id}>
       <View style={styles.headerContainer}>
         <Image
           source={require('../../assets/icons/profile.png')}
@@ -93,6 +95,7 @@ const PlayerQuestionCard = props => {
             </Text>
             {['DNB', '5', '61*', 'DNB', '61*'].map((score, index) => (
               <View
+                key={index.toString()}
                 style={{
                   paddingVertical: 2,
                   paddingHorizontal: 8,
@@ -111,8 +114,8 @@ const PlayerQuestionCard = props => {
         </View>
       </View>
       {player.questions.map((info, index) => (
-        <View>
-          <View key={index} style={styles.betContainer}>
+        <View key={'question' + index.toString()}>
+          <View style={styles.betContainer}>
             {renderQuestion(player?.player_name, info?.question_text)}
             <View style={styles.buttonContainer}>
               <TouchableOpacity

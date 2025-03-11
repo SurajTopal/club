@@ -7,7 +7,6 @@ import {AppColors} from '../../theme';
 
 import {styles} from './poolCard-styles';
 
-
 const PoolCard = props => {
   const {contestInfo, index} = props;
   const {
@@ -30,6 +29,7 @@ const PoolCard = props => {
     total_allowed_team,
     total_winners,
     category_id,
+    category_name,
     is_active,
     has_ended,
   } = contestInfo;
@@ -39,24 +39,52 @@ const PoolCard = props => {
   const progress = (totalSpots - remainingSpots) / totalSpots;
   const winnerPercentage = (total_winners / total_spots) * 100;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <TouchableOpacity
       style={styles.card}
       onPress={() =>
-        navigation.navigate('BatBallQuestion', {matchId: match_id})
+        navigation.navigate('Join', {
+          matchId: match_id,
+          maxPoolSize: max_pool_size,
+          totalSpots: total_spots,
+          remainingSpots: remainingSpots,
+          winnerPercentage: winnerPercentage,
+          categoryName: category_name,
+          firstPrice: first_price,
+          currentFee: current_entry_fee,
+          totalTeam: total_allowed_team,
+          progress: progress,
+        })
       }>
       {/* Pool Type and Discount */}
       <View style={styles.headerRow}>
         <View style={styles.flexRow}>
-          <Icon name="line-chart" size={14} color="lightgreen" />
-          <Text style={styles.flexiblePool}>{title}</Text>
+          <Icon
+            name="line-chart"
+            size={14}
+            color={AppColors.palette.lightLimeGreen}
+          />
+          <Text style={styles.flexiblePool}>{category_name}</Text>
         </View>
-        <Text style={styles.discount}>
-          <Text style={styles.strikeThrough}>₹{entry_fee}</Text> ₹
-          {current_entry_fee}
-        </Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('BatBallQuestion', {matchId: match_id})
+            }
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 15,
+              borderWidth: 1,
+              borderColor: AppColors.palette.osloGrey,
+              borderRadius: 5,
+              marginLeft: 5,
+            }}>
+            <Text style={styles.discount}>₹{current_entry_fee}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Pool Amount */}

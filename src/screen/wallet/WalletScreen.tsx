@@ -69,6 +69,7 @@ export default function WalletScreen() {
       <View>
         <FlatList
           data={quickActions}
+          showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => (
             <TouchableOpacity style={styles.actionItem} onPress={item.onPress}>
@@ -127,12 +128,12 @@ export default function WalletScreen() {
           <Icon name="chevron-right" type="entypo" />
         </View>
       </View>
-      <QuickActions />
       <AddMoneyModal isVisible={isVisible} setIsVisible={setIsVisible} />
       <History
         setIsVisible={setIsHistoryModalVisible}
         isVisible={isHistoryModalVisible}
       />
+      <QuickActions />
     </View>
   );
 }

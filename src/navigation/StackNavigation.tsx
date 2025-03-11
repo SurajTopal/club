@@ -21,6 +21,7 @@ import {Icon} from 'react-native-elements';
 import HomeScreen from '../screen/home/HomeScreen';
 import {useAuth} from '../auth-context';
 import {AppColors} from '../theme';
+import JoinScreen from '../screen/join/JoinScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -198,6 +199,7 @@ const DashboardStack = () => {
         ),
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Join" component={JoinScreen} />
       <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
       <Stack.Screen
         name="Captain"
@@ -253,7 +255,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return !isSignIn ? <AppStack /> : <AuthStack />;
+  return isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

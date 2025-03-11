@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
 import {AppColors} from '../../theme';
 
@@ -14,8 +13,6 @@ export default function PlayerBottomSheet(props) {
     {dummy: true},
     {dummy: true},
   ]);
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     if (questionList.length) {
@@ -38,6 +35,8 @@ export default function PlayerBottomSheet(props) {
         <FlatList
           data={[...questionList, ...dummy]}
           numColumns={2}
+          removeClippedSubviews={false}
+          showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
           columnWrapperStyle={{justifyContent: 'space-between'}}
           contentContainerStyle={styles.cardContainer}

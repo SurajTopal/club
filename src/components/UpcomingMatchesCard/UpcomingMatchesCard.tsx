@@ -24,7 +24,7 @@ const MatchCard = ({match}) => {
         </Text>
       </View>
       <View style={styles.headerContainer}>
-        <Text style={styles.matchTime}>{match?.format}</Text>
+        <Text style={styles.matchTime}>{match?.match_format}</Text>
         <Icon
           name="dot-single"
           type="entypo"

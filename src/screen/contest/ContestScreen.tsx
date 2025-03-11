@@ -18,7 +18,7 @@ export default function ContestScreen(props) {
 
   useEffect(() => {
     dispatch(contestFetch(matchId));
-  }, []);
+  }, [matchId]);
 
   const contestReducer = useSelector(state => state.allContest);
 
@@ -28,14 +28,14 @@ export default function ContestScreen(props) {
     }
   }, [contestReducer]);
 
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>All Contest</Text>
       <FlatList
         data={contestList}
         removeClippedSubviews={false}
-        keyExtractor={item => item?.id}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => item?.id?.toString()}
         renderItem={({item, index}) => (
           <PoolCard contestInfo={item} index={index} />
         )}

@@ -1,19 +1,17 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
-
-const {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.palette.ghostWhite,
+    backgroundColor: AppColors.palette.blackEel,
     justifyContent: 'space-between',
   },
   topContainer: {
     padding: 20,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
-    backgroundColor: AppColors.palette.dodgerBlue,
+    backgroundColor: AppColors.palette.black,
     elevation: 3,
   },
   amountText: {
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
     color: AppColors.palette.blackEel,
   },
   rechargeButton: {
-    backgroundColor: AppColors.palette.dodgerBlue,
+    backgroundColor: AppColors.palette.black,
     paddingVertical: 10,
     paddingHorizontal: 25,
     borderRadius: 8,
@@ -65,7 +63,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    borderRadius: 10,
     backgroundColor: AppColors.bgColor,
     borderTopWidth: 1,
     borderColor: AppColors.palette.greenWhite,
