@@ -1,14 +1,56 @@
-import React from 'react';
-import {View, Text, Dimensions, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
+import {Divider} from 'react-native-elements';
+import TeamCard from '../TeamCard/TeamCard';
 import {AppColors} from '../../theme';
 
 import {styles} from './poolCard-styles';
 
+const samplePlayers = [
+  {
+    id: '1',
+    name: 'Y BHATIA',
+    image: 'https://example.com/y_bhatia.png',
+    stat: '9 runs or more?',
+    prediction: 'Y',
+    points: 15,
+    role: 'C',
+  },
+  {
+    id: '2',
+    name: 'B MOONEY',
+    image: 'https://example.com/b_mooney.png',
+    stat: '23 runs or more?',
+    prediction: 'Y',
+    points: 26,
+    role: null,
+  },
+  {
+    id: '3',
+    name: 'H MATTHEWS',
+    image: 'https://example.com/h_matthews.png',
+    stat: '27 runs or more?',
+    prediction: 'N',
+    points: 51,
+    role: null,
+  },
+  {
+    id: '4',
+    name: 'T KANWAR',
+    image: 'https://example.com/t_kanwar.png',
+    stat: '1 wicket or more?',
+    prediction: 'N',
+    points: 59,
+    role: 'VC',
+  },
+];
+
 const PoolCard = props => {
-  const {contestInfo, index} = props;
+  const {contestInfo, index, isMyContest} = props;
   const {
     id,
     match_id,
@@ -38,105 +80,148 @@ const PoolCard = props => {
   const remainingSpots = totalSpots - filled_spots;
   const progress = (totalSpots - remainingSpots) / totalSpots;
   const winnerPercentage = (total_winners / total_spots) * 100;
-
+  const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigation<any>();
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() =>
-        navigation.navigate('Join', {
-          matchId: match_id,
-          maxPoolSize: max_pool_size,
-          totalSpots: total_spots,
-          remainingSpots: remainingSpots,
-          winnerPercentage: winnerPercentage,
-          categoryName: category_name,
-          firstPrice: first_price,
-          currentFee: current_entry_fee,
-          totalTeam: total_allowed_team,
-          progress: progress,
-        })
-      }>
-      {/* Pool Type and Discount */}
-      <View style={styles.headerRow}>
-        <View style={styles.flexRow}>
-          <Icon
-            name="line-chart"
-            size={14}
-            color={AppColors.palette.lightLimeGreen}
-          />
-          <Text style={styles.flexiblePool}>{category_name}</Text>
+    <View style={styles.card}>
+      <TouchableOpacity
+        style={styles.subCard}
+        onPress={() =>
+          navigation.navigate('Join', {
+            matchId: match_id,
+            maxPoolSize: max_pool_size,
+            totalSpots: total_spots,
+            remainingSpots: remainingSpots,
+            winnerPercentage: winnerPercentage,
+            categoryName: category_name,
+            firstPrice: first_price,
+            currentFee: current_entry_fee,
+            totalTeam: total_allowed_team,
+            progress: progress,
+          })
+        }>
+        {/* Pool Type and Discount */}
+        <View style={styles.headerRow}>
+          <View style={styles.flexRow}>
+            <Icon
+              name="line-chart"
+              size={14}
+              color={AppColors.palette.lightLimeGreen}
+            />
+            <Text style={styles.flexiblePool}>{category_name}</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('BatBallQuestion', {matchId: match_id})
+              }
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 15,
+                borderWidth: 1,
+                borderColor: AppColors.palette.osloGrey,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}>
+              <Text style={styles.discount}>₹{current_entry_fee}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
-          <TouchableOpacity
-            onPress={() =>
+
+        {/* Pool Amount */}
+        <Text style={styles.poolAmount}>₹{max_pool_size}</Text>
+
+        {/* Prize Details */}
+        <View style={styles.prizeRow}>
+          <View
+            style={[
+              styles.prizeItem,
+              {borderRightWidth: 1, borderColor: AppColors.palette.osloGrey},
+            ]}>
+            <Text style={styles.subText}>1st Prize</Text>
+            <Text style={styles.valueText}>₹{first_price}</Text>
+          </View>
+          <View
+            style={[
+              styles.prizeItem,
+              {borderRightWidth: 1, borderColor: AppColors.palette.osloGrey},
+            ]}>
+            <Text style={styles.subText}>Winners</Text>
+            <Text style={styles.valueText}>
+              <Icon name="trophy" size={14} color="white" /> {winnerPercentage}%
+            </Text>
+          </View>
+          <View style={styles.prizeItem}>
+            <Text style={styles.subText}>Teams</Text>
+            <Text style={styles.valueText}>
+              <Icon name="users" size={14} color="white" /> up to{' '}
+              {total_allowed_team}
+            </Text>
+          </View>
+        </View>
+
+        {/* Progress Bar */}
+        <Slider
+          style={styles.progressBar}
+          minimumValue={0}
+          maximumValue={1}
+          value={progress}
+          minimumTrackTintColor="#FFA500"
+          maximumTrackTintColor="#808080"
+          thumbTintColor="transparent"
+          // disabled={true}
+        />
+        {/* Spots Left */}
+        <View style={styles.spotRow}>
+          <Text style={styles.leftText}>{total_spots - filled_spots} Left</Text>
+          <Text style={styles.totalSpots}>Spots: {total_spots}</Text>
+        </View>
+
+        {isMyContest ? (
+          <>
+            <Divider
+              color={AppColors.palette.osloGrey}
+              style={{marginVertical: 10}}
+            />
+            <TouchableOpacity
+              style={styles.joinedTeamContainer}
+              onPress={() => setIsOpen(!isOpen)}>
+              <Text style={styles.joinedText}>Joined with 2 Teams</Text>
+              <EntypoIcon
+                name="chevron-down"
+                color={AppColors.bgColor}
+                size={20}
+              />
+            </TouchableOpacity>
+            <ScrollView horizontal>
+              {['T1', 'T2', 'T3'].map(team => (
+                <View style={styles.teamContainer} key={team + 'Team'}>
+                  <Text style={styles.team}>{team}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </>
+        ) : null}
+      </TouchableOpacity>
+      {isOpen && (
+        <>
+          <TeamCard
+            teamName="Team Name1"
+            players={samplePlayers}
+            onEdit={() =>
               navigation.navigate('BatBallQuestion', {matchId: match_id})
             }
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 15,
-              borderWidth: 1,
-              borderColor: AppColors.palette.osloGrey,
-              borderRadius: 5,
-              marginLeft: 5,
-            }}>
-            <Text style={styles.discount}>₹{current_entry_fee}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Pool Amount */}
-      <Text style={styles.poolAmount}>₹{max_pool_size}</Text>
-
-      {/* Prize Details */}
-      <View style={styles.prizeRow}>
-        <View
-          style={[
-            styles.prizeItem,
-            {borderRightWidth: 1, borderColor: AppColors.palette.osloGrey},
-          ]}>
-          <Text style={styles.subText}>1st Prize</Text>
-          <Text style={styles.valueText}>₹{first_price}</Text>
-        </View>
-        <View
-          style={[
-            styles.prizeItem,
-            {borderRightWidth: 1, borderColor: AppColors.palette.osloGrey},
-          ]}>
-          <Text style={styles.subText}>Winners</Text>
-          <Text style={styles.valueText}>
-            <Icon name="trophy" size={14} color="white" /> {winnerPercentage}%
-          </Text>
-        </View>
-        <View style={styles.prizeItem}>
-          <Text style={styles.subText}>Teams</Text>
-          <Text style={styles.valueText}>
-            <Icon name="users" size={14} color="white" /> up to{' '}
-            {total_allowed_team}
-          </Text>
-        </View>
-      </View>
-
-      {/* Progress Bar */}
-      <Slider
-        style={styles.progressBar}
-        minimumValue={0}
-        maximumValue={1}
-        value={progress}
-        minimumTrackTintColor="#FFA500"
-        maximumTrackTintColor="#808080"
-        thumbTintColor="transparent"
-        // disabled={true}
-      />
-
-      {/* Spots Left */}
-      <View style={styles.spotRow}>
-        <Text style={styles.leftText}>{total_spots - filled_spots} Left</Text>
-        <Text style={styles.totalSpots}>Spots: {total_spots}</Text>
-      </View>
-    </TouchableOpacity>
+          />
+          <TeamCard
+            teamName="Team Name1"
+            players={samplePlayers}
+            onEdit={() => {}}
+          />
+        </>
+      )}
+    </View>
   );
 };
 

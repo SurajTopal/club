@@ -5,9 +5,9 @@ import {playerQuestionFetch} from '../../features/playerQuestion/playerQuestionS
 import PlayerBottomSheet from '../../components/PlayerBottomSheet/PlayerBottomSheet';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {AppColors} from '../../theme';
 
 import {styles} from './batBallQuestionScreen-styles';
-import {AppColors} from '../../theme';
 
 const BatBallQuestionScreen = props => {
   const {
@@ -16,7 +16,7 @@ const BatBallQuestionScreen = props => {
     },
   } = props;
 
-  const [activeTab, setActiveTab] = useState('Batters');
+  const [activeTab, setActiveTab] = useState('batsman');
   const [playerQuestionList, setPlayerQuestionList] = useState([]);
   const [questionList, setQuestionList] = useState([]);
 
@@ -43,6 +43,14 @@ const BatBallQuestionScreen = props => {
     });
   };
 
+  // console.log(
+  //   'PlayerList : ',
+  //   playerQuestionList.filter(player => {
+  //     console.log('Player : ', player, '     ', activeTab);
+  //     if (player.player_type === activeTab) return player;
+  //   }),
+  // );
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -63,34 +71,47 @@ const BatBallQuestionScreen = props => {
           <TouchableOpacity
             style={[
               styles.buttonContainer,
-              activeTab === 'Batters' && styles.activeButtonContainer,
+              activeTab === 'batsman' && styles.activeButtonContainer,
             ]}
-            onPress={() => setActiveTab('Batters')}>
+            onPress={() => setActiveTab('batsman')}>
             <Text
               style={[
                 styles.buttonTitle,
-                activeTab === 'Batters' && styles.activeButtonTitle,
+                activeTab === 'batsman' && styles.activeButtonTitle,
               ]}>
-              Batters
+              Batsman
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.buttonContainer,
-              activeTab === 'Bowlers' && styles.activeButtonContainer,
+              activeTab === 'bowler' && styles.activeButtonContainer,
             ]}
-            onPress={() => setActiveTab('Bowlers')}>
+            onPress={() => setActiveTab('bowler')}>
             <Text
               style={[
                 styles.buttonTitle,
-                activeTab === 'Bowlers' && styles.activeButtonTitle,
+                activeTab === 'bowler' && styles.activeButtonTitle,
               ]}>
-              Bowlers
+              Bowler
             </Text>
           </TouchableOpacity>
         </View>
         <FlatList
-          data={playerQuestionList}
+          data={
+            activeTab === 'batsman'
+              ? playerQuestionList.filter(
+                  player => player.player_type === 'batsman',
+                )
+              : playerQuestionList?.filter(
+                  player => player.player_type === 'bowler',
+                )
+          }
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>There is no {activeTab} </Text>
+            </View>
+          )}
           removeClippedSubviews={false}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => 'question' + index} // Ensure unique key

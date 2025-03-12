@@ -1,7 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
 
-const {width} = Dimensions.get('screen');
+const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
@@ -47,6 +47,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: AppColors.palette.lightLimeGreen,
     fontWeight: '600',
+  },
+  emptyContainer: {
+    height: height * 0.4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: AppColors.bgColor,
   },
 });
 

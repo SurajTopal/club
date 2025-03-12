@@ -5,10 +5,12 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#1C1C1C',
     borderRadius: 10,
-    padding: 15,
     borderWidth: 0.5,
     borderColor: AppColors.palette.osloGrey,
     marginBottom: 15,
+  },
+  subCard: {
+    padding: 15,
   },
   headerRow: {
     flexDirection: 'row',
@@ -89,6 +91,28 @@ const styles = StyleSheet.create({
   totalSpots: {
     color: 'gray',
     fontSize: 14,
+  },
+  joinedTeamContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  joinedText: {
+    fontSize: 16,
+    color: AppColors.bgColor,
+    fontWeight: '600',
+  },
+  teamContainer: {
+    backgroundColor: AppColors.palette.osloGrey,
+    marginRight: 4,
+    paddingVertical: 2,
+    marginTop: 10,
+    paddingHorizontal: 5,
+    borderRadius: 5,
+  },
+  team: {
+    fontSize: 14,
+    color: AppColors.bgColor,
   },
 });
 

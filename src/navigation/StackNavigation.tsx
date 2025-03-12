@@ -10,22 +10,36 @@ import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import QuestionScreens from '../screen/questions/QuestionsScreen';
 import DashBoardScreen from '../screen/dashboard/DashboardScreen';
 import AddOrderScreen from '../screen/addOrder/AddOrderScreen';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import CaptainScreen from '../screen/captain/CaptainScreen';
 import ContestScreen from '../screen/contest/ContestScreen';
+import SettingScreen from '../screen/setting/SettingScreen';
 import WalletScreen from '../screen/wallet/WalletScreen';
 import {useNavigation} from '@react-navigation/native';
 import LoginScreen from '../screen/login/LoginScreen';
 import SplashScreen from 'react-native-splash-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {Icon} from 'react-native-elements';
 import HomeScreen from '../screen/home/HomeScreen';
+import JoinScreen from '../screen/join/JoinScreen';
+import Header from '../components/Header/Header';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAuth} from '../auth-context';
 import {AppColors} from '../theme';
-import JoinScreen from '../screen/join/JoinScreen';
+import MyMatchesScreen from '../screen/myMatches/MyMatchesScreen';
+import HowToPlayScreen from '../screen/howToPlay/HowToPlayScreen';
 
 const Stack = createNativeStackNavigator();
-
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+function MyDrawer() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Setting" component={SettingScreen} />
+      {/* <Drawer.Screen name="Profile" component={ProfileScreen} /> */}
+    </Drawer.Navigator>
+  );
+}
 
 const TabList = [
   {
@@ -33,12 +47,12 @@ const TabList = [
     iconName: 'home',
   },
   {
-    name: 'Wallet',
-    iconName: 'wallet',
+    name: 'My Matches',
+    iconName: 'cricket',
   },
   {
-    name: 'My Question',
-    iconName: 'questioncircle',
+    name: 'How to Play',
+    iconName: 'gamepad-variant-outline',
   },
 ];
 
@@ -57,14 +71,17 @@ const renderTab = props => {
             style={[styles.tabButton, isActive && styles.activeTab]}>
             <Icon
               name={tabInfo.iconName}
-              color={isActive ? 'white' : AppColors.palette.frostedWhite}
+              color={
+                isActive
+                  ? AppColors.palette.lightLimeGreen
+                  : AppColors.palette.frostedWhite
+              }
               size={25}
-              type="antdesign"
             />
             <Text
               style={{
                 color: isActive
-                  ? AppColors.bgColor
+                  ? AppColors.palette.lightLimeGreen
                   : AppColors.palette.frostedWhite,
               }}>
               {tabInfo.name}
@@ -180,25 +197,21 @@ const DashboardStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        headerRight: () => (
-          <View
-            style={{
-              alignItems: 'flex-end',
-              width: 100,
-              paddingRight: 10,
-            }}>
-            <Text
-              onPress={() => navigation.navigate('Wallet')}
-              style={{
-                fontSize: 15,
-                color: AppColors.palette.greenBlue,
-              }}>
-              ₹{walletBalance.toString()}
-            </Text>
-          </View>
-        ),
       }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        // options={{
+        //   header: () => (
+        //     <Header
+        //       title="Home"
+        //       isDrawer
+        //       walletBalance={walletBalance}
+        //       isWalletVisible
+        //     />
+        //   ),
+        // }}
+      />
       <Stack.Screen name="Join" component={JoinScreen} />
       <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
       <Stack.Screen
@@ -216,13 +229,33 @@ const DashboardStack = () => {
 };
 
 function MyTabs() {
+  const getTabBarVisibility = route => {
+
+    const routeName = route.state?.routes?.[route.state.index]?.name ?? '';
+
+   console.log("Route Name : ",routeName);
+
+    if (routeName === 'BatBallQuestion') {
+      return 'none';
+    }
+    return 'flex';
+  };
+
   return (
     <Tab.Navigator
       tabBar={props => renderTab(props)}
       screenOptions={{headerShown: false}}>
-      <Tab.Screen name="Home" component={DashboardStack} />
-      <Stack.Screen name="Wallet" component={WalletScreen} />
-      <Stack.Screen name="My Question" component={MyQuestionScreen} />
+      <Tab.Screen
+        name="Home"
+        component={DashboardStack}
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+          },
+        })}
+      />
+      <Stack.Screen name="My Matches" component={MyMatchesScreen} />
+      <Stack.Screen name="How to Play" component={HowToPlayScreen} />
       {/* <Tab.Screen name="Leaderboard" component={Leaderboard} /> */}
     </Tab.Navigator>
   );
@@ -255,7 +288,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return isSignIn ? <AppStack /> : <AuthStack />;
+  return !isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

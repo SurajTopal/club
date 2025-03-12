@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: '400',
   },
+  teamContestContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 1,
+  },
   matchTime: {
     color: '#ccc',
     fontSize: 14,
@@ -44,7 +50,6 @@ const styles = StyleSheet.create({
   leagueText: {
     color: '#bbb',
     fontSize: 12,
-    marginTop: 4,
   },
   teamContainer: {
     marginTop: 10,
@@ -61,12 +66,12 @@ const styles = StyleSheet.create({
   },
   teamName: {
     color: AppColors.palette.osloGrey,
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 10,
   },
   teamShortName: {
-    color: '#fff',
-    fontSize: 16,
+    color: AppColors.bgColor,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   prizeContainer: {
@@ -78,7 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   prizeText: {
-    color: '#fff',
+    color: AppColors.bgColor,
     fontSize: 16,
     fontWeight: 'bold',
   },

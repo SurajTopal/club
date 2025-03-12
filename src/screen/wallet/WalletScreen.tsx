@@ -70,6 +70,7 @@ export default function WalletScreen() {
         <FlatList
           data={quickActions}
           showsVerticalScrollIndicator={false}
+          removeClippedSubviews={false}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => (
             <TouchableOpacity style={styles.actionItem} onPress={item.onPress}>
