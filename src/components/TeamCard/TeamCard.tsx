@@ -5,7 +5,35 @@ import {AppColors} from '../../theme';
 
 import {styles} from './teamCard-styles';
 
-const TeamCard = ({teamName, players, onEdit}) => {
+const TeamCard = props => {
+  const {teamName, playerDetails, onEdit} = props;
+  const PlayerCard = ({player}) => {
+    return (
+      <View style={styles.playerCard}>
+        {player.role && <Text style={[styles.roleBadge]}>{player.role}</Text>}
+        {/* Player Image with Role Badge */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../../assets/images/virat.png')}
+            style={styles.image}
+          />
+        </View>
+        {/* Player Details */}
+        <Text numberOfLines={1} style={styles.playerName}>
+          {player?.player_name}
+        </Text>
+        <Text style={styles.playerStat}>
+          {player.questions[0]?.question_text}
+          <Text style={styles.prediction}>
+            - {player.questions[0]?.user_answer ? 'Yes' : 'No'}
+          </Text>
+        </Text>
+
+        <Text style={styles.points}>{player.questions[0]?.points} pts</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.card}>
       {/* Header */}
@@ -27,38 +55,13 @@ const TeamCard = ({teamName, players, onEdit}) => {
 
       {/* Player List */}
       <FlatList
-        data={players}
+        data={playerDetails?.players}
         horizontal
+        removeClippedSubviews={false}
         keyExtractor={item => item.id}
         renderItem={({item}) => <PlayerCard player={item} />}
         showsHorizontalScrollIndicator={false}
       />
-    </View>
-  );
-};
-
-const PlayerCard = ({player}) => {
-  return (
-    <View style={styles.playerCard}>
-      {player.role && <Text style={[styles.roleBadge]}>{player.role}</Text>}
-      {/* Player Image with Role Badge */}
-      <View style={styles.imageContainer}>
-        <Image
-          source={require('../../assets/images/virat.png')}
-          style={styles.image}
-        />
-      </View>
-
-      {/* Player Details */}
-      <Text numberOfLines={1} style={styles.playerName}>
-        {player.name}
-      </Text>
-      <Text style={styles.playerStat}>
-        {player.stat}
-        <Text style={styles.prediction}>- {player.prediction}</Text>
-      </Text>
-
-      <Text style={styles.points}>{player.points} pts</Text>
     </View>
   );
 };

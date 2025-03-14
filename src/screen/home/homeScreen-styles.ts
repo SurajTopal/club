@@ -1,16 +1,40 @@
-import {StyleSheet, TextStyle, ViewStyle} from 'react-native';
+import {Dimensions, StyleSheet, TextStyle, ViewStyle} from 'react-native';
 import {AppColors} from '../../theme';
 
+const {height, width} = Dimensions.get('screen');
 interface Styles {
   container: ViewStyle;
+  subContainer: ViewStyle;
+  bannerContainer: ViewStyle;
+  myMatchesContainer: ViewStyle;
+  seeAllContainer: ViewStyle;
+  seeAllText: TextStyle;
   title: TextStyle;
 }
 
 const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'black',
+    backgroundColor: AppColors.palette.black,
+  },
+  subContainer: {padding: 20},
+  bannerContainer: {
+    height: 170,
+    width: width * 0.9,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  myMatchesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  seeAllContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  seeAllText: {
+    color: AppColors.palette.greenWhite,
+    fontSize: 15,
   },
   title: {
     fontSize: 16,

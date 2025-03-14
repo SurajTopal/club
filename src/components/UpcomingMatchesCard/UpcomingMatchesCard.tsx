@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
-import moment from 'moment';
+import React from 'react';
 import {Image} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {formatEventDate} from '../../utility';
 
 import {styles} from './upcomingMatchesCard-styles';
-import {formatDate, formatEventDate} from '../../utility';
 
 interface IMatchCard {
   match: any;

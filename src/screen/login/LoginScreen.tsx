@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TextInput,
@@ -12,11 +12,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import Button from '../../components/Button/Button';
+import {AppColors} from '../../theme';
+import {CheckBox} from 'react-native-elements';
 
-const height = Dimensions.get('window').height;
+const {height, width} = Dimensions.get('screen');
 
 const LoginScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [isCertifyChecked, setIsCertifyChecked] = useState(false);
 
   const navigation = useNavigation<any>();
 
@@ -98,11 +102,10 @@ const LoginScreen = () => {
   };
 
   return (
-    <LinearGradient colors={['#6A11CB', '#2575FC']} style={styles.container}>
+    <LinearGradient colors={['#1B242E', 'black']} style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Login to your account</Text>
-
         <View style={styles.inputContainer}>
           <Text style={styles.phonePrefix}>+91</Text>
           <TextInput
@@ -115,16 +118,33 @@ const LoginScreen = () => {
             onChangeText={setPhoneNumber}
           />
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            alignSelf: 'flex-start',
+          }}>
+          <CheckBox
+            checked={isCertifyChecked}
+            onPress={() => setIsCertifyChecked(!isCertifyChecked)}
+            checkedColor={AppColors.palette.lightLimeGreen}
+            uncheckedColor={AppColors.bgColor}
+          />
+          <Text style={styles.text}> I certify that I am above 18 yeras</Text>
+        </View>
+        <TouchableOpacity onPress={handleLogin}>
+          <Text style={styles.loginText}>Send OTP</Text>
+        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
+        <Button
+          disabled={phoneNumber.length !== 10}
+          buttonStyle={[
             styles.loginButton,
             phoneNumber.length !== 10 && styles.disabledButton,
           ]}
-          onPress={handleLogin}
-          disabled={phoneNumber.length !== 10}>
-          <Text style={styles.loginText}>Send OTP</Text>
-        </TouchableOpacity>
+          title="Send OTP"
+        />
+        <Text style={styles.text}>By Continue, I agree to aceept T&C.</Text>
       </View>
     </LinearGradient>
   );
@@ -157,7 +177,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(255,255,255,0.2)',
     borderRadius: 10,
-    marginBottom: 20,
     marginHorizontal: 20,
   },
   phonePrefix: {
@@ -167,22 +186,23 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(255,255,255,0.3)',
   },
   input: {
-    color: 'white',
+    color: AppColors.bgColor,
     padding: 15,
+    flex: 1,
+  },
+  text: {
+    color: AppColors.palette.osloGrey,
+    fontSize: 13,
   },
   loginButton: {
-    width: '100%',
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
-    marginHorizontal: 20,
-    alignItems: 'center',
+    width: width * 0.9,
+    marginBottom: 10,
   },
   disabledButton: {
     opacity: 0.5,
   },
   loginText: {
-    color: '#6A11CB',
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 16,
   },

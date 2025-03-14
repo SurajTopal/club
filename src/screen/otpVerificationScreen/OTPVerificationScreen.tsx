@@ -10,15 +10,17 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-toast-message';
 import {useAuth} from '../../auth-context';
+import {AppColors} from '../../theme';
 
 const height = Dimensions.get('window').height;
 
 const OTPVerificationScreen = props => {
-  const {
-    route: {
-      params: {mobile},
-    },
-  } = props;
+  // const {
+  //   route: {
+  //     params: {mobile},
+  //   },
+  // } = props;
+  const mobile = '7834738437483';
 
   const [enteredOtp, setEnteredOtp] = useState('');
   const {signIn} = useAuth();
@@ -38,7 +40,7 @@ const OTPVerificationScreen = props => {
   };
 
   return (
-    <LinearGradient colors={['#6A11CB', '#2575FC']} style={styles.container}>
+    <LinearGradient colors={['#1B242E', 'black']} style={styles.container}>
       <View style={styles.subContainer}>
         <Text style={styles.title}>Enter OTP</Text>
         <TextInput
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   buttonText: {
-    color: '#6A11CB',
+    color: AppColors.palette.black,
     fontWeight: 'bold',
     fontSize: 16,
   },

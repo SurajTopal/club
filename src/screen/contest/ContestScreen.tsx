@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, Text} from 'react-native';
 import PoolCard from '../../components/PoolCard/PoolCard';
 import {contestFetch} from '../../features/contest/contestSlice';
+import {fetchTeam} from '../../features/teamList/teamListSlice';
 import TeamCard from '../../components/TeamCard/TeamCard';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -57,6 +58,7 @@ export default function ContestScreen(props) {
   } = props;
 
   const [contestList, setContestList] = useState([]);
+  const [teamList, setTeamList] = useState([]);
   const [activeTab, setActiveTab] = useState('Contest');
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -65,15 +67,25 @@ export default function ContestScreen(props) {
 
   useEffect(() => {
     dispatch(contestFetch(matchId));
+    dispatch(fetchTeam(matchId));
   }, [matchId]);
 
   const contestReducer = useSelector(state => state.allContest);
+  const teamReducer = useSelector(state => state.teams);
 
   useEffect(() => {
     if (contestReducer?.data?.data) {
       setContestList(contestReducer?.data?.data);
     }
   }, [contestReducer]);
+
+  useEffect(() => {
+    if (teamReducer?.data) {
+      setTeamList(teamReducer?.data || []);
+    }
+  }, [teamReducer]);
+
+  console.log('ContList : ', contestList);
 
   return (
     <View style={styles.container}>
@@ -84,23 +96,50 @@ export default function ContestScreen(props) {
         tabContainerStyle={styles.tabContainer}
       />
       <View style={styles.subContainer}>
-        {activeTab === 'My Teams' ? (
+        {activeTab === 'My Teams' && (
           <>
-            <TeamCard
-              teamName="Team Name1"
-              players={samplePlayers}
-              onEdit={() =>
+            <FlatList
+              data={teamList}
+              removeClippedSubviews={false}
+              renderItem={({item, index}) => {
+                const {} = item;
+                return (
+                  <TeamCard
+                    teamName="Team Name1"
+                    playerDetails={item}
+                    onEdit={() =>
+                      navigation.navigate('BatBallQuestion', {matchId: matchId})
+                    }
+                  />
+                );
+              }}
+            />
+
+            <Button
+              title="Create Team"
+              handleButtonPress={() =>
                 navigation.navigate('BatBallQuestion', {matchId: matchId})
               }
             />
-            <Button title="Create Team" handleButtonPress={() => {}} />
           </>
-        ) : (
+        )}
+
+        {(activeTab === 'My Contest' || activeTab === 'Contest') && (
           <FlatList
             data={contestList}
             removeClippedSubviews={false}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id?.toString()}
+            ListEmptyComponent={() => (
+              <View
+                style={{
+                  height: 300,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text style={{backgroundColor: 'red'}}>Hello</Text>
+              </View>
+            )}
             renderItem={({item, index}) => (
               <PoolCard
                 contestInfo={item}

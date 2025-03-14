@@ -1,68 +1,41 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import MatchCard from '../../components/UpcomingMatchesCard/UpcomingMatchesCard';
+import BottomSheetComponent from '../../components/MoreAction/MoreAction';
+import MyMatchCard from '../../components/MyMatchesCard/MyMatchesCard';
 import {liveMatchFetch} from '../../features/matches/liveMatchSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {Icon} from 'react-native-elements';
+import {AppColors} from '../../theme';
 
 import {styles} from './homeScreen-styles';
+import Header from '../../components/Header/Header';
 
-const matchData = [
+const matches = [
   {
-    id: '0ed85b00-1a44-4949-83c9-ff953f47dc1b',
-    start_time: '2023-03-25T08:30:00.000Z',
-    end_time: '2023-03-25T11:30:00.000Z',
-    venue: 'Wankhede Stadium, Mumbai',
-    title: 'Mumbai Indians vs Chennai Super Kings',
-    team1_name: 'New Zealand',
-    team1_sname: 'NZ',
-    team2_name: 'India',
-    team2_sname: 'IND',
-    format: '50 overs',
-    tournament_name: 'Champions Trophy 2025',
+    key: '1',
+    team1: 'MUM-W',
+    team2: 'GJ-W',
+    team1Logo: 'https://example.com/mum-logo.png',
+    team2Logo: 'https://example.com/gj-logo.png',
+    date: 'Tomorrow',
+    time: '7:30 PM',
   },
   {
-    id: '2b34c567-8d90-123e-456f-7890ghijklm4',
-    start_time: '2023-05-15T14:00:00.000Z',
-    end_time: '2023-05-15T17:00:00.000Z',
-    venue: 'M. Chinnaswamy Stadium, Bengaluru',
-    title: 'Royal Challengers Bangalore vs Rajasthan Royals',
-    team1_name: 'Pakistan',
-    team1_sname: 'PAK',
-    team2_name: 'South Africa',
-    team2_sname: 'SA',
-    format: 'Test Match',
-    tournament_name: 'ICC Test Championship 2025',
-  },
-  {
-    id: '1a23b456-7c89-012d-345e-6789fghijklm',
-    start_time: '2023-04-10T10:00:00.000Z',
-    end_time: '2023-04-10T13:00:00.000Z',
-    venue: 'Eden Gardens, Kolkata',
-    title: 'Kolkata Knight Riders vs Delhi Capitals',
-    team1_name: 'Australia',
-    team1_sname: 'AUS',
-    team2_name: 'England',
-    team2_sname: 'ENG',
-    format: 'T20',
-    tournament_name: 'World Cup 2025',
-  },
-  {
-    id: '2b34c567-8d90-123e-456f-7890ghijklm1',
-    start_time: '2023-05-15T14:00:00.000Z',
-    end_time: '2023-05-15T17:00:00.000Z',
-    venue: 'M. Chinnaswamy Stadium, Bengaluru',
-    title: 'Royal Challengers Bangalore vs Rajasthan Royals',
-    team1_name: 'Pakistan',
-    team1_sname: 'PAK',
-    team2_name: 'South Africa',
-    team2_sname: 'SA',
-    format: 'Test Match',
-    tournament_name: 'ICC Test Championship 2025',
+    key: '2',
+    team1: 'DEL-W',
+    team2: 'TBC',
+    team1Logo: 'https://example.com/del-logo.png',
+    team2Logo: 'https://example.com/tbc-logo.png',
+    date: '15 Mar',
+    time: '7:30 PM',
   },
 ];
 
 export default function HomeScreen() {
   const [liveMatchList, setLiveMatchList] = useState();
+  const [isSheetVisible, setIsSheetVisible] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -79,11 +52,51 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upcoming Matches</Text>
-      <FlatList
-        data={liveMatchList}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => <MatchCard match={item} />}
+      <Header
+        title="Home"
+        isDrawer
+        walletBalance={56565}
+        isWalletVisible={true}
+        setIsVisible={setIsSheetVisible}
+      />
+      <View style={styles.subContainer}>
+        <TouchableOpacity>
+          <Image
+            source={require('../../assets/images/banner.png')}
+            style={styles.bannerContainer}
+          />
+        </TouchableOpacity>
+        <View style={styles.myMatchesContainer}>
+          <Text style={styles.title}>My Matches</Text>
+          <TouchableOpacity style={styles.seeAllContainer} onPress={() => {}}>
+            <Text style={styles.seeAllText}>See all</Text>
+            <Icon
+              name="chevron-right"
+              type="entypo"
+              color={AppColors.palette.greenWhite}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{height: 150}}>
+          <FlatList
+            data={matches}
+            horizontal
+            removeClippedSubviews={false}
+            contentContainerStyle={{margin: 0}}
+            renderItem={({item}) => <MyMatchCard {...item} />}
+          />
+        </View>
+        <Text style={styles.title}>Upcoming Matches</Text>
+        <FlatList
+          data={liveMatchList}
+          removeClippedSubviews={false}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => <MatchCard match={item} />}
+        />
+      </View>
+      <BottomSheetComponent
+        isVisible={isSheetVisible}
+        toggleSheet={() => setIsSheetVisible(false)}
       />
     </View>
   );

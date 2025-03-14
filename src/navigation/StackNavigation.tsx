@@ -10,7 +10,7 @@ import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import QuestionScreens from '../screen/questions/QuestionsScreen';
 import DashBoardScreen from '../screen/dashboard/DashboardScreen';
 import AddOrderScreen from '../screen/addOrder/AddOrderScreen';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
 import CaptainScreen from '../screen/captain/CaptainScreen';
 import ContestScreen from '../screen/contest/ContestScreen';
 import SettingScreen from '../screen/setting/SettingScreen';
@@ -27,19 +27,12 @@ import {useAuth} from '../auth-context';
 import {AppColors} from '../theme';
 import MyMatchesScreen from '../screen/myMatches/MyMatchesScreen';
 import HowToPlayScreen from '../screen/howToPlay/HowToPlayScreen';
+import CustomDrawer from './Drawer';
+import GetStartedScreen from '../screen/getStarted/GetStartedScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-
-function MyDrawer() {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Setting" component={SettingScreen} />
-      {/* <Drawer.Screen name="Profile" component={ProfileScreen} /> */}
-    </Drawer.Navigator>
-  );
-}
 
 const TabList = [
   {
@@ -201,16 +194,17 @@ const DashboardStack = () => {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        // options={{
-        //   header: () => (
-        //     <Header
-        //       title="Home"
-        //       isDrawer
-        //       walletBalance={walletBalance}
-        //       isWalletVisible
-        //     />
-        //   ),
-        // }}
+        options={{
+          headerShown: false,
+          // header: () => (
+          //   <Header
+          //     title="Home"
+          //     isDrawer
+          //     walletBalance={walletBalance}
+          //     isWalletVisible
+          //   />
+          // ),
+        }}
       />
       <Stack.Screen name="Join" component={JoinScreen} />
       <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
@@ -230,10 +224,9 @@ const DashboardStack = () => {
 
 function MyTabs() {
   const getTabBarVisibility = route => {
-
     const routeName = route.state?.routes?.[route.state.index]?.name ?? '';
 
-   console.log("Route Name : ",routeName);
+    console.log('Route Name : ', routeName);
 
     if (routeName === 'BatBallQuestion') {
       return 'none';
@@ -264,12 +257,32 @@ function MyTabs() {
 const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="GetStarted" component={GetStartedScreen} />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          headerShown: true,
+          header: () => (
+            <Header title="Login/Register" isBackButtonVisible={true} />
+          ),
+        }}
+      />
       <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
       {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
     </Stack.Navigator>
   );
 };
+
+// const AppStack = () => {
+//   return (
+//     <Drawer.Navigator
+//       screenOptions={{headerShown: false}}
+//       drawerContent={props => <CustomDrawer {...props} />}>
+//       <Drawer.Screen name="TabStack" component={MyTabs} />
+//     </Drawer.Navigator>
+//   );
+// };
 
 const AppStack = () => {
   return (
@@ -288,7 +301,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return !isSignIn ? <AppStack /> : <AuthStack />;
+  return isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

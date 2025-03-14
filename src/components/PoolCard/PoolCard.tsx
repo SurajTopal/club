@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
@@ -9,45 +9,46 @@ import TeamCard from '../TeamCard/TeamCard';
 import {AppColors} from '../../theme';
 
 import {styles} from './poolCard-styles';
+import {useSelector} from 'react-redux';
 
-const samplePlayers = [
-  {
-    id: '1',
-    name: 'Y BHATIA',
-    image: 'https://example.com/y_bhatia.png',
-    stat: '9 runs or more?',
-    prediction: 'Y',
-    points: 15,
-    role: 'C',
-  },
-  {
-    id: '2',
-    name: 'B MOONEY',
-    image: 'https://example.com/b_mooney.png',
-    stat: '23 runs or more?',
-    prediction: 'Y',
-    points: 26,
-    role: null,
-  },
-  {
-    id: '3',
-    name: 'H MATTHEWS',
-    image: 'https://example.com/h_matthews.png',
-    stat: '27 runs or more?',
-    prediction: 'N',
-    points: 51,
-    role: null,
-  },
-  {
-    id: '4',
-    name: 'T KANWAR',
-    image: 'https://example.com/t_kanwar.png',
-    stat: '1 wicket or more?',
-    prediction: 'N',
-    points: 59,
-    role: 'VC',
-  },
-];
+// const samplePlayers = [
+//   {
+//     id: '1',
+//     name: 'Y BHATIA',
+//     image: 'https://example.com/y_bhatia.png',
+//     stat: '9 runs or more?',
+//     prediction: 'Y',
+//     points: 15,
+//     role: 'C',
+//   },
+//   {
+//     id: '2',
+//     name: 'B MOONEY',
+//     image: 'https://example.com/b_mooney.png',
+//     stat: '23 runs or more?',
+//     prediction: 'Y',
+//     points: 26,
+//     role: null,
+//   },
+//   {
+//     id: '3',
+//     name: 'H MATTHEWS',
+//     image: 'https://example.com/h_matthews.png',
+//     stat: '27 runs or more?',
+//     prediction: 'N',
+//     points: 51,
+//     role: null,
+//   },
+//   {
+//     id: '4',
+//     name: 'T KANWAR',
+//     image: 'https://example.com/t_kanwar.png',
+//     stat: '1 wicket or more?',
+//     prediction: 'N',
+//     points: 59,
+//     role: 'VC',
+//   },
+// ];
 
 const PoolCard = props => {
   const {contestInfo, index, isMyContest} = props;
@@ -82,6 +83,16 @@ const PoolCard = props => {
   const winnerPercentage = (total_winners / total_spots) * 100;
   const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigation<any>();
+
+  const [allTeam, setAllTeam] = useState([]);
+
+  const teamReducer = useSelector(state => state.teams);
+
+  useEffect(() => {
+    if (teamReducer?.data) {
+      setAllTeam(teamReducer?.data || []);
+    }
+  }, [teamReducer]);
 
   return (
     <View style={styles.card}>
@@ -195,29 +206,32 @@ const PoolCard = props => {
                 size={20}
               />
             </TouchableOpacity>
-            <ScrollView horizontal>
+            {/* <ScrollView horizontal>
               {['T1', 'T2', 'T3'].map(team => (
                 <View style={styles.teamContainer} key={team + 'Team'}>
                   <Text style={styles.team}>{team}</Text>
                 </View>
               ))}
-            </ScrollView>
+            </ScrollView> */}
           </>
         ) : null}
       </TouchableOpacity>
       {isOpen && (
         <>
-          <TeamCard
-            teamName="Team Name1"
-            players={samplePlayers}
-            onEdit={() =>
-              navigation.navigate('BatBallQuestion', {matchId: match_id})
-            }
-          />
-          <TeamCard
-            teamName="Team Name1"
-            players={samplePlayers}
-            onEdit={() => {}}
+          <FlatList
+            data={teamList}
+            renderItem={({item, index}) => {
+              const {} = item;
+              return (
+                <TeamCard
+                  teamName="Team Name1"
+                  playerDetails={item}
+                  onEdit={() =>
+                    navigation.navigate('BatBallQuestion', {matchId: matchId})
+                  }
+                />
+              );
+            }}
           />
         </>
       )}

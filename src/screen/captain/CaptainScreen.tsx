@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import CaptainCard from '../../components/CaptainCard/CaptainCard';
-import {createTeam} from '../../features/createTeam/createTeamSlice';
+import { createTeam } from '../../features/createTeam/createTeamSlice';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {AppColors} from '../../theme';
 
 import {styles} from './captainScreen-styles';
-
 
 export default function CaptainScreen(props) {
   const {
@@ -21,6 +20,8 @@ export default function CaptainScreen(props) {
 
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
+
+  console.log('Natch:', matchId);
 
   useEffect(() => {
     if (

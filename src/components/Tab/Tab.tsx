@@ -18,6 +18,9 @@ export default function Tab(props: ITab) {
     tabContainerStyle = {},
   } = props;
 
+
+  console.log("selected : ",selectedTab);
+
   return (
     <View style={[styles.container, tabContainerStyle]}>
       {tabOption.map((name: string) => (
