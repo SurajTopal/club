@@ -8,10 +8,16 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     padding: 15,
+    flex: 1,
   },
   tabContainer: {
     paddingHorizontal: 20,
     paddingTop: 10,
+  },
+  createTeamButton: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: 10,
   },
 });
 

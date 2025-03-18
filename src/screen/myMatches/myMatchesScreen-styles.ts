@@ -11,6 +11,7 @@ interface Styles {
   tabSubContainer: ViewStyle;
   tabName: TextStyle;
   activeTabName: TextStyle;
+  matchText: TextStyle;
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -29,7 +30,7 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: AppColors.palette.nightBlack,
     borderRadius: 15,
     padding: 4,
-    marginTop: height * 0.05,
+    marginTop: height * 0.02,
     justifyContent: 'space-between',
   },
   activeTabContainer: {
@@ -49,6 +50,14 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 15,
     fontWeight: '400',
     color: AppColors.palette.osloGrey,
+  },
+  matchText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: AppColors.bgColor,
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: height * 0.15,
   },
 });
 

@@ -55,7 +55,6 @@ const liveMatchQuestionSlice = createSlice({
       state.errorMessage = '';
     });
     builder.addCase(fetchLiveQuestions.fulfilled, (state, action) => {
-      console.log('ACtion : ', action);
       state.isLoading = false;
       state.data = action.payload;
     });

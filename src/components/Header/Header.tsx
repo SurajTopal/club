@@ -9,21 +9,18 @@ import {styles} from './header-styles';
 interface IHeader {
   title: string;
   isBackButtonVisible?: boolean;
-  isDrawer?: boolean;
-  isWalletVisble?: boolean;
-  walletBalance?: Number;
   isWalletVisible?: boolean;
-  setIsVisible?: (isVisible: boolean) => void;
+  walletBalance?: Number;
+  setIsVisible?: boolean;
 }
 
 export default function Header(props: IHeader) {
   const {
     title,
     isBackButtonVisible = false,
-    isDrawer = false,
     walletBalance = 0,
+    isWalletVisible = false,
     setIsVisible,
-    isWalletVisble = false,
   } = props;
   const navigation = useNavigation();
 
@@ -31,44 +28,54 @@ export default function Header(props: IHeader) {
     <View style={styles.container}>
       <View style={styles.leftContainer}>
         {isBackButtonVisible && (
-          <Icon
-            onPress={() => {}}
-            name="arrowleft"
-            type="antdesign"
-            color={AppColors.palette.lightLimeGreen}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{marginRight: 20}}>
+            <Icon
+              name="arrowleft"
+              type="antdesign"
+              color={AppColors.palette.lightLimeGreen}
+            />
+          </TouchableOpacity>
         )}
-        {isDrawer && (
-          <Icon
-            onPress={() => {}}
-            name="menu"
-            type="entypo"
-            color={AppColors.palette.lightLimeGreen}
-          />
+        {title === 'Home' && (
+          <TouchableOpacity onPress={() => {}} style={{marginRight: 20}}>
+            <Icon
+              onPress={() => {}}
+              name="menu"
+              type="entypo"
+              color={AppColors.palette.lightLimeGreen}
+            />
+          </TouchableOpacity>
         )}
+
         <Text style={styles.title}>{title}</Text>
       </View>
-      {isWalletVisble && (
+      {isWalletVisible && (
         <View style={styles.rightContainer}>
-          <TouchableOpacity style={styles.walletContainer}>
+          <TouchableOpacity
+            style={styles.walletContainer}
+            onPress={() => navigation.navigate('Wallet')}>
             <Icon
               name="wallet"
               type="entypo"
               color={AppColors.palette.osloGrey}
             />
-            <Text
-              onPress={() => navigation.navigate('Wallet')}
-              style={styles.amount}>
-              ₹{walletBalance}
-            </Text>
+            <Text style={styles.amount}>₹{walletBalance || 0}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsVisible(true)}>
-            <Icon
-              name="dots-three-vertical"
-              type="entypo"
-              color={AppColors.bgColor}
-            />
-          </TouchableOpacity>
+          {title === 'Home' && (
+            <TouchableOpacity
+              onPress={() => {
+              if(setIsVisible)
+                setIsVisible(true);
+              }}>
+              <Icon
+                name="dots-three-vertical"
+                type="entypo"
+                color={AppColors.bgColor}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>

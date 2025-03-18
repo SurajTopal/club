@@ -12,6 +12,8 @@ import playerQuestionReducer from '../features/playerQuestion/playerQuestionSlic
 import winningReducer from '../features/winningList/winningSlice';
 import teamReducer from '../features/teamList/teamListSlice';
 import myContestReducer from '../features/contest/userContestSlice';
+import myMatchesReducer from '../features/matches/myMatchesSlice';
+import fetchLeaderBoardReducer from '../features/leaderBoard/leaderBoardSlice';
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +30,8 @@ export const store = configureStore({
     winning: winningReducer,
     teams: teamReducer,
     myContest: myContestReducer,
+    myMatches: myMatchesReducer,
+    leaderBoard: fetchLeaderBoardReducer,
   },
 });
 

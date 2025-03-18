@@ -12,10 +12,7 @@ export const liveMatchFetch = createAsyncThunk(
           Authorization: token,
         },
       });
-
-      console.log('Response : ', response);
-
-      if (response.status === 201) {
+      if (response.status === 200) {
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(
@@ -50,7 +47,6 @@ const liveMatchSlice = createSlice({
       state.errorMessage = '';
     });
     builder.addCase(liveMatchFetch.fulfilled, (state, action) => {
-      console.log('ACtion : ', action);
       state.isLoading = false;
       state.data = action.payload;
     });

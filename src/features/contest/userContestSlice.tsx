@@ -18,7 +18,7 @@ export const fetchMyContest = createAsyncThunk(
 
       console.log('Response : myContest', response);
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(

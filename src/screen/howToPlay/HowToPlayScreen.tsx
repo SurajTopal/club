@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-
-import {styles} from './howToPlayScreen-styles';
-import {AppColors} from '../../theme';
-import BottomSheetComponent from '../../components/MoreAction/MoreAction';
 import BottomSheetAccordian from '../../components/BottomSheetAccordian/BottomSheetAccordian';
 import {ScrollView} from 'react-native';
+import {AppColors} from '../../theme';
+
+import {styles} from './howToPlayScreen-styles';
 
 export default function HowToPlayScreen() {
   const [activeTab, setActiveTab] = useState('Select');

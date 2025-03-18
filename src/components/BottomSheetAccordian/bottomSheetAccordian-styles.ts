@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.palette.lightBlack,
   },
   sheetContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: AppColors.palette.nightBlack,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     padding: 20,
-    elevation: 2,
+    flex: 1,
   },
   headerContainer: {
     flexDirection: 'row',

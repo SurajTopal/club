@@ -54,7 +54,7 @@ export default function BottomSheetAccordian(props) {
           ) : (
             <>
               <ScrollView
-                style={{flex: 1, backgroundColor: '#121212', padding: 16}}>
+                style={{flex: 1}}>
                 {HOW_TO_PLAY[title]?.rules?.map((item, index) => (
                   <View key={index} style={{marginBottom: 16}}>
                     <Text

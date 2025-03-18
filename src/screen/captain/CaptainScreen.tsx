@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import CaptainCard from '../../components/CaptainCard/CaptainCard';
-import { createTeam } from '../../features/createTeam/createTeamSlice';
+import {createTeam} from '../../features/createTeam/createTeamSlice';
 import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../../auth-context';
 import {useDispatch} from 'react-redux';
 import {AppColors} from '../../theme';
 
@@ -11,17 +12,17 @@ import {styles} from './captainScreen-styles';
 export default function CaptainScreen(props) {
   const {
     route: {
-      params: {questionList, matchId},
+      params: {questionList, matchId, contestId, isTeamCreation = false},
     },
   } = props;
 
   const [captainViceCaptain, setCaptainViceCaptain] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
-
+  const [teamID, setTeamID] = useState('');
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
 
-  console.log('Natch:', matchId);
+  const {contestData} = useAuth();
 
   useEffect(() => {
     if (
@@ -50,7 +51,21 @@ export default function CaptainScreen(props) {
         user_responses: [...userReponse],
       };
 
-      dispatch(createTeam({formatData, navigation}));
+      if (contestId)
+        dispatch(
+          createTeam({formatData, navigation, isNavigation: false}),
+        ).then(response => {
+          const teamId = response?.payload?.data?.user_team_id;
+          if (teamId) {
+            navigation.navigate('Join', {
+              ...contestData,
+              teamId,
+              contestId,
+              isJoin: true,
+            });
+          }
+        });
+      else dispatch(createTeam({formatData, navigation, isNavigation: true}));
     }
   };
 

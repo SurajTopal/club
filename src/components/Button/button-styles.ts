@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttonText: {
     fontWeight: 'bold',

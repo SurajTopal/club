@@ -12,7 +12,7 @@ import {styles} from './batBallQuestionScreen-styles';
 const BatBallQuestionScreen = props => {
   const {
     route: {
-      params: {matchId},
+      params: {matchId, contestId, isOnlyTeamCreation = false},
     },
   } = props;
 
@@ -40,16 +40,10 @@ const BatBallQuestionScreen = props => {
     navigation.navigate('Captain', {
       questionList: questionList,
       matchId: matchId,
+      contestId: contestId || '',
+      isOnlyTeamCreation: isOnlyTeamCreation || false,
     });
   };
-
-  // console.log(
-  //   'PlayerList : ',
-  //   playerQuestionList.filter(player => {
-  //     console.log('Player : ', player, '     ', activeTab);
-  //     if (player.player_type === activeTab) return player;
-  //   }),
-  // );
 
   return (
     <View style={styles.container}>

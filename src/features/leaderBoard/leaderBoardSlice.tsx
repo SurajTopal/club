@@ -1,15 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
 import axios from 'axios';
 
-export const playerQuestionFetch = createAsyncThunk(
-  'playerQuestion/playerQuestionFetch',
-  async (matchId, thunkAPI) => {
+export const fetchLeaderBoard = createAsyncThunk(
+  'leaderboard/fetchLeaderBoard',
+  async (_, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       const response = await axios.get(
-        `http://20.40.40.110:9117/match/${matchId}/players`,
+        `http://20.40.40.110:9117/leaderboard/getLeaderboard?contestId=a88a600f-e5c9-4d1e-af9d-443fffc7a712`,
         {
           headers: {
             Authorization: token,
@@ -17,7 +16,7 @@ export const playerQuestionFetch = createAsyncThunk(
         },
       );
 
-      console.log("QURSTION api : ",response);
+      console.log('Response : leaderBoard ', response);
 
       if (response.status === 200) {
         return response.data;
@@ -27,8 +26,6 @@ export const playerQuestionFetch = createAsyncThunk(
         );
       }
     } catch (error) {
-
-      console.log('Error in qestion api : ',error.response);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
@@ -45,21 +42,21 @@ const initialState = {
   errorMessage: '',
 };
 
-const playerQuestionSlice = createSlice({
-  name: 'playerQuestion',
+const leaderBoardSlice = createSlice({
+  name: 'leaderboard',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(playerQuestionFetch.pending, state => {
+    builder.addCase(fetchLeaderBoard.pending, state => {
       state.isLoading = true;
       state.isError = false;
       state.errorMessage = '';
     });
-    builder.addCase(playerQuestionFetch.fulfilled, (state, action) => {
+    builder.addCase(fetchLeaderBoard.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
     });
-    builder.addCase(playerQuestionFetch.rejected, (state, action) => {
+    builder.addCase(fetchLeaderBoard.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.errorMessage = action.payload || 'An unknown error occurred';
@@ -67,4 +64,4 @@ const playerQuestionSlice = createSlice({
   },
 });
 
-export default playerQuestionSlice.reducer;
+export default leaderBoardSlice.reducer;

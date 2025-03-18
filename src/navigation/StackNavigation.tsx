@@ -29,6 +29,8 @@ import MyMatchesScreen from '../screen/myMatches/MyMatchesScreen';
 import HowToPlayScreen from '../screen/howToPlay/HowToPlayScreen';
 import CustomDrawer from './Drawer';
 import GetStartedScreen from '../screen/getStarted/GetStartedScreen';
+import TeamScreen from '../screen/team/TeamScreen';
+import config from '../config';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,7 +89,7 @@ const renderTab = props => {
 };
 
 const DashboardStack = () => {
-  const {signOut} = useAuth();
+  const {signOut, setTotalBalance} = useAuth();
 
   const [walletBalance, setWalletBalance] = useState(0);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
@@ -100,83 +102,89 @@ const DashboardStack = () => {
 
   const fetchBalance = useSelector(state => state.walletBalance);
 
-  // const connectWebSocket = async () => {
-  //   const token = await AsyncStorage.getItem('authToken');
+  const connectWebSocket = async () => {
+    const token = await AsyncStorage.getItem('authToken');
 
-  //   try {
-  //     // Create WebSocket instance with custom headers
-  //     const ws = new WebSocket('ws://20.40.40.110:8090/ws', [], {
-  //       headers: {
-  //         Authorization: `${token}`,
-  //       },
-  //     });
+    try {
+      // Create WebSocket instance with custom headers
+      const ws = new WebSocket('ws://20.40.40.110:8090/ws', [], {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
 
-  //     // Connection opened
-  //     ws.onopen = () => {
-  //       console.log('WebSocket Connection Established');
-  //       setConnected(true);
-  //       setConnectionStatus('Connected');
-  //       // setMessages(prev => [
-  //       //   ...prev,
-  //       //   {text: 'Connected to server', type: 'system'},
-  //       // ]);
-  //     };
+      // Connection opened
+      ws.onopen = () => {
+        console.log('WebSocket Connection Established');
+        setConnected(true);
+        setConnectionStatus('Connected');
+        // setMessages(prev => [
+        //   ...prev,
+        //   {text: 'Connected to server', type: 'system'},
+        // ]);
+      };
 
-  //     // Listen for messages
-  //     ws.onmessage = event => {
-  //       console.log('Message received:', JSON.parse(event.data));
+      // Listen for messages
+      ws.onmessage = event => {
+        console.log('Message received:', JSON.parse(event.data));
 
-  //       if (event.data) {
-  //         console.log('Working...', event.data);
+        if (event.data) {
+          console.log('Working...', JSON.parse(event.data));
 
-  //         const balanceInfo = JSON.parse(event.data);
-  //         setWalletBalance(
-  //           balanceInfo?.mainAmount + balanceInfo?.winningAmount,
-  //         );
-  //       }
-  //       // setMessages(prev => [...prev, {text: event.data, type: 'received'}]);
-  //     };
+          const balanceInfo = JSON.parse(event.data);
+          setWalletBalance(
+            balanceInfo?.mainAmount + balanceInfo?.winningAmount,
+          );
 
-  //     // Listen for errors
-  //     ws.onerror = error => {
-  //       console.log('WebSocket Error:', error);
-  //       setConnectionStatus(`Error: ${error.message || 'Unknown error'}`);
-  //       // setMessages(prev => [
-  //       //   ...prev,
-  //       //   {text: `Error: ${error.message || 'Unknown error'}`, type: 'error'},
-  //       // ]);
-  //     };
+          setTotalBalance(
+            balanceInfo?.mainAmount + balanceInfo?.winningAmount
+          );
 
-  //     // Connection closed
-  //     ws.onclose = event => {
-  //       console.log('WebSocket Connection Closed:', event.code, event.reason);
-  //       setConnected(false);
-  //       setConnectionStatus(
-  //         `Disconnected: ${event.reason || 'Connection closed'}`,
-  //       );
-  //       // setMessages(prev => [
-  //       //   ...prev,
-  //       //   {
-  //       //     text: `Disconnected: ${event.reason || 'Connection closed'}`,
-  //       //     type: 'system',
-  //       //   },
-  //       // ]);
-  //     };
+          console.log('account balance  ', config?.WALLET_BALANCE);
+        }
+        // setMessages(prev => [...prev, {text: event.data, type: 'received'}]);
+      };
 
-  //     websocketRef.current = ws;
-  //   } catch (error) {
-  //     console.error('Failed to connect WebSocket:', error);
-  //     setConnectionStatus(`Connection Failed: ${error.message}`);
-  //     // setMessages(prev => [
-  //     //   ...prev,
-  //     //   {text: `Connection Failed: ${error.message}`, type: 'error'},
-  //     // ]);
-  //   }
-  // };
+      // Listen for errors
+      ws.onerror = error => {
+        console.log('WebSocket Error:', error);
+        setConnectionStatus(`Error: ${error.message || 'Unknown error'}`);
+        // setMessages(prev => [
+        //   ...prev,
+        //   {text: `Error: ${error.message || 'Unknown error'}`, type: 'error'},
+        // ]);
+      };
+
+      // Connection closed
+      ws.onclose = event => {
+        console.log('WebSocket Connection Closed:', event.code, event.reason);
+        setConnected(false);
+        setConnectionStatus(
+          `Disconnected: ${event.reason || 'Connection closed'}`,
+        );
+        // setMessages(prev => [
+        //   ...prev,
+        //   {
+        //     text: `Disconnected: ${event.reason || 'Connection closed'}`,
+        //     type: 'system',
+        //   },
+        // ]);
+      };
+
+      websocketRef.current = ws;
+    } catch (error) {
+      console.error('Failed to connect WebSocket:', error);
+      setConnectionStatus(`Connection Failed: ${error.message}`);
+      // setMessages(prev => [
+      //   ...prev,
+      //   {text: `Connection Failed: ${error.message}`, type: 'error'},
+      // ]);
+    }
+  };
 
   useEffect(() => {
-    // connectWebSocket();
-    dispatch(fetchWalletBalance());
+    connectWebSocket();
+    // dispatch(fetchWalletBalance());
   }, []);
 
   useEffect(() => {
@@ -196,26 +204,50 @@ const DashboardStack = () => {
         component={HomeScreen}
         options={{
           headerShown: false,
-          // header: () => (
-          //   <Header
-          //     title="Home"
-          //     isDrawer
-          //     walletBalance={walletBalance}
-          //     isWalletVisible
-          //   />
-          // ),
         }}
       />
-      <Stack.Screen name="Join" component={JoinScreen} />
+      <Stack.Screen
+        name="Join"
+        component={JoinScreen}
+        options={{
+          header: () => (
+            <Header
+              isBackButtonVisible
+              title="Join"
+              isWalletVisible
+              walletBalance={walletBalance}
+            />
+          ),
+        }}
+      />
       <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
       <Stack.Screen
         name="Captain"
         component={CaptainScreen}
         options={{title: 'Select C & VC'}}
       />
-      <Stack.Screen name="Contest" component={ContestScreen} />
+      <Stack.Screen
+        name="Contest"
+        component={ContestScreen}
+        options={{
+          header: () => (
+            <Header
+              isBackButtonVisible
+              title="Contest"
+              isWalletVisible
+              setIsVisible={() => {}}
+              walletBalance={walletBalance}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name="Team" component={TeamScreen} />
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
-      <Stack.Screen name="Wallet" component={WalletScreen} />
+      <Stack.Screen
+        name="Wallet"
+        component={WalletScreen}
+        options={{header: () => <Header isBackButtonVisible title="Wallet" />}}
+      />
       <Stack.Screen name="Question" component={QuestionScreens} />
       <Stack.Screen name="AddOrder" component={AddOrderScreen} />
     </Stack.Navigator>

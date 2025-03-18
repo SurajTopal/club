@@ -1,10 +1,14 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-
 import {styles} from './myMatchesCard-styles';
 
+import {getMatchStatus} from '../../utility';
+
 const MyMatchCard = props => {
-  const {team1, team2, team1Logo, team2Logo, date, time} = props;
+  const {team1_sname, team2_sname, start_time, end_time} = props;
+
+
+  const {matchStatus, time} = getMatchStatus(start_time, end_time);
 
   return (
     <TouchableOpacity style={styles.card}>
@@ -15,23 +19,31 @@ const MyMatchCard = props => {
               source={require('../../assets/icons/profile.png')}
               style={styles.logo}
             />
-            <Text style={styles.teamName}>{team1}</Text>
+            <Text style={styles.teamName}>{team1_sname}</Text>
           </View>
           <View style={styles.team}>
             <Image
               source={require('../../assets/icons/profile.png')}
               style={styles.logo}
             />
-            <Text style={styles.teamName}>{team2}</Text>
+            <Text style={styles.teamName}>{team2_sname}</Text>
           </View>
         </View>
         <View style={styles.infoRow}>
-          <Text style={[styles.dateTime, {marginBottom: 5}]}>{date}</Text>
+          <Text style={[styles.dateTime, {marginBottom: 5}]}>
+            {matchStatus}
+          </Text>
           <Text style={styles.dateTime}>{time}</Text>
         </View>
       </View>
       <View style={styles.footerContainer}>
-        <Text style={styles.footerText}>1 Team</Text>
+        <Text style={styles.footerText}>
+          {matchStatus === 'Live'
+            ? 'Live'
+            : matchStatus === 'Completed'
+            ? 'Well Played'
+            : matchStatus}
+        </Text>
       </View>
     </TouchableOpacity>
   );

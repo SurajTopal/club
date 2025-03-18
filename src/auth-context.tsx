@@ -10,6 +10,10 @@ type AuthContextType = {
   signOut: () => Promise<void>;
   setIsSignIn: (isSignIn: boolean) => void;
   authToken: string | null;
+  setContestData: (contestData: any) => void;
+  contestData: any;
+  totalBalance: Number;
+  setTotalBalance: (totalBalance: any) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,6 +29,8 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
+  const [contestData, setContestData] = useState({});
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const checkAuthStatus = async () => {
     setIsLoading(true);
@@ -33,7 +39,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
         setAuthToken(token);
-        console.log("TOKEN",token);
+        console.log('TOKEN', token);
         setIsSignIn(true); // User is signed in if the token exists
       } else {
         setIsSignIn(false);
@@ -54,9 +60,8 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     try {
       const response = await axios.post('http://20.40.40.110:9111/verifyOtp', {
         phone: mobile,
-        code:otp,
+        code: otp,
       });
-
 
       if (response?.data?.message === 'OTP verified successfully') {
         console.log('Response : : ', response);
@@ -108,6 +113,10 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         signOut,
         setIsSignIn,
         authToken,
+        setContestData,
+        contestData,
+        setTotalBalance,
+        totalBalance,
       }}>
       {children}
     </AuthContext.Provider>

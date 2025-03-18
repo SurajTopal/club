@@ -7,48 +7,10 @@ import Slider from '@react-native-community/slider';
 import {Divider} from 'react-native-elements';
 import TeamCard from '../TeamCard/TeamCard';
 import {AppColors} from '../../theme';
-
-import {styles} from './poolCard-styles';
+import {useAuth} from '../../auth-context';
 import {useSelector} from 'react-redux';
 
-// const samplePlayers = [
-//   {
-//     id: '1',
-//     name: 'Y BHATIA',
-//     image: 'https://example.com/y_bhatia.png',
-//     stat: '9 runs or more?',
-//     prediction: 'Y',
-//     points: 15,
-//     role: 'C',
-//   },
-//   {
-//     id: '2',
-//     name: 'B MOONEY',
-//     image: 'https://example.com/b_mooney.png',
-//     stat: '23 runs or more?',
-//     prediction: 'Y',
-//     points: 26,
-//     role: null,
-//   },
-//   {
-//     id: '3',
-//     name: 'H MATTHEWS',
-//     image: 'https://example.com/h_matthews.png',
-//     stat: '27 runs or more?',
-//     prediction: 'N',
-//     points: 51,
-//     role: null,
-//   },
-//   {
-//     id: '4',
-//     name: 'T KANWAR',
-//     image: 'https://example.com/t_kanwar.png',
-//     stat: '1 wicket or more?',
-//     prediction: 'N',
-//     points: 59,
-//     role: 'VC',
-//   },
-// ];
+import {styles} from './poolCard-styles';
 
 const PoolCard = props => {
   const {contestInfo, index, isMyContest} = props;
@@ -82,7 +44,10 @@ const PoolCard = props => {
   const progress = (totalSpots - remainingSpots) / totalSpots;
   const winnerPercentage = (total_winners / total_spots) * 100;
   const [isOpen, setIsOpen] = useState(false);
+  const [joinScreenData, setJoinScreenData] = useState({});
   const navigation = useNavigation<any>();
+
+  const {setContestData} = useAuth();
 
   const [allTeam, setAllTeam] = useState([]);
 
@@ -94,24 +59,70 @@ const PoolCard = props => {
     }
   }, [teamReducer]);
 
+  useEffect(() => {
+    setJoinScreenData({
+      matchId: match_id,
+      maxPoolSize: max_pool_size,
+      totalSpots: total_spots,
+      remainingSpots: remainingSpots,
+      winnerPercentage: winnerPercentage,
+      categoryName: category_name,
+      firstPrice: first_price,
+      currentFee: current_entry_fee,
+      totalTeam: total_allowed_team,
+      progress: progress,
+    });
+  }, []);
+
+  const handleContestData = () => {
+    setContestData({
+      matchId: match_id,
+      maxPoolSize: max_pool_size,
+      totalSpots: total_spots,
+      remainingSpots: remainingSpots,
+      winnerPercentage: winnerPercentage,
+      categoryName: category_name,
+      firstPrice: first_price,
+      currentFee: current_entry_fee,
+      totalTeam: total_allowed_team,
+      progress: progress,
+    });
+  };
+
+  const handleContest = () => {
+    handleContestData();
+    if (allTeam.length > 1) {
+      navigation.navigate('Team', {
+        contestId: id,
+        currentFee: current_entry_fee,
+      });
+    } else if (allTeam.length === 0) {
+      navigation.navigate('BatBallQuestion', {
+        matchId: match_id,
+        contestId: id,
+      });
+    } else if (allTeam.length === 1) {
+      navigation.navigate('Join', {
+        ...joinScreenData,
+        contestId: id,
+        teamId: allTeam[0]?.team_id,
+        isJoin: true,
+      });
+    }
+  };
+
   return (
     <View style={styles.card}>
       <TouchableOpacity
         style={styles.subCard}
-        onPress={() =>
+        onPress={() => {
+          handleContestData();
           navigation.navigate('Join', {
-            matchId: match_id,
-            maxPoolSize: max_pool_size,
-            totalSpots: total_spots,
-            remainingSpots: remainingSpots,
-            winnerPercentage: winnerPercentage,
-            categoryName: category_name,
-            firstPrice: first_price,
-            currentFee: current_entry_fee,
-            totalTeam: total_allowed_team,
-            progress: progress,
-          })
-        }>
+            ...joinScreenData,
+            isJoin: false,
+            contestId: id,
+          });
+        }}>
         {/* Pool Type and Discount */}
         <View style={styles.headerRow}>
           <View style={styles.flexRow}>
@@ -123,11 +134,11 @@ const PoolCard = props => {
             <Text style={styles.flexiblePool}>{category_name}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
+            {!isMyContest && entry_fee !== current_entry_fee && (
+              <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
+            )}
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('BatBallQuestion', {matchId: match_id})
-              }
+              onPress={handleContest}
               style={{
                 paddingVertical: 5,
                 paddingHorizontal: 15,
@@ -136,7 +147,9 @@ const PoolCard = props => {
                 borderRadius: 5,
                 marginLeft: 5,
               }}>
-              <Text style={styles.discount}>₹{current_entry_fee}</Text>
+              <Text style={styles.discount}>
+                ₹{current_entry_fee || entry_fee}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -216,10 +229,11 @@ const PoolCard = props => {
           </>
         ) : null}
       </TouchableOpacity>
-      {isOpen && (
+      {/* {isOpen && (
         <>
           <FlatList
-            data={teamList}
+            data={allTeam}
+            removeClippedSubviews={false}
             renderItem={({item, index}) => {
               const {} = item;
               return (
@@ -234,7 +248,7 @@ const PoolCard = props => {
             }}
           />
         </>
-      )}
+      )} */}
     </View>
   );
 };

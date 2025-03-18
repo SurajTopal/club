@@ -8,41 +8,50 @@ import Toast from 'react-native-toast-message';
 export const createTeam = createAsyncThunk<
   void, // No data will be stored
   {rejectValue: string} // Rejection type
->('teamCreation/createTeam', async ({formatData,navigation}, thunkAPI) => {
+>(
+  'teamCreation/createTeam',
+  async ({formatData, navigation, isNavigation = false}, thunkAPI) => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
 
-  try {
-    const token = await AsyncStorage.getItem('authToken');
-
-    const response = await axios.post(
-      `http://20.40.40.110:9117/team/user/createTeam`,
-      formatData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
+      const response = await axios.post(
+        `http://20.40.40.110:9117/team/user/createTeam`,
+        formatData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
         },
-      },
-    );
-
-    if (response.status === 201) {
-      Toast.show({
-        text1: 'Team has been created Successfully!!',
-        type: 'success',
-        visibilityTime: 2000,
-      });
-   
-      navigation.navigate('Home');
-    } else {
-      return thunkAPI.rejectWithValue(
-        `Unexpected response status: ${response.status}`,
       );
-    }
-  } catch (error: any) {
-    console.log('ERORR ROR ', error);
-    const errorMessage =
-      error.response?.data?.message || error.message || 'Something went wrong';
-    console.log('Error : ', errorMessage);
-    return thunkAPI.rejectWithValue(errorMessage);
-  }
-});
 
+      console.log('team API ', response);
+
+      if (response.status === 201) {
+        Toast.show({
+          text1: 'Team has been created Successfully!!',
+          type: 'success',
+          visibilityTime: 2000,
+        });
+
+        if (isNavigation) navigation.navigate('Home');
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(
+          `Unexpected response status: ${response.status}`,
+        );
+      }
+    } catch (error: any) {
+      console.log('ERORR ROR response walalalllalallal', error.response);
+
+      Toast.show({text1: error.response?.data?.message, type: 'error'});
+
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Something went wrong';
+      console.log('Error : ', errorMessage);
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  },
+);

@@ -1,12 +1,43 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import {CheckBox} from 'react-native-elements';
 import {AppColors} from '../../theme';
 
 import {styles} from './teamCard-styles';
+import {CheckBox} from 'react-native-elements';
 
-const TeamCard = props => {
-  const {teamName, playerDetails, onEdit} = props;
+interface ITeamCard {
+  teamName: string;
+  playerDetails: any;
+  onEdit: () => void;
+  isTeamSelection?: boolean;
+  selectedTeamIds: Array<string>;
+  setSelectedTeamIds: (selectedTeamIds: Array<string>) => void;
+}
+
+const TeamCard = (props: ITeamCard) => {
+  const {
+    teamName,
+    playerDetails,
+    onEdit,
+    setSelectedTeamIds,
+    selectedTeamIds,
+    isTeamSelection = false,
+  } = props;
+
+  const [isSelected, setIsSelected] = useState(false);
+
+  useEffect(() => {
+    if (selectedTeamIds) {
+      if (selectedTeamIds.find(teamId => teamId === playerDetails?.team_id)) {
+        setIsSelected(true);
+      } else {
+        setIsSelected(false);
+      }
+    }
+  }, [selectedTeamIds]);
+
   const PlayerCard = ({player}) => {
     return (
       <View style={styles.playerCard}>
@@ -34,23 +65,48 @@ const TeamCard = props => {
     );
   };
 
+  console.log('Team Details :', playerDetails);
+
+  const handleCheck = () => {
+    if (
+      selectedTeamIds?.length &&
+      selectedTeamIds?.find(teamId => teamId === playerDetails?.team_id)
+    ) {
+      const index = selectedTeamIds.indexOf(playerDetails?.team_id);
+      const teamIds = selectedTeamIds;
+      teamIds.splice(index, 1);
+      setSelectedTeamIds([...teamIds]);
+    } else {
+      setSelectedTeamIds([...selectedTeamIds, playerDetails?.team_id]);
+    }
+  };
+
   return (
     <View style={styles.card}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.teamName}>{teamName}</Text>
-        <TouchableOpacity
-          onPress={onEdit}
-          style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Icon
-            name="account-edit"
-            size={20}
-            color={AppColors.palette.greenWhite}
+        {isTeamSelection ? (
+          <CheckBox
+            onPress={handleCheck}
+            checked={isSelected}
+            uncheckedColor={AppColors.bgColor}
+            checkedColor={AppColors.palette.lightLimeGreen}
           />
-          <Text style={{color: AppColors.palette.greenWhite, marginLeft: 5}}>
-            Edit
-          </Text>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={onEdit}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Icon
+              name="account-edit"
+              size={20}
+              color={AppColors.palette.greenWhite}
+            />
+            <Text style={{color: AppColors.palette.greenWhite, marginLeft: 5}}>
+              Edit
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* Player List */}

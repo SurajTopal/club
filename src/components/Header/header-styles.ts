@@ -1,12 +1,10 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
 
-const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: AppColors.palette.black,
-    borderBottomWidth: 1,
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',

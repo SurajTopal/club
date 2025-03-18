@@ -1,15 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
 import axios from 'axios';
 
-export const playerQuestionFetch = createAsyncThunk(
-  'playerQuestion/playerQuestionFetch',
-  async (matchId, thunkAPI) => {
+export const fetchMyMatches = createAsyncThunk(
+  'myMatches/fetchMyMatches',
+  async (_, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       const response = await axios.get(
-        `http://20.40.40.110:9117/match/${matchId}/players`,
+        `http://20.40.40.110:9117/match/my-matches`,
         {
           headers: {
             Authorization: token,
@@ -17,7 +16,7 @@ export const playerQuestionFetch = createAsyncThunk(
         },
       );
 
-      console.log("QURSTION api : ",response);
+      console.log('Response : my Matches ---', response);
 
       if (response.status === 200) {
         return response.data;
@@ -28,7 +27,7 @@ export const playerQuestionFetch = createAsyncThunk(
       }
     } catch (error) {
 
-      console.log('Error in qestion api : ',error.response);
+      console.log("MY matches : ",error?.response);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
@@ -45,21 +44,21 @@ const initialState = {
   errorMessage: '',
 };
 
-const playerQuestionSlice = createSlice({
-  name: 'playerQuestion',
+const myMatchesSlice = createSlice({
+  name: 'myMatches',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    builder.addCase(playerQuestionFetch.pending, state => {
+    builder.addCase(fetchMyMatches.pending, state => {
       state.isLoading = true;
       state.isError = false;
       state.errorMessage = '';
     });
-    builder.addCase(playerQuestionFetch.fulfilled, (state, action) => {
+    builder.addCase(fetchMyMatches.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload;
     });
-    builder.addCase(playerQuestionFetch.rejected, (state, action) => {
+    builder.addCase(fetchMyMatches.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.errorMessage = action.payload || 'An unknown error occurred';
@@ -67,4 +66,4 @@ const playerQuestionSlice = createSlice({
   },
 });
 
-export default playerQuestionSlice.reducer;
+export default myMatchesSlice.reducer;

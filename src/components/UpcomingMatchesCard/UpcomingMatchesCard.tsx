@@ -28,7 +28,7 @@ const MatchCard = (props: IMatchCard) => {
 
         {isMyMatch && (
           <View style={styles.teamContestContainer}>
-            <Text style={styles.endTime}>2 Team </Text>
+            <Text style={styles.endTime}>{match?.team_count} Team </Text>
             <Icon
               name="dot-single"
               type="entypo"
@@ -36,7 +36,7 @@ const MatchCard = (props: IMatchCard) => {
               size={16}
               style={styles.icon}
             />
-            <Text style={styles.endTime}>2 Contest</Text>
+            <Text style={styles.endTime}>{match?.contest_count} Contest</Text>
           </View>
         )}
       </View>
@@ -49,7 +49,9 @@ const MatchCard = (props: IMatchCard) => {
           size={16}
           style={styles.icon}
         />
-        <Text style={styles.leagueText}> {match.tournament_name}</Text>
+        <Text style={styles.leagueText}>
+          {match.tournament_name || match.title}
+        </Text>
       </View>
       <View
         style={{
