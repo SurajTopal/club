@@ -4,11 +4,11 @@ import axios from 'axios';
 
 export const fetchLeaderBoard = createAsyncThunk(
   'leaderboard/fetchLeaderBoard',
-  async (_, thunkAPI) => {
+  async (contestId, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
       const response = await axios.get(
-        `http://20.40.40.110:9117/leaderboard/getLeaderboard?contestId=a88a600f-e5c9-4d1e-af9d-443fffc7a712`,
+        `http://20.40.40.110:9117/leaderboard/getLeaderboard?contestId=${contestId}`,
         {
           headers: {
             Authorization: token,

@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
+import {Divider} from 'react-native-elements';
+import TeamCard from '../TeamCard/TeamCard';
 import {AppColors} from '../../theme';
 import {useAuth} from '../../auth-context';
 import {useSelector} from 'react-redux';
 
-import {styles} from './poolCard-styles';
+import {styles} from './myContestCard-styles';
 
-const PoolCard = props => {
+const MyContestCard = props => {
   const {contestInfo} = props;
   const {
     id,
@@ -31,6 +33,7 @@ const PoolCard = props => {
     total_allowed_team,
     total_winners,
     category_id,
+    teams_data,
     category_name,
     is_active,
     has_ended,
@@ -41,85 +44,31 @@ const PoolCard = props => {
   const progress = (totalSpots - remainingSpots) / totalSpots;
   const winnerPercentage = (total_winners / total_spots) * 100;
   const [isOpen, setIsOpen] = useState(false);
-  const [joinScreenData, setJoinScreenData] = useState({});
+  const [contestTeam, setContestTeam] = useState([]);
   const navigation = useNavigation<any>();
 
-  const {setContestData} = useAuth();
-
-  const [allTeam, setAllTeam] = useState([]);
-
   const teamReducer = useSelector(state => state.teams);
+  console.log('Team Reducer  : : ', teamReducer?.data);
 
   useEffect(() => {
     if (teamReducer?.data) {
-      setAllTeam(teamReducer?.data || []);
+      console.log('Dta : ', teams_data);
+
+      const result = teamReducer?.data
+        .filter(item =>
+          teams_data.some(team => team.team_index === item.teamindex),
+        ) // Filter objects where index is in a
+        .map(item => item);
+
+      setContestTeam(result || []);
     }
   }, [teamReducer]);
 
-  useEffect(() => {
-    setJoinScreenData({
-      matchId: match_id,
-      maxPoolSize: max_pool_size,
-      totalSpots: total_spots,
-      remainingSpots: remainingSpots,
-      winnerPercentage: winnerPercentage,
-      categoryName: category_name,
-      firstPrice: first_price,
-      currentFee: current_entry_fee,
-      totalTeam: total_allowed_team,
-      progress: progress,
-    });
-  }, []);
-
-  const handleContestData = () => {
-    setContestData({
-      matchId: match_id,
-      maxPoolSize: max_pool_size,
-      totalSpots: total_spots,
-      remainingSpots: remainingSpots,
-      winnerPercentage: winnerPercentage,
-      categoryName: category_name,
-      firstPrice: first_price,
-      currentFee: current_entry_fee,
-      totalTeam: total_allowed_team,
-      progress: progress,
-    });
-  };
-
-  const handleContest = () => {
-    handleContestData();
-    if (allTeam.length > 1) {
-      navigation.navigate('Team', {
-        contestId: id,
-        currentFee: current_entry_fee,
-      });
-    } else if (allTeam.length === 0) {
-      navigation.navigate('BatBallQuestion', {
-        matchId: match_id,
-        contestId: id,
-      });
-    } else if (allTeam.length === 1) {
-      navigation.navigate('Join', {
-        ...joinScreenData,
-        contestId: id,
-        teamId: allTeam[0]?.team_id,
-        isJoin: true,
-      });
-    }
-  };
+  const handleContest = () => {};
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity
-        style={styles.subCard}
-        onPress={() => {
-          handleContestData();
-          navigation.navigate('Join', {
-            ...joinScreenData,
-            isJoin: false,
-            contestId: id,
-          });
-        }}>
+      <TouchableOpacity style={styles.subCard} onPress={() => {}}>
         {/* Pool Type and Discount */}
         <View style={styles.headerRow}>
           <View style={styles.flexRow}>
@@ -131,9 +80,6 @@ const PoolCard = props => {
             <Text style={styles.flexiblePool}>{category_name}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            {entry_fee !== current_entry_fee && (
-              <Text style={styles.strikeThrough}>₹{entry_fee}</Text>
-            )}
             <TouchableOpacity
               onPress={handleContest}
               style={{
@@ -199,9 +145,43 @@ const PoolCard = props => {
           <Text style={styles.leftText}>{total_spots - filled_spots} Left</Text>
           <Text style={styles.totalSpots}>Spots: {total_spots}</Text>
         </View>
+
+        <Divider
+          color={AppColors.palette.osloGrey}
+          style={{marginVertical: 10}}
+        />
+        <TouchableOpacity
+          style={styles.joinedTeamContainer}
+          onPress={() => setIsOpen(!isOpen)}>
+          <Text style={styles.joinedText}>
+            Joined with {teams_data?.length} Teams
+          </Text>
+          <Icon
+            name={isOpen ? 'chevron-up' : 'chevron-down'}
+            color={AppColors.bgColor}
+            size={20}
+          />
+        </TouchableOpacity>
+        <ScrollView horizontal>
+          {teams_data.map(team => (
+            <View style={styles.teamContainer} key={team + 'Team'}>
+              <Text style={styles.team}>{team?.team_index}</Text>
+            </View>
+          ))}
+        </ScrollView>
       </TouchableOpacity>
+      {isOpen && (
+        <ScrollView>
+          {contestTeam.map((item, index) => (
+            <TeamCard
+              teamName={`Team Name ${index + 1}`}
+              playerDetails={item}
+            />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
 
-export default PoolCard;
+export default MyContestCard;

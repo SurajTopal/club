@@ -27,7 +27,6 @@ const PlayerQuestionCard = props => {
   }
 
   const handlePlayerSelection = (info, option) => {
-    console.log('INFO HAIA', player);
 
     const questionInfo = {
       name: player.player_name,

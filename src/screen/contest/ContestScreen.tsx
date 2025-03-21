@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Text, Image, ImageBackground} from 'react-native';
+import {View, FlatList, Text, ImageBackground, Dimensions} from 'react-native';
 import PoolCard from '../../components/PoolCard/PoolCard';
 import {fetchMyContest} from '../../features/contest/userContestSlice';
+import MyContestCard from '../../components/MyContestCard/MyContestCard';
 import {contestFetch} from '../../features/contest/contestSlice';
 import {fetchTeam} from '../../features/teamList/teamListSlice';
 import TeamCard from '../../components/TeamCard/TeamCard';
@@ -9,7 +10,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../../components/Button/Button';
 import Tab from '../../components/Tab/Tab';
-import {AppColors} from '../../theme';
+
+const {height} = Dimensions.get('screen');
 
 import {styles} from './contestScreen-styles';
 
@@ -31,7 +33,7 @@ export default function ContestScreen(props) {
 
   useEffect(() => {
     dispatch(contestFetch(matchId));
-    dispatch(fetchMyContest(matchId));
+    dispatch(fetchMyContest('0f022be8-ba52-4398-b316-992f7920c1ee'));
     dispatch(fetchTeam(matchId));
   }, [matchId]);
 
@@ -52,7 +54,9 @@ export default function ContestScreen(props) {
   }, [teamReducer]);
 
   useEffect(() => {
-    if (myContestReducer?.data?.data) {
+    if (myContestReducer?.data?.data 
+      // && !myContestReducer?.data?.isMatchEnded
+    ) {
       setMyContest(myContestReducer?.data?.data);
     }
   }, [myContestReducer]);
@@ -76,6 +80,7 @@ export default function ContestScreen(props) {
                   <TeamCard
                     teamName={'Team Name' + (index + 1)}
                     playerDetails={item}
+                    isEdit
                     onEdit={() =>
                       navigation.navigate('BatBallQuestion', {matchId: matchId})
                     }
@@ -83,7 +88,6 @@ export default function ContestScreen(props) {
                 );
               }}
             />
-
             <Button
               title="Create Team"
               handleButtonPress={() =>
@@ -95,7 +99,6 @@ export default function ContestScreen(props) {
             />
           </>
         )}
-
         {(activeTab === 'My Contest' || activeTab === 'Contest') && (
           <>
             <FlatList
@@ -104,29 +107,27 @@ export default function ContestScreen(props) {
               showsVerticalScrollIndicator={false}
               keyExtractor={item => item?.id?.toString()}
               ListEmptyComponent={() => (
-                <View
-                  style={{
-                    height: 300,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
+                <View>
+                  <ImageBackground
+                    source={require('../../assets/images/myMatches.jpg')}
                     style={{
-                      fontSize: 16,
-                      fontWeight: '600',
-                      color: AppColors.bgColor,
+                      height: height * 0.7,
+                      width: '100%',
                     }}>
-                    There is no contest
-                  </Text>
+                    <Text style={styles.matchText}>
+                      {activeTab === 'Contest' ? 'All Contest' : 'Join Contest'}{' '}
+                      will show here
+                    </Text>
+                  </ImageBackground>
                 </View>
               )}
-              renderItem={({item, index}) => (
-                <PoolCard
-                  contestInfo={item}
-                  index={index}
-                  isMyContest={activeTab === 'My Contest'}
-                />
-              )}
+              renderItem={({item, index}) => {
+                return activeTab === 'My Contest' ? (
+                  <MyContestCard contestInfo={item} index={index} />
+                ) : (
+                  <PoolCard contestInfo={item} />
+                );
+              }}
               contentContainerStyle={{paddingBottom: 20}}
             />
             {activeTab === 'Contest' && (

@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  Image,
+} from 'react-native';
 import {BottomSheet, Divider, Icon} from 'react-native-elements';
 import {HOW_TO_PLAY} from '../../constant/contants';
 import {AppColors} from '../../theme';
 
 import {styles} from './bottomSheetAccordian-styles';
-import {Image} from 'react-native';
 
 export default function BottomSheetAccordian(props) {
   const {title} = props;
@@ -13,7 +19,7 @@ export default function BottomSheetAccordian(props) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.mainContainer} key={Math.random()}>
       <TouchableOpacity
         style={styles.container}
         onPress={() => setIsVisible(true)}>
@@ -53,8 +59,7 @@ export default function BottomSheetAccordian(props) {
             />
           ) : (
             <>
-              <ScrollView
-                style={{flex: 1}}>
+              <ScrollView style={{flex: 1}}>
                 {HOW_TO_PLAY[title]?.rules?.map((item, index) => (
                   <View key={index} style={{marginBottom: 16}}>
                     <Text

@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 export default function TeamScreen(props) {
   const {
     route: {
-      params: {contestId,},
+      params: {contestId},
     },
   } = props;
 
@@ -30,8 +30,7 @@ export default function TeamScreen(props) {
   }, [teamReducer]);
 
   const handleJoinButton = () => {
-
-console.log("COnested Team ID : ",contestId);
+    console.log('COnested Team ID : ', contestId);
 
     if (contestId) {
       const formatData = {

@@ -129,18 +129,12 @@ const DashboardStack = () => {
         console.log('Message received:', JSON.parse(event.data));
 
         if (event.data) {
-          console.log('Working...', JSON.parse(event.data));
-
           const balanceInfo = JSON.parse(event.data);
           setWalletBalance(
             balanceInfo?.mainAmount + balanceInfo?.winningAmount,
           );
 
-          setTotalBalance(
-            balanceInfo?.mainAmount + balanceInfo?.winningAmount
-          );
-
-          console.log('account balance  ', config?.WALLET_BALANCE);
+          setTotalBalance(balanceInfo?.mainAmount + balanceInfo?.winningAmount);
         }
         // setMessages(prev => [...prev, {text: event.data, type: 'received'}]);
       };
@@ -220,11 +214,34 @@ const DashboardStack = () => {
           ),
         }}
       />
-      <Stack.Screen name="BatBallQuestion" component={BatBallQuestionScreen} />
+      <Stack.Screen name="My Matches" component={MyMatchesScreen} />
+      <Stack.Screen
+        name="BatBallQuestion"
+        component={BatBallQuestionScreen}
+        options={{
+          header: () => (
+            <Header
+              isBackButtonVisible
+              title="Player Selection"
+              isWalletVisible
+              walletBalance={walletBalance}
+            />
+          ),
+        }}
+      />
       <Stack.Screen
         name="Captain"
         component={CaptainScreen}
-        options={{title: 'Select C & VC'}}
+        options={{
+          header: () => (
+            <Header
+              isBackButtonVisible
+              title="Select C & CV"
+              isWalletVisible
+              walletBalance={walletBalance}
+            />
+          ),
+        }}
       />
       <Stack.Screen
         name="Contest"
@@ -235,13 +252,25 @@ const DashboardStack = () => {
               isBackButtonVisible
               title="Contest"
               isWalletVisible
-              setIsVisible={() => {}}
               walletBalance={walletBalance}
             />
           ),
         }}
       />
-      <Stack.Screen name="Team" component={TeamScreen} />
+      <Stack.Screen
+        name="Team"
+        component={TeamScreen}
+        options={{
+          header: () => (
+            <Header
+              isBackButtonVisible
+              title="Team"
+              isWalletVisible
+              walletBalance={walletBalance}
+            />
+          ),
+        }}
+      />
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
       <Stack.Screen
         name="Wallet"
@@ -300,7 +329,16 @@ const AuthStack = () => {
           ),
         }}
       />
-      <Stack.Screen name="OTPVerification" component={OTPVerificationScreen} />
+      <Stack.Screen
+        name="OTPVerification"
+        component={OTPVerificationScreen}
+        options={{
+          headerShown: true,
+          header: () => (
+            <Header title="Verification" isBackButtonVisible={true} />
+          ),
+        }}
+      />
       {/* <Stack.Screen name="Chat" component={ChatScreen} /> */}
     </Stack.Navigator>
   );

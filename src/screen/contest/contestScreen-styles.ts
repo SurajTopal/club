@@ -1,5 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
+
+const {height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   container: {
@@ -18,6 +20,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     bottom: 10,
+  },
+  matchText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: AppColors.bgColor,
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: height * 0.15,
   },
 });
 

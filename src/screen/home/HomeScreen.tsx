@@ -5,6 +5,7 @@ import BottomSheetComponent from '../../components/MoreAction/MoreAction';
 import MyMatchCard from '../../components/MyMatchesCard/MyMatchesCard';
 import {liveMatchFetch} from '../../features/matches/liveMatchSlice';
 import {fetchMyMatches} from '../../features/matches/myMatchesSlice';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../components/Header/Header';
 import {useAuth} from '../../auth-context';
@@ -20,6 +21,7 @@ export default function HomeScreen() {
   const [myMatchestList, myMatchesList] = useState([]);
 
   const {totalBalance} = useAuth();
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
 
@@ -29,6 +31,8 @@ export default function HomeScreen() {
   }, []);
 
   const myMatchReducer = useSelector(state => state.myMatches);
+
+  console.log('Navitaion : ', navigation.getParent());
 
   useEffect(() => {
     if (myMatchReducer?.data?.data) {
@@ -61,7 +65,9 @@ export default function HomeScreen() {
         </TouchableOpacity>
         <View style={styles.myMatchesContainer}>
           <Text style={styles.title}>My Matches</Text>
-          <TouchableOpacity style={styles.seeAllContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.seeAllContainer}
+            onPress={() => navigation.getParent()?.navigate('My Matches')}>
             <Text style={styles.seeAllText}>See all</Text>
             <Icon
               name="chevron-right"

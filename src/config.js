@@ -1,3 +1,3 @@
-import {WALLET_BALANCE, IS_SHEET_VISIBLE} from '@env';
+import {WALLET_BALANCE} from '@env';
 
-export default {WALLET_BALANCE, IS_SHEET_VISIBLE};
+export default {WALLET_BALANCE};

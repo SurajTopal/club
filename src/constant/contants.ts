@@ -127,3 +127,5 @@ export const HOW_TO_PLAY = {
     ],
   },
 };
+
+export const HIT_SLOP_FIVE = {left: 5, right: 5, bottom: 5, top: 5};

@@ -2,18 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import {CheckBox} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
 import {AppColors} from '../../theme';
 
 import {styles} from './teamCard-styles';
-import {CheckBox} from 'react-native-elements';
 
 interface ITeamCard {
   teamName: string;
   playerDetails: any;
-  onEdit: () => void;
+  onEdit?: () => void;
   isTeamSelection?: boolean;
   selectedTeamIds: Array<string>;
   setSelectedTeamIds: (selectedTeamIds: Array<string>) => void;
+  isEdit?: boolean;
 }
 
 const TeamCard = (props: ITeamCard) => {
@@ -24,6 +25,7 @@ const TeamCard = (props: ITeamCard) => {
     setSelectedTeamIds,
     selectedTeamIds,
     isTeamSelection = false,
+    isEdit = false,
   } = props;
 
   const [isSelected, setIsSelected] = useState(false);
@@ -65,8 +67,6 @@ const TeamCard = (props: ITeamCard) => {
     );
   };
 
-  console.log('Team Details :', playerDetails);
-
   const handleCheck = () => {
     if (
       selectedTeamIds?.length &&
@@ -93,7 +93,7 @@ const TeamCard = (props: ITeamCard) => {
             uncheckedColor={AppColors.bgColor}
             checkedColor={AppColors.palette.lightLimeGreen}
           />
-        ) : (
+        ) : isEdit ? (
           <TouchableOpacity
             onPress={onEdit}
             style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -106,7 +106,7 @@ const TeamCard = (props: ITeamCard) => {
               Edit
             </Text>
           </TouchableOpacity>
-        )}
+        ) : null}
       </View>
 
       {/* Player List */}

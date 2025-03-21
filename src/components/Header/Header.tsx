@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {HIT_SLOP_FIVE} from '../../constant/contants';
 import {Icon} from 'react-native-elements';
 import {AppColors} from '../../theme';
 
@@ -65,9 +66,9 @@ export default function Header(props: IHeader) {
           </TouchableOpacity>
           {title === 'Home' && (
             <TouchableOpacity
+              hitSlop={HIT_SLOP_FIVE}
               onPress={() => {
-              if(setIsVisible)
-                setIsVisible(true);
+                if (setIsVisible) setIsVisible(true);
               }}>
               <Icon
                 name="dots-three-vertical"

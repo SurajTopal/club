@@ -46,8 +46,8 @@ const JoinScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(winningListFetch('a88a600f-e5c9-4d1e-af9d-443fffc7a712'));
-    dispatch(fetchLeaderBoard());
+    dispatch(winningListFetch(contestId));
+    dispatch(fetchLeaderBoard(contestId));
   }, []);
 
   const winningReducer = useSelector(state => state.winning);
