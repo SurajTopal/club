@@ -34,6 +34,7 @@ export default function DashBoardScreen() {
       <FlatList
         data={matchList}
         showsVerticalScrollIndicator={false}
+        removeClippedSubviews={false}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>There is no Live Matches</Text>

@@ -17,10 +17,13 @@ const MatchCard = (props: IMatchCard) => {
 
   const navigation = useNavigation();
 
+  const handleCardPress = () => {
+    if (isMyMatch) navigation.navigate('My Contest', {matchId: match?.match_id});
+    else navigation.navigate('Contest', {matchId: match.id});
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.cardContainer}
-      onPress={() => navigation.navigate('Contest', {matchId: match.id})}>
+    <TouchableOpacity style={styles.cardContainer} onPress={handleCardPress}>
       <View style={styles.topRow}>
         <Text style={styles.timer}>
           {formatEventDate(match?.start_time, match?.end_time)}
@@ -80,10 +83,12 @@ const MatchCard = (props: IMatchCard) => {
           </View>
         </View>
 
-        {/* <View style={styles.prizeContainer}>
-          <Text style={styles.megaText}>MEGA</Text>
-          <Text style={styles.prizeText}>₹2 LAKHS</Text>
-        </View> */}
+        {match?.amount >= 1 && (
+          <View style={styles.prizeContainer}>
+            <Text style={styles.megaText}>You Won</Text>
+            <Text style={styles.prizeText}>₹{match?.amount}</Text>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

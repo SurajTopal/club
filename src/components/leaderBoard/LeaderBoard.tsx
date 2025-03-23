@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {styles} from './leaderBoard-styles';
-import { AppColors } from '../../theme';
+import {AppColors} from '../../theme';
 
 const TEAM = [
   {
@@ -125,7 +125,8 @@ const TEAM = [
   },
 ];
 
-export default function LeaderBoard() {
+export default function LeaderBoard(props) {
+  const {leaderboard} = props;
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -133,23 +134,22 @@ export default function LeaderBoard() {
         <Text style={styles.title}>Points</Text>
         <Text style={styles.title}>Rank</Text>
       </View>
-
       <FlatList
-        data={TEAM}
+        data={leaderboard}
+        removeClippedSubviews={false}
         keyExtractor={(item, index) => 'points' + index.toString()}
         renderItem={({item, index}) => (
           <View style={styles.cardContainer}>
             <View style={styles.leftCardContainer}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.text} numberOfLines={1}>
-                  {item?.username}
+                  {item?.user_name}
                 </Text>
-                <View
-                  style={styles.teamContainer}>
-                  <Text style={styles.text}>{item.team}</Text>
+                <View style={styles.teamContainer}>
+                  <Text style={styles.text}>{item.teamindex}</Text>
                 </View>
               </View>
-              <Text style={styles.text}>WON {item.won}</Text>
+              <Text style={styles.text}>WON {item.amount}</Text>
             </View>
             <Text style={styles.text}>{item.points}</Text>
             <Text style={styles.text}>{item.rank} --</Text>

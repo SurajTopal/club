@@ -45,6 +45,7 @@ export default function BottomSheetAccordian(props) {
           {title !== 'createYourTeam' && title !== 'scoringPoints' ? (
             <FlatList
               data={HOW_TO_PLAY[title]?.points}
+              removeClippedSubviews={false}
               keyExtractor={(item, index) => 'Point' + index.toString()}
               renderItem={({item}) => (
                 <View style={styles.titleContainer}>

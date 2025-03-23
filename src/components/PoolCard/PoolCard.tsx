@@ -40,7 +40,6 @@ const PoolCard = props => {
   const remainingSpots = totalSpots - filled_spots;
   const progress = (totalSpots - remainingSpots) / totalSpots;
   const winnerPercentage = (total_winners / total_spots) * 100;
-  const [isOpen, setIsOpen] = useState(false);
   const [joinScreenData, setJoinScreenData] = useState({});
   const navigation = useNavigation<any>();
 
@@ -114,11 +113,21 @@ const PoolCard = props => {
         style={styles.subCard}
         onPress={() => {
           handleContestData();
-          navigation.navigate('Join', {
-            ...joinScreenData,
-            isJoin: false,
-            contestId: id,
-          });
+
+          if (allTeam?.length === 1) {
+            navigation.navigate('Join', {
+              ...joinScreenData,
+              contestId: id,
+              teamId: allTeam[0]?.team_id,
+              isJoin: true,
+            });
+          } else {
+            navigation.navigate('Join', {
+              ...joinScreenData,
+              isJoin: false,
+              contestId: id,
+            });
+          }
         }}>
         {/* Pool Type and Discount */}
         <View style={styles.headerRow}>

@@ -33,7 +33,7 @@ export default function ContestScreen(props) {
 
   useEffect(() => {
     dispatch(contestFetch(matchId));
-    dispatch(fetchMyContest('0f022be8-ba52-4398-b316-992f7920c1ee'));
+    dispatch(fetchMyContest(matchId));
     dispatch(fetchTeam(matchId));
   }, [matchId]);
 
@@ -53,10 +53,9 @@ export default function ContestScreen(props) {
     }
   }, [teamReducer]);
 
+
   useEffect(() => {
-    if (myContestReducer?.data?.data 
-      // && !myContestReducer?.data?.isMatchEnded
-    ) {
+    if (myContestReducer?.data?.data && !myContestReducer?.data?.isMatchEnded) {
       setMyContest(myContestReducer?.data?.data);
     }
   }, [myContestReducer]);

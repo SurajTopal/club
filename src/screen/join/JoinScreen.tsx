@@ -39,6 +39,7 @@ const JoinScreen = props => {
   const [selectedTab, setSelectedTab] = useState('Winnings');
   const [winningData, setWinningData] = useState([]);
   const [leaderBoardData, setLeaderBoardData] = useState([]);
+  const [allTeam, setAllTeam] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -52,6 +53,7 @@ const JoinScreen = props => {
 
   const winningReducer = useSelector(state => state.winning);
   const leaderBoardReducer = useSelector(state => state.leaderBoard);
+  const allTeamReducer = useSelector(state => state.teams);
 
   useEffect(() => {
     if (winningReducer?.data) {
@@ -65,11 +67,30 @@ const JoinScreen = props => {
     }
   }, [leaderBoardReducer]);
 
+  useEffect(() => {
+    if (allTeamReducer?.data) {
+      setAllTeam(allTeamReducer?.data);
+    }
+  }, [allTeamReducer]);
+
+ 
+
   const handleJoin = () => {
     if (contestId && teamId && isJoin) {
       setIsVisible(true);
     } else {
-      navigation.navigate('Team', {contestId: contestId});
+      if (allTeam.length > 1) {
+        navigation.navigate('Team', {
+          contestId: contestId,
+          currentFee: currentFee,
+        });
+      } else if (allTeam.length === 0) {
+        navigation.navigate('BatBallQuestion', {
+          matchId: matchId,
+          contestId: contestId,
+        });
+      }
+      // navigation.navigate('Team', {contestId: contestId});
     }
   };
 

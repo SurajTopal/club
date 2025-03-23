@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {BottomSheet, Icon} from 'react-native-elements';
 import {AppColors} from '../../theme';
@@ -8,7 +8,7 @@ import {useAuth} from '../../auth-context';
 import {styles} from './joinBottomSheet-styles';
 
 const ContestBottomSheet = props => {
-  const {isVisible, setIsVisible, handleJoinButton} = props;
+  const {isVisible, setIsVisible, handleJoinButton, numberOfTeam = 1} = props;
 
   const {contestData, totalBalance} = useAuth();
 
@@ -26,17 +26,23 @@ const ContestBottomSheet = props => {
         }}>
         <View>
           <Text style={styles.title}>Join contest</Text>
-          <Text style={styles.balance}>Amount Unutilised + Winnings = ₹{totalBalance}</Text>
+          <Text style={styles.balance}>
+            Amount Unutilised + Winnings = ₹{totalBalance}
+          </Text>
         </View>
       </View>
       <View style={styles.entryRow}>
         <Text style={styles.label}>Entry Fee</Text>
-        <Text style={styles.value}>₹{contestData?.currentFee}</Text>
+        <Text style={styles.value}>
+          ₹{contestData?.currentFee * numberOfTeam}
+        </Text>
       </View>
 
       <View style={styles.entryRow}>
         <Text style={styles.label}>To Pay</Text>
-        <Text style={styles.value}>₹{contestData?.currentFee}</Text>
+        <Text style={styles.value}>
+          ₹{contestData?.currentFee * numberOfTeam}
+        </Text>
       </View>
 
       <Text style={styles.terms}>

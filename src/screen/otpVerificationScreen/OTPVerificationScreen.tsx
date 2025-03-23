@@ -15,12 +15,11 @@ import {AppColors} from '../../theme';
 const height = Dimensions.get('window').height;
 
 const OTPVerificationScreen = props => {
-  // const {
-  //   route: {
-  //     params: {mobile},
-  //   },
-  // } = props;
-  const mobile = '7834738437483';
+  const {
+    route: {
+      params: {mobile},
+    },
+  } = props;
 
   const [enteredOtp, setEnteredOtp] = useState('');
   const {signIn} = useAuth();
@@ -86,15 +85,17 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    width: '70%',
+    fontSize: 16,
+    fontWeight: 'bold',
     backgroundColor: 'rgba(255,255,255,0.2)',
     borderRadius: 10,
     marginBottom: 20,
     marginHorizontal: 20,
   },
   otpButton: {
-    width: '100%',
-    backgroundColor: 'white',
+    width: '40%',
+    backgroundColor: AppColors.palette.lightLimeGreen,
     padding: 15,
     borderRadius: 10,
     marginHorizontal: 20,

@@ -10,6 +10,7 @@ interface Styles {
   seeAllContainer: ViewStyle;
   seeAllText: TextStyle;
   title: TextStyle;
+  matchText: TextStyle;
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -40,6 +41,14 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 16,
     fontWeight: '600',
     color: AppColors.bgColor,
+  },
+  matchText: {
+    color: AppColors.bgColor,
+    fontWeight: '600',
+    fontSize: 16,
+    bottom: 5,
+    position: 'absolute',
+    alignSelf: 'center',
   },
 });
 

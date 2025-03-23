@@ -92,7 +92,8 @@ const LoginScreen = () => {
 
   const handleLogin = () => {
     if (phoneNumber.length === 10) {
-      sendOTP();
+      if (isCertifyChecked) sendOTP();
+      else Toast.show({text1: 'Please check T&C.', type: 'info'});
     } else {
       Alert.alert(
         'Invalid Number',
@@ -132,16 +133,13 @@ const LoginScreen = () => {
           />
           <Text style={styles.text}> I certify that I am above 18 yeras</Text>
         </View>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.loginText}>Send OTP</Text>
-        </TouchableOpacity>
-
         <Button
           disabled={phoneNumber.length !== 10}
           buttonStyle={[
             styles.loginButton,
             phoneNumber.length !== 10 && styles.disabledButton,
           ]}
+          handleButtonPress={handleLogin}
           title="Send OTP"
         />
         <Text style={styles.text}>By Continue, I agree to aceept T&C.</Text>

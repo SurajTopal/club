@@ -83,6 +83,7 @@ export default function TeamScreen(props) {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         handleJoinButton={handleJoinButton}
+        numberOfTeam={selectedTeamIds?.length}
       />
     </View>
   );

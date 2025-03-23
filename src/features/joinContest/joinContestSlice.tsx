@@ -40,7 +40,7 @@ export const joinContest = createAsyncThunk<
     }
   } catch (error: any) {
     Toast.show({text1: error.response?.data.error, type: 'error'});
-    console.log('ERORR ROR ', error.response);
+    console.log('ERORR ROR Join Contest--', error.response);
     const errorMessage =
       error.response?.data?.message || error.message || 'Something went wrong';
     console.log('\n\nError : ', errorMessage);

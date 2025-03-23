@@ -10,16 +10,15 @@ import {
 import MatchCard from '../../components/UpcomingMatchesCard/UpcomingMatchesCard';
 import {fetchMyMatches} from '../../features/matches/myMatchesSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import moment from 'moment';
 
-const {width, height} = Dimensions.get('screen');
+const {height} = Dimensions.get('screen');
 
 import {styles} from './myMatchesScreen-styles';
 
 export default function MyMatchesScreen() {
-  const [activeTab, setActiveTab] = useState('Upcoming');
+  const [activeTab, setActiveTab] = useState('Active Matches');
   const [tabData, setTabData] = useState([]);
-  const tabOptions = ['Upcoming', 'Live', 'Completed'];
+  const tabOptions = ['Active Matches', 'Completed Matches'];
 
   const [myMatchestList, myMatchesList] = useState([]);
 
@@ -44,22 +43,11 @@ export default function MyMatchesScreen() {
   }, [activeTab, myMatchReducer]);
 
   const filterMatches = tab => {
-    const now = moment(); // Current date and time
-
     let filteredMatches = myMatchestList?.filter(match => {
-      const startTime = moment(match.start_time);
-      const endTime = moment(match.end_time);
-
-      if (tab === 'Upcoming') {
-        return startTime.isAfter(now, 'minute'); // Only future matches
-      } else if (tab === 'Live') {
-        return (
-          startTime.isSameOrBefore(now, 'minute') &&
-          endTime.isAfter(now, 'minute')
-        ); // Ongoing matches
-      } else if (tab === 'Completed') {
-        return endTime.isBefore(now, 'minute'); // Past matches
+      if (tab === 'Active Matches') {
+        return match?.is_settled === false; 
       }
+      return match?.is_settled === true;
     });
 
     setTabData(filteredMatches);

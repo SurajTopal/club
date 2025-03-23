@@ -6,7 +6,6 @@ import Slider from '@react-native-community/slider';
 import {Divider} from 'react-native-elements';
 import TeamCard from '../TeamCard/TeamCard';
 import {AppColors} from '../../theme';
-import {useAuth} from '../../auth-context';
 import {useSelector} from 'react-redux';
 
 import {styles} from './myContestCard-styles';
@@ -33,10 +32,11 @@ const MyContestCard = props => {
     total_allowed_team,
     total_winners,
     category_id,
-    teams_data,
+    team_indexes,
     category_name,
     is_active,
     has_ended,
+    contest_id,
   } = contestInfo;
 
   const totalSpots = total_spots;
@@ -45,18 +45,16 @@ const MyContestCard = props => {
   const winnerPercentage = (total_winners / total_spots) * 100;
   const [isOpen, setIsOpen] = useState(false);
   const [contestTeam, setContestTeam] = useState([]);
-  const navigation = useNavigation<any>();
 
   const teamReducer = useSelector(state => state.teams);
-  console.log('Team Reducer  : : ', teamReducer?.data);
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     if (teamReducer?.data) {
-      console.log('Dta : ', teams_data);
-
       const result = teamReducer?.data
         .filter(item =>
-          teams_data.some(team => team.team_index === item.teamindex),
+          team_indexes?.some(teamIndex => teamIndex === item.teamindex),
         ) // Filter objects where index is in a
         .map(item => item);
 
@@ -64,11 +62,13 @@ const MyContestCard = props => {
     }
   }, [teamReducer]);
 
-  const handleContest = () => {};
+  const handleContest = () => {
+    navigation.navigate('WinningLeaderboard', {contestId: contest_id});
+  };
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity style={styles.subCard} onPress={() => {}}>
+      <TouchableOpacity style={styles.subCard} onPress={handleContest}>
         {/* Pool Type and Discount */}
         <View style={styles.headerRow}>
           <View style={styles.flexRow}>
@@ -80,8 +80,7 @@ const MyContestCard = props => {
             <Text style={styles.flexiblePool}>{category_name}</Text>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={handleContest}
+            <View
               style={{
                 paddingVertical: 5,
                 paddingHorizontal: 15,
@@ -93,7 +92,7 @@ const MyContestCard = props => {
               <Text style={styles.discount}>
                 ₹{current_entry_fee || entry_fee}
               </Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -154,7 +153,7 @@ const MyContestCard = props => {
           style={styles.joinedTeamContainer}
           onPress={() => setIsOpen(!isOpen)}>
           <Text style={styles.joinedText}>
-            Joined with {teams_data?.length} Teams
+            Joined with {team_indexes?.length} Teams
           </Text>
           <Icon
             name={isOpen ? 'chevron-up' : 'chevron-down'}
@@ -163,16 +162,16 @@ const MyContestCard = props => {
           />
         </TouchableOpacity>
         <ScrollView horizontal>
-          {teams_data.map(team => (
+          {team_indexes?.map(team => (
             <View style={styles.teamContainer} key={team + 'Team'}>
-              <Text style={styles.team}>{team?.team_index}</Text>
+              <Text style={styles.team}>{team}</Text>
             </View>
           ))}
         </ScrollView>
       </TouchableOpacity>
       {isOpen && (
         <ScrollView>
-          {contestTeam.map((item, index) => (
+          {contestTeam?.map((item, index) => (
             <TeamCard
               teamName={`Team Name ${index + 1}`}
               playerDetails={item}

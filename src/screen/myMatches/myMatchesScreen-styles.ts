@@ -58,6 +58,7 @@ const styles = StyleSheet.create<Styles>({
     position: 'absolute',
     alignSelf: 'center',
     bottom: height * 0.15,
+    textAlign: 'center',
   },
 });
 

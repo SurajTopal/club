@@ -2,6 +2,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import {createContext, useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import createApi from './redux/api';
 
 type AuthContextType = {
   isLoading: boolean;
@@ -14,6 +15,7 @@ type AuthContextType = {
   contestData: any;
   totalBalance: Number;
   setTotalBalance: (totalBalance: any) => void;
+  api: any;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -104,6 +106,8 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     }
   };
 
+  const api = createApi(signOut);
+
   return (
     <AuthContext.Provider
       value={{
@@ -117,6 +121,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         contestData,
         setTotalBalance,
         totalBalance,
+        api,
       }}>
       {children}
     </AuthContext.Provider>

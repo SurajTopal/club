@@ -1,7 +1,14 @@
 import {StyleSheet} from 'react-native';
-import { AppColors } from '../../theme';
+import {AppColors} from '../../theme';
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: AppColors.palette.black,
+  },
+  subContainer: {
+    padding: 15,
+  },
   winningRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

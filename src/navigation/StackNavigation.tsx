@@ -31,6 +31,8 @@ import CustomDrawer from './Drawer';
 import GetStartedScreen from '../screen/getStarted/GetStartedScreen';
 import TeamScreen from '../screen/team/TeamScreen';
 import config from '../config';
+import MyContestScreen from '../screen/myContest/MyContestScreen';
+import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeaderBoardScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -201,6 +203,13 @@ const DashboardStack = () => {
         }}
       />
       <Stack.Screen
+        name="WinningLeaderboard"
+        component={WinningLeaderBoardScreen}
+        options={{
+          header: () => <Header isBackButtonVisible title="Contest Status" />,
+        }}
+      />
+      <Stack.Screen
         name="Join"
         component={JoinScreen}
         options={{
@@ -214,7 +223,7 @@ const DashboardStack = () => {
           ),
         }}
       />
-      <Stack.Screen name="My Matches" component={MyMatchesScreen} />
+      {/* <Stack.Screen name="My Matches" component={MyMatchesScreen} /> */}
       <Stack.Screen
         name="BatBallQuestion"
         component={BatBallQuestionScreen}
@@ -283,6 +292,37 @@ const DashboardStack = () => {
   );
 };
 
+const MyMatchesStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="My Matches"
+        component={MyMatchesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="My Contest"
+        component={MyContestScreen}
+        options={{
+          headerShown: true,
+          header: () => (
+            <Header title="My Contest" isBackButtonVisible={true} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="WinningLeaderboard"
+        component={WinningLeaderBoardScreen}
+        options={{
+          header: () => <Header isBackButtonVisible title="Contest Status" />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 function MyTabs() {
   const getTabBarVisibility = route => {
     const routeName = route.state?.routes?.[route.state.index]?.name ?? '';
@@ -308,7 +348,7 @@ function MyTabs() {
           },
         })}
       />
-      <Stack.Screen name="My Matches" component={MyMatchesScreen} />
+      <Stack.Screen name="My Matches" component={MyMatchesStack} />
       <Stack.Screen name="How to Play" component={HowToPlayScreen} />
       {/* <Tab.Screen name="Leaderboard" component={Leaderboard} /> */}
     </Tab.Navigator>

@@ -68,6 +68,7 @@ const History = props => {
             <FlatList
               data={transaction}
               keyExtractor={item => item.TransactionId}
+              removeClippedSubviews={false}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
             />

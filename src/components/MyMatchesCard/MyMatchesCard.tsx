@@ -5,10 +5,9 @@ import {styles} from './myMatchesCard-styles';
 import {getMatchStatus} from '../../utility';
 
 const MyMatchCard = props => {
-  const {team1_sname, team2_sname, start_time, end_time} = props;
+  const {team1_sname, team2_sname, start_time, end_time, is_settled} = props;
 
-
-  const {matchStatus, time} = getMatchStatus(start_time, end_time);
+  const {time} = getMatchStatus(start_time, end_time);
 
   return (
     <TouchableOpacity style={styles.card}>
@@ -31,18 +30,14 @@ const MyMatchCard = props => {
         </View>
         <View style={styles.infoRow}>
           <Text style={[styles.dateTime, {marginBottom: 5}]}>
-            {matchStatus}
+            {is_settled ? 'Completed' : 'Active'}
           </Text>
           <Text style={styles.dateTime}>{time}</Text>
         </View>
       </View>
       <View style={styles.footerContainer}>
         <Text style={styles.footerText}>
-          {matchStatus === 'Live'
-            ? 'Live'
-            : matchStatus === 'Completed'
-            ? 'Well Played'
-            : matchStatus}
+          {is_settled ? 'Completed' : 'Active'}
         </Text>
       </View>
     </TouchableOpacity>

@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   optionButton: {
     width: '48%',
     alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 0.5,
     borderColor: AppColors.palette.osloGrey,
     paddingVertical: 15,
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   optionText: {
-    marginLeft: 10,
     fontSize: 16,
     marginTop: 10,
     color: 'white',
