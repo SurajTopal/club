@@ -1,23 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
-import axios from 'axios';
+import createApi from '../../redux/api';
 
 export const playerQuestionFetch = createAsyncThunk(
   'playerQuestion/playerQuestionFetch',
-  async (matchId, thunkAPI) => {
+  async ({matchId,signOut}, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      const response = await axios.get(
-        `http://20.40.40.110:9117/match/${matchId}/players`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
+         
+     if (!token) {
+       return thunkAPI.rejectWithValue('No auth token found');
+     }
 
-      console.log("QURSTION api : ",response);
+     const api = createApi(signOut); 
+
+     api.defaults.headers.common['Authorization'] = token;
+
+     const response = await api.get(`/match/${matchId}/players`);
 
       if (response.status === 200) {
         return response.data;

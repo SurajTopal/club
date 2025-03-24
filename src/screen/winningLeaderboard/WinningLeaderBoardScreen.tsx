@@ -3,11 +3,12 @@ import {View, Text, FlatList} from 'react-native';
 import {Image} from 'react-native-elements';
 import {winningListFetch} from '../../features/winningList/winningSlice';
 import {fetchLeaderBoard} from '../../features/leaderBoard/leaderBoardSlice';
+import LeaderBoard from '../../components/leaderBoard/LeaderBoard';
 import {useDispatch, useSelector} from 'react-redux';
 import Tab from '../../components/Tab/Tab';
+import {useAuth} from '../../auth-context';
 
 import {styles} from './winningLeaderBoardScreen-styles';
-import LeaderBoard from '../../components/leaderBoard/LeaderBoard';
 
 export default function WinningLeaderBoardScreen(props) {
   const {
@@ -23,16 +24,15 @@ export default function WinningLeaderBoardScreen(props) {
   const [isContestEnded, setIsContestEnded] = useState(false);
 
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   useEffect(() => {
-    dispatch(winningListFetch(contestId));
-    dispatch(fetchLeaderBoard(contestId));
+    dispatch(winningListFetch({contestId, signOut}));
+    dispatch(fetchLeaderBoard({contestId, signOut}));
   }, []);
 
   const winningReducer = useSelector(state => state.winning);
   const leaderBoardReducer = useSelector(state => state.leaderBoard);
-
-  console.log('LeaderBoard : ; ; ', leaderBoardReducer);
 
   useEffect(() => {
     if (winningReducer?.data) {

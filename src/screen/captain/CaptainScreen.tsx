@@ -23,6 +23,7 @@ export default function CaptainScreen(props) {
   const navigation = useNavigation<any>();
 
   const {contestData} = useAuth();
+  const {signOut} = useAuth();
 
   useEffect(() => {
     if (
@@ -45,7 +46,6 @@ export default function CaptainScreen(props) {
     if (isSelected) {
       const formatData = {
         match_id: matchId,
-        user_id: '123e4567-e89b-12d3-a456-426614174001',
         captain_id: captainViceCaptain?.captain?.playerId,
         vice_captain_id: captainViceCaptain?.viceCaptain?.playerId,
         user_responses: [...userReponse],
@@ -53,7 +53,7 @@ export default function CaptainScreen(props) {
 
       if (contestId)
         dispatch(
-          createTeam({formatData, navigation, isNavigation: false}),
+          createTeam({formatData, navigation, isNavigation: false, signOut}),
         ).then(response => {
           const teamId = response?.payload?.data?.user_team_id;
           if (teamId) {
@@ -65,7 +65,10 @@ export default function CaptainScreen(props) {
             });
           }
         });
-      else dispatch(createTeam({formatData, navigation, isNavigation: true}));
+      else
+        dispatch(
+          createTeam({formatData, navigation, isNavigation: true, signOut}),
+        );
     }
   };
 

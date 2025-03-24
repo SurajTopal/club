@@ -4,8 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchTransaction = createAsyncThunk(
   'wallet/fetchTransaction',
-  async (_, thunkAPI) => {
-   
+  async ({signOut}, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
 
@@ -18,6 +17,10 @@ export const fetchTransaction = createAsyncThunk(
         },
       );
 
+      if (response.status === 401) {
+        signOut();
+      }
+
       if (response.status === 200) {
         console.log('History : ', response);
         return response.data;
@@ -26,7 +29,6 @@ export const fetchTransaction = createAsyncThunk(
           `Unexpected response status: ${response.status}`,
         );
       }
-
     } catch (error) {
       console.log('error in fetch transaction ', error);
       const errorMessage =

@@ -23,7 +23,6 @@ const LoginScreen = () => {
   const [isCertifyChecked, setIsCertifyChecked] = useState(false);
 
   const navigation = useNavigation<any>();
-
   // Add this function to request SMS permissions
   // const requestSMSPermission = async () => {
   //   if (Platform.OS === 'android') {
@@ -68,7 +67,7 @@ const LoginScreen = () => {
   const sendOTP = async () => {
     try {
       const response = await axios.post('http://20.40.40.110:9111/login', {
-        phone: phoneNumber,
+        phone: phoneNumber.trim(),
       });
 
       if (response.status === 200) {
@@ -82,10 +81,9 @@ const LoginScreen = () => {
         });
       }
     } catch (error) {
-      console.log('Error : ', error);
       Toast.show({
-        type: 'info',
-        text2: 'Invalid Phone Number !! ',
+        type: 'error',
+        text2: error?.response?.data?.message,
       });
     }
   };
@@ -95,10 +93,10 @@ const LoginScreen = () => {
       if (isCertifyChecked) sendOTP();
       else Toast.show({text1: 'Please check T&C.', type: 'info'});
     } else {
-      Alert.alert(
-        'Invalid Number',
-        'Please enter a valid 10-digit mobile number',
-      );
+      Toast.show({
+        text1: 'Please enter a valid 10-digit mobile number',
+        type: 'error',
+      });
     }
   };
 

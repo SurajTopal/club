@@ -1,22 +1,24 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
+import createApi from '../../redux/api';
 
 export const fetchLeaderBoard = createAsyncThunk(
   'leaderboard/fetchLeaderBoard',
-  async (contestId, thunkAPI) => {
+  async ({contestId, signOut}, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      const response = await axios.get(
-        `http://20.40.40.110:9117/leaderboard/getLeaderboard?contestId=${contestId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
 
-      console.log('Response : leaderBoard ', response);
+      if (!token) {
+        return thunkAPI.rejectWithValue('No auth token found');
+      }
+
+      const api = createApi(signOut); // ✅ Create an Axios instance
+
+      api.defaults.headers.common['Authorization'] = token; // ✅ Correctly set the token
+
+      const response = await api.get(
+        `/leaderboard/getLeaderboard?contestId=${contestId}`,
+      );
 
       if (response.status === 200) {
         return response.data;

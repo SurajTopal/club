@@ -10,6 +10,7 @@ import {
 import MatchCard from '../../components/UpcomingMatchesCard/UpcomingMatchesCard';
 import {fetchMyMatches} from '../../features/matches/myMatchesSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {useAuth} from '../../auth-context';
 
 const {height} = Dimensions.get('screen');
 
@@ -23,9 +24,10 @@ export default function MyMatchesScreen() {
   const [myMatchestList, myMatchesList] = useState([]);
 
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   useEffect(() => {
-    dispatch(fetchMyMatches());
+    dispatch(fetchMyMatches(signOut));
   }, []);
 
   const myMatchReducer = useSelector(state => state.myMatches);
@@ -45,7 +47,7 @@ export default function MyMatchesScreen() {
   const filterMatches = tab => {
     let filteredMatches = myMatchestList?.filter(match => {
       if (tab === 'Active Matches') {
-        return match?.is_settled === false; 
+        return match?.is_settled === false;
       }
       return match?.is_settled === true;
     });

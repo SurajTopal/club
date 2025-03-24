@@ -5,14 +5,13 @@ import Toast from 'react-native-toast-message';
 
 export const addMoney = createAsyncThunk(
   'wallet/addMoney',
-  async (addMoneyDetails, thunkAPI) => {
+  async ({amountDetails, signOut}, thunkAPI) => {
     const token = await AsyncStorage.getItem('authToken');
-    console.log('Token : ', token);
-
+  
     try {
       const response = await axios.post(
         `http://20.40.40.110:8090/add-money`,
-        addMoneyDetails,
+        amountDetails,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -21,9 +20,11 @@ export const addMoney = createAsyncThunk(
         },
       );
 
-      if (response.status === 200) {
-        console.log('RESPONSE BALQNCE : ', response);
+      if (response.status === 401) {
+        signOut();
+      }
 
+      if (response.status === 200) {
         Toast.show({
           text1: 'Money added successfully!',
           type: 'success',

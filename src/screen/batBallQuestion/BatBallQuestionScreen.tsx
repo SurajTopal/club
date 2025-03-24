@@ -5,6 +5,7 @@ import {playerQuestionFetch} from '../../features/playerQuestion/playerQuestionS
 import PlayerBottomSheet from '../../components/PlayerBottomSheet/PlayerBottomSheet';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useAuth} from '../../auth-context';
 import {AppColors} from '../../theme';
 
 import {styles} from './batBallQuestionScreen-styles';
@@ -22,10 +23,11 @@ const BatBallQuestionScreen = props => {
 
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   // Fetch player questions on mount
   useEffect(() => {
-    dispatch(playerQuestionFetch(matchId));
+    dispatch(playerQuestionFetch(matchId, signOut));
   }, [dispatch, matchId]);
 
   const playerQuestionReducer = useSelector(state => state?.playerQuestion);

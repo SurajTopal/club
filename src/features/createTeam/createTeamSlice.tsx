@@ -10,7 +10,7 @@ export const createTeam = createAsyncThunk<
   {rejectValue: string} // Rejection type
 >(
   'teamCreation/createTeam',
-  async ({formatData, navigation, isNavigation = false}, thunkAPI) => {
+  async ({formatData, navigation, isNavigation = false, signOut}, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
 
@@ -25,7 +25,9 @@ export const createTeam = createAsyncThunk<
         },
       );
 
-      console.log('team API ', response);
+      if (response?.status === 401) {
+        signOut();
+      }
 
       if (response.status === 201) {
         Toast.show({

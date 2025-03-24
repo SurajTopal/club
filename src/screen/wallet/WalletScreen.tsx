@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import React, {useEffect, useState} from 'react';
 import AddMoneyModal from './AddMoneyModal';
 import {Icon} from 'react-native-elements';
+import {useAuth} from '../../auth-context';
 
 import {styles} from './walletScreen-styles';
 
@@ -15,10 +16,11 @@ export default function WalletScreen() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
 
+  const {signOut} = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchWalletBalance());
+    dispatch(fetchWalletBalance(signOut));
   }, []);
 
   const fetchBalance = useSelector(state => state.walletBalance);

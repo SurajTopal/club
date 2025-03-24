@@ -10,6 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../../components/Button/Button';
 import Tab from '../../components/Tab/Tab';
+import {useAuth} from '../../auth-context';
 
 const {height} = Dimensions.get('screen');
 
@@ -28,13 +29,13 @@ export default function ContestScreen(props) {
   const [activeTab, setActiveTab] = useState('Contest');
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  const {signOut} = useAuth();
   const tabOption = ['Contest', 'My Contest', 'My Teams'];
 
   useEffect(() => {
-    dispatch(contestFetch(matchId));
-    dispatch(fetchMyContest(matchId));
-    dispatch(fetchTeam(matchId));
+    dispatch(contestFetch({matchId, signOut}));
+    dispatch(fetchMyContest({matchId, signOut}));
+    dispatch(fetchTeam({matchId, signOut}));
   }, [matchId]);
 
   const contestReducer = useSelector(state => state.allContest);
@@ -52,7 +53,6 @@ export default function ContestScreen(props) {
       setTeamList(teamReducer?.data || []);
     }
   }, [teamReducer]);
-
 
   useEffect(() => {
     if (myContestReducer?.data?.data && !myContestReducer?.data?.isMatchEnded) {

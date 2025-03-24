@@ -4,10 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchWalletBalance = createAsyncThunk(
   'wallet/fetchWalletBalance',
-  async (_, thunkAPI) => {
-
-    console.log("Fetch Wallet ");
-
+  async (signOut, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
 
@@ -20,8 +17,12 @@ export const fetchWalletBalance = createAsyncThunk(
         },
       );
 
+      if (response.status === 401) {
+        signOut();
+      }
+
       if (response.status === 200) {
-        console.log("RESPONSE BALANCE : ",response);
+       
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(
@@ -29,8 +30,7 @@ export const fetchWalletBalance = createAsyncThunk(
         );
       }
     } catch (error) {
-
-        console.log("cfetch valance ",error);
+      console.log('cfetch valance ', error);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||

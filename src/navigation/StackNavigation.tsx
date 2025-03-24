@@ -3,7 +3,14 @@ import BatBallQuestionScreen from '../screen/batBallQuestion/BatBallQuestionScre
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {fetchWalletBalance} from '../features/wallet/walletBalanceSlice';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import MyQuestionScreen from '../screen/myQuestion/MyQuestionScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
@@ -33,6 +40,7 @@ import TeamScreen from '../screen/team/TeamScreen';
 import config from '../config';
 import MyContestScreen from '../screen/myContest/MyContestScreen';
 import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeaderBoardScreen';
+import ProfileScreen from '../screen/profile/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -369,6 +377,7 @@ const AuthStack = () => {
           ),
         }}
       />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen
         name="OTPVerification"
         component={OTPVerificationScreen}
@@ -395,8 +404,37 @@ const AuthStack = () => {
 // };
 
 const AppStack = () => {
+  const [newUser, setNewUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
+  useEffect(() => {
+    const getUserStatus = async () => {
+      const userStatus = await AsyncStorage.getItem('isNewUser');
+      setNewUser(userStatus === 'true');
+      setIsLoading(false); 
+    };
+
+    getUserStatus();
+  }, []);
+
+  if (isLoading)
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: AppColors.palette.black,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color={AppColors.palette.dodgerBlue} />
+      </View>
+    );
+ 
+
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+      {newUser === true && (
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      )}
       <Stack.Screen name="TabStack" component={MyTabs} />
     </Stack.Navigator>
   );
@@ -404,6 +442,17 @@ const AppStack = () => {
 
 const Navigation = () => {
   const {isSignIn} = useAuth();
+  // const [newUser, setNewUser] = useState(null);
+
+  // const getUserStatus = async () => {
+  //   const userStatus = await AsyncStorage.getItem('isNewUser');
+  //   console.log('userStatus', Boolean(userStatus));
+  //   setNewUser(userStatus);
+  // };
+
+  // useEffect(() => {
+  //   getUserStatus();
+  // }, []);
 
   useLayoutEffect(() => {
     setTimeout(() => {

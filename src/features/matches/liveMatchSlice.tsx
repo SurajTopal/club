@@ -1,17 +1,23 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
+import createApi from '../../redux/api';
 
 export const liveMatchFetch = createAsyncThunk(
   'liveMatch/liveMatchFetch',
-  async (_, thunkAPI) => {
+  async (signOut, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      const response = await axios.get(`http://20.40.40.110:9117/match/live`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+
+      if (!token) {
+        return thunkAPI.rejectWithValue('No auth token found');
+      }
+
+      const api = createApi(signOut); // ✅ Create an Axios instance
+
+      api.defaults.headers.common['Authorization'] = token; // ✅ Correctly set the token
+
+      const response = await api.get('/match/live');
+
       if (response.status === 200) {
         return response.data;
       } else {

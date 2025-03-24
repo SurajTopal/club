@@ -10,7 +10,6 @@ import {Provider} from 'react-redux';
 import {AppColors} from './src/theme';
 
 export default function App() {
-
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
@@ -20,7 +19,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <StatusBar backgroundColor={AppColors.palette.black} />
-      <NavigationContainer >
+      <NavigationContainer>
         <AuthProvider>
           <Navigation />
           <Toast />

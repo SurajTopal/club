@@ -6,40 +6,9 @@ import {fetchTeam} from '../../features/teamList/teamListSlice';
 import {fetchMyContest} from '../../features/contest/userContestSlice';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useAuth} from '../../auth-context';
 
 import {styles} from './myContestScreen-styles';
-
-const contests = [
-  {
-    id: '1',
-    firstPrize: 800,
-    totalPrizePool: '₹7,418',
-    entryFee: 21,
-    winnerPercentage: 41,
-    maxTeams: 11,
-    teams: [
-      {id: 'T1', username: 'SHARA10044YZ', score: 190, rank: 105, winnings: 25},
-      {
-        id: 'T2',
-        username: 'SHARA10044YZ',
-        score: 127.5,
-        rank: 219,
-        winnings: 0,
-      },
-    ],
-  },
-  {
-    id: '2',
-    firstPrize: 30,
-    totalPrizePool: '₹2,575',
-    entryFee: 15,
-    winnerPercentage: 42,
-    maxTeams: 11,
-    teams: [
-      {id: 'T1', username: 'SHARA10044YZ', score: 190, rank: 40, winnings: 30},
-    ],
-  },
-];
 
 export default function MyContestScreen(props) {
   const {
@@ -52,14 +21,14 @@ export default function MyContestScreen(props) {
   const tabOptions = ['Contest', 'Teams'];
 
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   useEffect(() => {
-    dispatch(fetchMyContest(matchId));
-    dispatch(fetchTeam(matchId));
+    dispatch(fetchMyContest({matchId, signOut}));
+    dispatch(fetchTeam({matchId, signOut}));
   }, []);
 
- const myContestReducer = useSelector(state => state?.myContest);
-
+  const myContestReducer = useSelector(state => state?.myContest);
 
   useEffect(() => {
     if (myContestReducer?.data?.data) {

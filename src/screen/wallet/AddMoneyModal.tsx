@@ -12,6 +12,7 @@ import {AppColors} from '../../theme';
 import {useDispatch} from 'react-redux';
 import {addMoney} from '../../features/wallet/addMoneySlice';
 import {fetchWalletBalance} from '../../features/wallet/walletBalanceSlice';
+import {useAuth} from '../../auth-context';
 
 const {width} = Dimensions.get('window');
 
@@ -20,6 +21,7 @@ const AddMoneyModal = props => {
   const [amount, setAmount] = useState(0);
 
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   const handleAddMoney = () => {
     if (amount) {
@@ -31,7 +33,7 @@ const AddMoneyModal = props => {
         created_at: '2024-09-12T15:04:05Z',
       };
 
-      dispatch(addMoney(amountDetails))
+      dispatch(addMoney({amountDetails, signOut}))
         .then(_ => {
           dispatch(fetchWalletBalance());
         })

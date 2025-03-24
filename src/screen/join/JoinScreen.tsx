@@ -11,6 +11,7 @@ import Slider from '@react-native-community/slider';
 import Button from '../../components/Button/Button';
 import {Icon} from 'react-native-elements';
 import {AppColors} from '../../theme';
+import {useAuth} from '../../auth-context';
 
 import {styles} from './joinScreen-styles';
 
@@ -43,12 +44,13 @@ const JoinScreen = props => {
   const [isVisible, setIsVisible] = useState(false);
 
   const navigation = useNavigation();
+  const {signOut} = useAuth();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(winningListFetch(contestId));
-    dispatch(fetchLeaderBoard(contestId));
+    dispatch(winningListFetch({contestId, signOut}));
+    dispatch(fetchLeaderBoard({contestId, signOut}));
   }, []);
 
   const winningReducer = useSelector(state => state.winning);
@@ -72,8 +74,6 @@ const JoinScreen = props => {
       setAllTeam(allTeamReducer?.data);
     }
   }, [allTeamReducer]);
-
- 
 
   const handleJoin = () => {
     if (contestId && teamId && isJoin) {
@@ -99,7 +99,7 @@ const JoinScreen = props => {
       contest_id: contestId,
       user_team_ids: [teamId],
     };
-    dispatch(joinContest({formatData, navigation}));
+    dispatch(joinContest({formatData, navigation, signOut}));
     setIsVisible(false);
   };
 

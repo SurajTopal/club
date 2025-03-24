@@ -1,22 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
+import createApi from '../../redux/api'; // Correctly import createApi
 
 export const fetchMyMatches = createAsyncThunk(
   'myMatches/fetchMyMatches',
-  async (_, thunkAPI) => {
+  async (signOut, thunkAPI) => {
     try {
       const token = await AsyncStorage.getItem('authToken');
-      const response = await axios.get(
-        `http://20.40.40.110:9117/match/my-matches`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
+  
+      if (!token) {
+        return thunkAPI.rejectWithValue('No auth token found');
+      }
 
-      console.log('Response : my Matches ---', response);
+      const api = createApi(signOut); // ✅ Create an Axios instance
+
+      api.defaults.headers.common['Authorization'] = token; // ✅ Correctly set the token
+
+      const response = await api.get('/match/my-matches'); // ✅ Use the correct API instance
 
       if (response.status === 200) {
         return response.data;
@@ -26,13 +26,10 @@ export const fetchMyMatches = createAsyncThunk(
         );
       }
     } catch (error) {
-
-      console.log("MY matches : ",error?.response);
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'Something went wrong';
-      return thunkAPI.rejectWithValue(errorMessage);
+      console.log('Error fetching matches:', error?.response);
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || 'Something went wrong',
+      );
     }
   },
 );

@@ -41,7 +41,6 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       const token = await AsyncStorage.getItem('authToken');
       if (token) {
         setAuthToken(token);
-        console.log('TOKEN', token);
         setIsSignIn(true); // User is signed in if the token exists
       } else {
         setIsSignIn(false);
@@ -65,11 +64,15 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
         code: otp,
       });
 
-      if (response?.data?.message === 'OTP verified successfully') {
-        console.log('Response : : ', response);
+     if (response?.data?.message === 'OTP verified successfully') {
         const token = response?.data?.token; // Adjust key as per API response
         setAuthToken(token); // Save token in state
+
         await AsyncStorage.setItem('authToken', token); // Save token in AsyncStorage
+        await AsyncStorage.setItem(
+          'isNewUser',
+          response?.data?.newUser.toString(),
+        );
         Toast.show({
           type: 'success',
           text2: 'Login Successful',

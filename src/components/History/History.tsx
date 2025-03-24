@@ -3,19 +3,21 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {fetchTransaction} from '../../features/wallet/transactionSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {BottomSheet} from 'react-native-elements';
+import {useAuth} from '../../auth-context';
+import {AppColors} from '../../theme';
 import moment from 'moment';
 
 import {styles} from './history-styles';
-import {AppColors} from '../../theme';
 
 const History = props => {
   const {isVisible, setIsVisible} = props;
   const [transaction, setTransaction] = useState([]);
 
   const dispatch = useDispatch();
+  const {signOut} = useAuth();
 
   useEffect(() => {
-    dispatch(fetchTransaction());
+    dispatch(fetchTransaction({signOut}));
   }, []);
 
   const fetchTansaction = useSelector(state => state.transaction?.data);
@@ -27,7 +29,6 @@ const History = props => {
   }, [fetchTansaction]);
 
   const renderItem = ({item}) => {
-    console.log('Item : ', item.TransactionType);
     return (
       <View
         style={[

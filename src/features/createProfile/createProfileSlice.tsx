@@ -1,19 +1,19 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 import axios from 'axios';
 
-import Toast from 'react-native-toast-message';
 
 // Thunk for making an API call without storing data
-export const joinContest = createAsyncThunk<
+export const createProfile = createAsyncThunk<
   void, // No data will be stored
   {rejectValue: string} // Rejection type
->('join/joinContest', async ({formatData, navigation, signOut}, thunkAPI) => {
+>('teamCreation/createProfile', async (formatData, thunkAPI) => {
   try {
     const token = await AsyncStorage.getItem('authToken');
 
     const response = await axios.post(
-      `http://20.40.40.110:9117/contest/register`,
+      `http://20.40.40.110:9111/createPriofile`,
       formatData,
       {
         headers: {
@@ -23,30 +23,27 @@ export const joinContest = createAsyncThunk<
       },
     );
 
-
-    if (response.status === 401) {
-      signOut();
-    }
-
     if (response.status === 201) {
       Toast.show({
-        text1: 'Contest has been join successfully!!',
+        text1: 'User profile created Successfully!!',
         type: 'success',
         visibilityTime: 2000,
       });
 
-      navigation.navigate('Home');
+      return response.data;
     } else {
       return thunkAPI.rejectWithValue(
         `Unexpected response status: ${response.status}`,
       );
     }
   } catch (error: any) {
-    Toast.show({text1: error.response?.data.error, type: 'error'});
-    console.log('ERORR ROR Join Contest--', error.response);
+    console.log('Error in create your profile', error.response);
+
+    Toast.show({text1: error.response?.data?.message, type: 'error'});
+
     const errorMessage =
       error.response?.data?.message || error.message || 'Something went wrong';
-    console.log('\n\nError : ', errorMessage);
+    console.log('Error : ', errorMessage);
     return thunkAPI.rejectWithValue(errorMessage);
   }
 });

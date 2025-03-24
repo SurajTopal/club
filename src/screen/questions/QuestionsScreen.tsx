@@ -3,6 +3,7 @@ import {fetchLiveQuestions} from '../../features/matches/liveMatchesQuestionSlic
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {useAuth} from '../../auth-context';
 
 import {styles} from './questionScreen-styles';
 
@@ -68,8 +69,10 @@ const QuestionScreen = props => {
   const [questionList, setQuestionList] = useState([]);
   const dispatch = useDispatch();
 
+  const {signOut} = useAuth();
+
   useEffect(() => {
-    dispatch(fetchLiveQuestions(matchId));
+    dispatch(fetchLiveQuestions(matchId, signOut));
   }, []);
 
   const matchQuestionsList = useSelector(state => state?.liveQuestion);
