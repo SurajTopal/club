@@ -7,6 +7,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch} from 'react-redux';
 import {createProfile} from '../../features/createProfile/createProfileSlice';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -14,6 +16,8 @@ const ProfileScreen = () => {
   const [lastName, setLastName] = useState('');
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
+
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
 
@@ -26,7 +30,7 @@ const ProfileScreen = () => {
   //     });
   //   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log({
       firstName,
       lastName,
@@ -41,7 +45,14 @@ const ProfileScreen = () => {
         lastName,
       };
 
-      //   dispatch(createProfile(profileData));
+      dispatch(createProfile(profileData)).then(async response => {
+        if (
+          response?.payload?.message === 'User profile created successfully'
+        ) {
+          navigation.navigate('TabStack');
+          await AsyncStorage.setItem('isNewUser', false?.toString());
+        }
+      });
     } else {
       Toast.show({text1: 'Enter first Name!', type: 'error'});
     }
