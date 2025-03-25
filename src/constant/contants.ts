@@ -128,4 +128,29 @@ export const HOW_TO_PLAY = {
   },
 };
 
+export const FAQ = [
+  {title: 'What is HighRolllerClub?'},
+  {title: 'How do I edit my teams?'},
+  {title: 'Can I edit a team after the match starts?'},
+  {title: 'Can I join a contest with multiple teams?'},
+  {
+    title:
+      'What happens if an incorrect starting lineup is officially announced?',
+  },
+  {title: 'Can I delete a team?'},
+  {title: 'How do you switch teams in a contest?'},
+  {
+    title:
+      'What happens when one or more of my selected players do not play in the match?',
+  },
+  {title: 'Why am I able to see matches only for some tours and not all?'},
+  {title: 'How do I understand a contest on HighRolllerClub?'},
+  {title: 'What are the different types of contests?'},
+  {title: 'How do I join a Public Contest?'},
+  {title: 'Do unfilled public contests get canceled?'},
+  {title: 'How do I view my match performance on HighRolllerClub?'},
+  {title: 'What happens when a match is tied?'},
+  {title: 'How many teams can I create per match?'},
+];
+
 export const HIT_SLOP_FIVE = {left: 5, right: 5, bottom: 5, top: 5};

@@ -7,6 +7,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import MatchCard from '../../components/UpcomingMatchesCard/UpcomingMatchesCard';
 import BottomSheetComponent from '../../components/MoreAction/MoreAction';
@@ -23,7 +24,6 @@ import {AppColors} from '../../theme';
 const {height} = Dimensions.get('screen');
 
 import {styles} from './homeScreen-styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
   const [liveMatchList, setLiveMatchList] = useState();
@@ -58,13 +58,6 @@ export default function HomeScreen() {
     }
   }, [liveMatches]);
 
-  const tokengenerate = async () => {
-    await AsyncStorage.setItem(
-      'authToken',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDI1NjM0NTgsImlkIjoiMDNlZDcyY2QtMzRlMC00ZjM0LThhYjgtNTcxM2ZlMjdlY2VlIiwicm9sZV9pZCI6InVzZXIifQ.38NHfA_nLrfcieTcCG2rKH1mAcU81Zp4yddOp1pYMyw',
-    );
-  };
-
   return (
     <View style={styles.container}>
       <Header
@@ -74,7 +67,7 @@ export default function HomeScreen() {
         setIsVisible={setIsSheetVisible}
       />
       <View style={styles.subContainer}>
-        <TouchableOpacity onPress={() => tokengenerate()}>
+        <TouchableOpacity onPress={() => {}}>
           <Image
             source={require('../../assets/images/banner.png')}
             style={styles.bannerContainer}

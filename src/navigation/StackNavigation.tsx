@@ -393,24 +393,14 @@ const AuthStack = () => {
   );
 };
 
-// const AppStack = () => {
-//   return (
-//     <Drawer.Navigator
-//       screenOptions={{headerShown: false}}
-//       drawerContent={props => <CustomDrawer {...props} />}>
-//       <Drawer.Screen name="TabStack" component={MyTabs} />
-//     </Drawer.Navigator>
-//   );
-// };
-
 const AppStack = () => {
   const [newUser, setNewUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getUserStatus = async () => {
       const userStatus = await AsyncStorage.getItem('isNewUser');
       setNewUser(userStatus === 'true');
-      setIsLoading(false); 
+      setIsLoading(false);
     };
 
     getUserStatus();
@@ -428,31 +418,21 @@ const AppStack = () => {
         <ActivityIndicator size="large" color={AppColors.palette.dodgerBlue} />
       </View>
     );
- 
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Drawer.Navigator
+      screenOptions={{headerShown: false}}
+      drawerContent={props => <CustomDrawer {...props} />}>
       {newUser === true && (
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Drawer.Screen name="Profile" component={ProfileScreen} />
       )}
-      <Stack.Screen name="TabStack" component={MyTabs} />
-    </Stack.Navigator>
+      <Drawer.Screen name="TabStack" component={MyTabs} />
+    </Drawer.Navigator>
   );
 };
 
 const Navigation = () => {
   const {isSignIn} = useAuth();
-  // const [newUser, setNewUser] = useState(null);
-
-  // const getUserStatus = async () => {
-  //   const userStatus = await AsyncStorage.getItem('isNewUser');
-  //   console.log('userStatus', Boolean(userStatus));
-  //   setNewUser(userStatus);
-  // };
-
-  // useEffect(() => {
-  //   getUserStatus();
-  // }, []);
 
   useLayoutEffect(() => {
     setTimeout(() => {
@@ -460,7 +440,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return isSignIn ? <AppStack /> : <AuthStack />;
+  return !isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

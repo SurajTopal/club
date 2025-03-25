@@ -25,6 +25,10 @@ export default function Header(props: IHeader) {
   } = props;
   const navigation = useNavigation();
 
+  const openDrawerMenu = () => {
+    navigation.openDrawer();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -40,9 +44,9 @@ export default function Header(props: IHeader) {
           </TouchableOpacity>
         )}
         {title === 'Home' && (
-          <TouchableOpacity onPress={() => {}} style={{marginRight: 20}}>
+          <TouchableOpacity style={{marginRight: 20}} hitSlop={HIT_SLOP_FIVE}>
             <Icon
-              onPress={() => {}}
+              onPress={openDrawerMenu}
               name="menu"
               type="entypo"
               color={AppColors.palette.lightLimeGreen}

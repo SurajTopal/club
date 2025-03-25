@@ -1,3 +1,4 @@
+
 import {Dimensions, StyleSheet} from 'react-native';
 import {AppColors} from '../../theme';
 
