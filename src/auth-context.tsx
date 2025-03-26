@@ -3,6 +3,7 @@ import Toast from 'react-native-toast-message';
 import {createContext, useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import createApi from './redux/api';
+import config from '../config';
 
 type AuthContextType = {
   isLoading: boolean;
@@ -59,7 +60,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
   const signIn = async ({mobile, otp}: {mobile: string; otp: string}) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://20.40.40.110:9111/verifyOtp', {
+      const response = await axios.post(`${config.AUTH_BASE_URL}/verifyOtp`, {
         phone: mobile,
         code: otp,
       });

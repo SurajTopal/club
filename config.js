@@ -1,0 +1,3 @@
+import {MATCH_BASE_URL, WALLET_BASE_URL, AUTH_BASE_URL} from '@env';
+
+export default {MATCH_BASE_URL, WALLET_BASE_URL, AUTH_BASE_URL};

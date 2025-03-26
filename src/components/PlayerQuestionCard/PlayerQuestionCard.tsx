@@ -53,16 +53,16 @@ const PlayerQuestionCard = props => {
       setQuestionList([questionInfo]);
     } else if (
       player.player_name !== playerInfo?.name &&
-      questionList.length < 4
+      questionList?.length < 4
     ) {
       setQuestionList([...questionList, questionInfo]);
-    } else if (player.player_name === playerInfo?.name) {
+    } else if (player?.player_name === playerInfo?.name) {
       const quesList = questionList;
       if (
-        questionInfo.questionId === playerInfo.questionId &&
-        option === playerInfo.option
+        questionInfo?.questionId === playerInfo?.questionId &&
+        option === playerInfo?.option
       ) {
-        quesList.splice(playerIndex, 1);
+        quesList?.splice(playerIndex, 1);
         console.log();
       } else {
         quesList[playerIndex] = questionInfo;

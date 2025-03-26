@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from '../../../config';
 
 export const fetchTransaction = createAsyncThunk(
   'wallet/fetchTransaction',
@@ -9,7 +10,7 @@ export const fetchTransaction = createAsyncThunk(
       const token = await AsyncStorage.getItem('authToken');
 
       const response = await axios.get(
-        `http://20.40.40.110:8090/transactions?page=1`,
+        `${config.WALLET_BASE_URL}/transactions?page=1`,
         {
           headers: {
             Authorization: token,

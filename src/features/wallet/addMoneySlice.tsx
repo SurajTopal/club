@@ -2,6 +2,7 @@ import axios from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import config from '../../../config';
 
 export const addMoney = createAsyncThunk(
   'wallet/addMoney',
@@ -10,7 +11,7 @@ export const addMoney = createAsyncThunk(
   
     try {
       const response = await axios.post(
-        `http://20.40.40.110:8090/add-money`,
+        `${config.WALLET_BASE_URL}/add-money`,
         amountDetails,
         {
           headers: {

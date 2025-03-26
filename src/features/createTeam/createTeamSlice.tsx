@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import Toast from 'react-native-toast-message';
+import config from '../../../config';
 
 // Thunk for making an API call without storing data
 export const createTeam = createAsyncThunk<
@@ -15,7 +16,7 @@ export const createTeam = createAsyncThunk<
       const token = await AsyncStorage.getItem('authToken');
 
       const response = await axios.post(
-        `http://20.40.40.110:9117/team/user/createTeam`,
+        `${config?.MATCH_BASE_URL}/team/user/createTeam`,
         formatData,
         {
           headers: {

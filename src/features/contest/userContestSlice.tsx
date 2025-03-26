@@ -17,7 +17,6 @@ export const fetchMyContest = createAsyncThunk(
       api.defaults.headers.common['Authorization'] = token; // ✅ Correctly set the token
 
       const response = await api.get(`/contest/user-contests/${matchId}`);
-
       if (response.status === 200) {
         return response.data;
       } else {

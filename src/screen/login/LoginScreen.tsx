@@ -15,6 +15,7 @@ import axios from 'axios';
 import Button from '../../components/Button/Button';
 import {AppColors} from '../../theme';
 import {CheckBox} from 'react-native-elements';
+import config from '../../../config';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -66,7 +67,7 @@ const LoginScreen = () => {
 
   const sendOTP = async () => {
     try {
-      const response = await axios.post('http://20.40.40.110:9111/login', {
+      const response = await axios.post(`${config.AUTH_BASE_URL}/login`, {
         phone: phoneNumber.trim(),
       });
 

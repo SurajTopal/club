@@ -2,6 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import config from '../../../config';
 
 
 // Thunk for making an API call without storing data
@@ -13,7 +14,7 @@ export const createProfile = createAsyncThunk<
     const token = await AsyncStorage.getItem('authToken');
 
     const response = await axios.post(
-      `http://20.40.40.110:9111/createPriofile`,
+      `${config.AUTH_BASE_URL}/createPriofile`,
       formatData,
       {
         headers: {

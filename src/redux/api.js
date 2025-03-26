@@ -1,8 +1,9 @@
 import axios from 'axios';
+import config from '../../config';
 
 const createApi = signOut => {
   const api = axios.create({
-    baseURL: 'http://20.40.40.110:9117',
+    baseURL: config?.MATCH_BASE_URL,
     timeout: 10000, // 10 sec timeout
   });
 
@@ -12,7 +13,6 @@ const createApi = signOut => {
     },
     async function (error) {
       const res = error.response;
-    
       if (res?.status === 401) {
                 signOut(); // Call the signOut function from context
       }

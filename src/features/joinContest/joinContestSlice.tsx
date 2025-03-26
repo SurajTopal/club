@@ -1,8 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import config from '../../../config';
 import axios from 'axios';
 
-import Toast from 'react-native-toast-message';
 
 // Thunk for making an API call without storing data
 export const joinContest = createAsyncThunk<
@@ -13,7 +14,7 @@ export const joinContest = createAsyncThunk<
     const token = await AsyncStorage.getItem('authToken');
 
     const response = await axios.post(
-      `http://20.40.40.110:9117/contest/register`,
+      `${config.MATCH_BASE_URL}/contest/register`,
       formatData,
       {
         headers: {
@@ -22,7 +23,6 @@ export const joinContest = createAsyncThunk<
         },
       },
     );
-
 
     if (response.status === 401) {
       signOut();

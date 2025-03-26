@@ -1,14 +1,16 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
+import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-import {AppColors} from '../theme';
 import Button from '../components/Button/Button';
+import {AppColors} from '../theme';
+import {useAuth} from '../auth-context';
 
 const CustomDrawer = props => {
   const navigation = useNavigation();
+  const {signOut} = useAuth();
 
   return (
     <LinearGradient colors={['#1B242E', 'black']} style={styles.container}>
@@ -56,7 +58,7 @@ const CustomDrawer = props => {
           <Icon name="headphones" size={20} color="white" />
           <Text style={styles.menuText}>Help & Support</Text>
         </TouchableOpacity>
-        <Button title="Logout" handleButtonPress={() => {}} />
+        <Button title="Logout" handleButtonPress={signOut} />
 
         <Text style={styles.version}>VERSION 1.0.1</Text>
       </DrawerContentScrollView>

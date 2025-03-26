@@ -37,7 +37,7 @@ import HowToPlayScreen from '../screen/howToPlay/HowToPlayScreen';
 import CustomDrawer from './Drawer';
 import GetStartedScreen from '../screen/getStarted/GetStartedScreen';
 import TeamScreen from '../screen/team/TeamScreen';
-import config from '../config';
+import config from '../../config';
 import MyContestScreen from '../screen/myContest/MyContestScreen';
 import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeaderBoardScreen';
 import ProfileScreen from '../screen/profile/ProfileScreen';
@@ -440,7 +440,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return !isSignIn ? <AppStack /> : <AuthStack />;
+  return isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

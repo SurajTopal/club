@@ -1,6 +1,7 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import config from '../../../config';
+import axios from 'axios';
 
 export const fetchWalletBalance = createAsyncThunk(
   'wallet/fetchWalletBalance',
@@ -9,7 +10,7 @@ export const fetchWalletBalance = createAsyncThunk(
       const token = await AsyncStorage.getItem('authToken');
 
       const response = await axios.get(
-        `http://20.40.40.110:8090/wallet/getBalance`,
+        `${config.WALLET_BASE_URL}/wallet/getBalance`,
         {
           headers: {
             Authorization: token,
@@ -22,7 +23,6 @@ export const fetchWalletBalance = createAsyncThunk(
       }
 
       if (response.status === 200) {
-       
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(

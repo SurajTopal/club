@@ -20,6 +20,7 @@ import Header from '../../components/Header/Header';
 import {useAuth} from '../../auth-context';
 import {Icon} from 'react-native-elements';
 import {AppColors} from '../../theme';
+import config from '../../../config';
 
 const {height} = Dimensions.get('screen');
 
@@ -34,6 +35,8 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   const {signOut} = useAuth();
+
+  console.log('CONGI : ', config);
 
   const dispatch = useDispatch();
 

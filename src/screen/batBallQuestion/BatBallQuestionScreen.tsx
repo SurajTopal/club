@@ -27,7 +27,7 @@ const BatBallQuestionScreen = props => {
 
   // Fetch player questions on mount
   useEffect(() => {
-    dispatch(playerQuestionFetch(matchId, signOut));
+    dispatch(playerQuestionFetch({matchId, signOut}));
   }, [dispatch, matchId]);
 
   const playerQuestionReducer = useSelector(state => state?.playerQuestion);
