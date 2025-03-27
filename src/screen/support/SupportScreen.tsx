@@ -10,10 +10,10 @@ import {
   SafeAreaView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Button from '../../components/Button/Button';
-import {AppColors} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import Button from '../../components/Button/Button';
 import Toast from 'react-native-toast-message';
+import {AppColors} from '../../theme';
 
 export default function SupportScreen() {
   const [title, setTitle] = useState('');
