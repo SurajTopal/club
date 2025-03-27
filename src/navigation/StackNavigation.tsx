@@ -37,10 +37,10 @@ import HowToPlayScreen from '../screen/howToPlay/HowToPlayScreen';
 import CustomDrawer from './Drawer';
 import GetStartedScreen from '../screen/getStarted/GetStartedScreen';
 import TeamScreen from '../screen/team/TeamScreen';
-import config from '../../config';
 import MyContestScreen from '../screen/myContest/MyContestScreen';
 import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeaderBoardScreen';
 import ProfileScreen from '../screen/profile/ProfileScreen';
+import SupportScreen from '../screen/support/SupportScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -231,7 +231,6 @@ const DashboardStack = () => {
           ),
         }}
       />
-      {/* <Stack.Screen name="My Matches" component={MyMatchesScreen} /> */}
       <Stack.Screen
         name="BatBallQuestion"
         component={BatBallQuestionScreen}
@@ -289,6 +288,13 @@ const DashboardStack = () => {
         }}
       />
       <Stack.Screen name="Dashboard" component={DashBoardScreen} />
+      <Stack.Screen
+        name="Support"
+        component={SupportScreen}
+        options={{
+          header: () => <Header isBackButtonVisible title="Help & Support" />,
+        }}
+      />
       <Stack.Screen
         name="Wallet"
         component={WalletScreen}
@@ -440,7 +446,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return isSignIn ? <AppStack /> : <AuthStack />;
+  return !isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

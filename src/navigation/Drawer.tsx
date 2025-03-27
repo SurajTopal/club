@@ -54,7 +54,9 @@ const CustomDrawer = props => {
           <Text style={styles.menuText}>Privacy Policy</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('Support')}>
           <Icon name="headphones" size={20} color="white" />
           <Text style={styles.menuText}>Help & Support</Text>
         </TouchableOpacity>
