@@ -446,7 +446,7 @@ const Navigation = () => {
     }, 2000);
   }, []);
 
-  return !isSignIn ? <AppStack /> : <AuthStack />;
+  return isSignIn ? <AppStack /> : <AuthStack />;
 };
 
 const styles = StyleSheet.create({

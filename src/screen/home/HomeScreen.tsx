@@ -36,8 +36,6 @@ export default function HomeScreen() {
 
   const {signOut} = useAuth();
 
-  console.log('CONGI : ', config);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,12 +68,12 @@ export default function HomeScreen() {
         setIsVisible={setIsSheetVisible}
       />
       <View style={styles.subContainer}>
-        <TouchableOpacity onPress={() => {}}>
+        {/* <TouchableOpacity onPress={() => {}}>
           <Image
             source={require('../../assets/images/banner.png')}
             style={styles.bannerContainer}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {myMatchestList.length && (
           <>
             <View style={styles.myMatchesContainer}>

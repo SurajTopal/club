@@ -28,10 +28,10 @@ export default function HowToPlayScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image
+      {/* <Image
         source={require('../../assets/images/howToPlay.png')}
         style={styles.bannerContainer}
-      />
+      /> */}
       <View style={styles.tabContainer}>
         {tabOption.map(option => (
           <TouchableOpacity
