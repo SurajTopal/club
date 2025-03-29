@@ -8,8 +8,16 @@ import {store} from './src/redux/store';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {AppColors} from './src/theme';
+import * as Sentry from '@sentry/react-native';
 
-export default function App() {
+Sentry.init({
+  dsn: 'https://db2c341da84cc494b0a1f57b4ee9e9a5@o4509055856279552.ingest.us.sentry.io/4509055856541696',
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
+
+export default Sentry.wrap(function App() {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
@@ -27,4 +35,4 @@ export default function App() {
       </NavigationContainer>
     </Provider>
   );
-}
+});

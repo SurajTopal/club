@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 import {AppColors} from '../../theme';
+import config from '../../../config';
 
 import {styles} from './addOrderScreen-styles';
 
@@ -15,8 +16,6 @@ export default function AddOrderScreen(props) {
       params: {questionDetails},
     },
   } = props;
-
-  console.log('Question Details : ', questionDetails);
 
   const dispatch = useDispatch();
   const {Question, QuestionId, slide} = questionDetails;
@@ -36,7 +35,7 @@ export default function AddOrderScreen(props) {
     try {
       // Create WebSocket instance with custom headers
       const ws = new WebSocket(
-        `ws://20.40.40.110:9000/ws?questionId=${QuestionId}`,
+        `${config.SOCKET_BASE_URL}/ws?questionId=${QuestionId}`,
         [],
         {
           headers: {

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import config from '../../config';
 
 const WebSocketClient = () => {
   const [connected, setConnected] = useState(false);
@@ -22,7 +23,7 @@ const WebSocketClient = () => {
   const connectWebSocket = () => {
     try {
       // Create WebSocket instance with custom headers
-      const ws = new WebSocket('ws://20.40.40.110:8090/ws', [], {
+      const ws = new WebSocket(`${config.SOCKET_BASE_URL}/ws`, [], {
         headers: {
           Authorization: `${token}`,
         },

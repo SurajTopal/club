@@ -24,46 +24,6 @@ const LoginScreen = () => {
   const [isCertifyChecked, setIsCertifyChecked] = useState(false);
 
   const navigation = useNavigation<any>();
-  // Add this function to request SMS permissions
-  // const requestSMSPermission = async () => {
-  //   if (Platform.OS === 'android') {
-  //     try {
-  //       const permissions = [
-  //         PermissionsAndroid.PERMISSIONS.READ_SMS,
-  //         PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-  //         PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-  //         PermissionsAndroid.PERMISSIONS.READ_PHONE_NUMBERS,
-  //       ];
-
-  //       const granted = await PermissionsAndroid.requestMultiple(permissions);
-
-  //       const allPermissionsGranted = Object.values(granted).every(
-  //         permission => permission === PermissionsAndroid.RESULTS.GRANTED,
-  //       );
-
-  //       if (allPermissionsGranted) {
-  //         console.log('All permissions granted');
-  //         return true;
-  //       } else {
-  //         console.log('Permissions denied');
-  //         // Show a message to user about why permissions are needed
-  //         Toast.show({
-  //           type: 'info',
-  //           text2: 'Permissions are required for auto OTP detection',
-  //           visibilityTime: 3000,
-  //         });
-  //         return false;
-  //       }
-  //     } catch (err) {
-  //       console.warn(err);
-  //       return false;
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   requestSMSPermission();
-  // }, []);
 
   const sendOTP = async () => {
     try {

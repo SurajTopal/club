@@ -41,6 +41,7 @@ import MyContestScreen from '../screen/myContest/MyContestScreen';
 import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeaderBoardScreen';
 import ProfileScreen from '../screen/profile/ProfileScreen';
 import SupportScreen from '../screen/support/SupportScreen';
+import config from '../../config';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,7 +118,7 @@ const DashboardStack = () => {
 
     try {
       // Create WebSocket instance with custom headers
-      const ws = new WebSocket('ws://20.40.40.110:8090/ws', [], {
+      const ws = new WebSocket(`${config.SOCKET_BASE_URL}/ws`, [], {
         headers: {
           Authorization: `${token}`,
         },
