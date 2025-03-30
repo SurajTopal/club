@@ -42,6 +42,9 @@ import WinningLeaderBoardScreen from '../screen/winningLeaderboard/WinningLeader
 import ProfileScreen from '../screen/profile/ProfileScreen';
 import SupportScreen from '../screen/support/SupportScreen';
 import config from '../../config';
+import FairPlayScreen from '../screen/fairPlayPolicy/FairPlayPolicyScreen';
+import TermsAndConditionsScreen from '../screen/termsAndCondition/TermsAndConditionScreen';
+import PrivacyPolicyScreen from '../screen/privacyPolicy/PrivacyPolicyScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -294,6 +297,29 @@ const DashboardStack = () => {
         component={SupportScreen}
         options={{
           header: () => <Header isBackButtonVisible title="Help & Support" />,
+        }}
+      />
+      <Stack.Screen
+        name="Privacy Policy"
+        component={PrivacyPolicyScreen}
+        options={{
+          header: () => <Header isBackButtonVisible title="Privacy Policy" />,
+        }}
+      />
+      <Stack.Screen
+        name="Fair Play Policy"
+        component={FairPlayScreen}
+        options={{
+          header: () => <Header isBackButtonVisible title="Fair Play Policy" />,
+        }}
+      />
+      <Stack.Screen
+        name="Terms and Condition"
+        component={TermsAndConditionsScreen}
+        options={{
+          header: () => (
+            <Header isBackButtonVisible title="Terms and Condition" />
+          ),
         }}
       />
       <Stack.Screen

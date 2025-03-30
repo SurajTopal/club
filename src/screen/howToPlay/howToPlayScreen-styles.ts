@@ -14,14 +14,14 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    width: width * 0.57,
+    width: width * 0.6,
     marginTop: 15,
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
   tab: {
     backgroundColor: AppColors.palette.nightBlack,
-    width: width * 0.17,
+    width: width * 0.19,
     paddingVertical: 5,
     paddingHorizontal: 10,
     justifyContent: 'center',

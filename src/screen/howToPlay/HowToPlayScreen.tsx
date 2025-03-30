@@ -5,6 +5,8 @@ import {ScrollView} from 'react-native';
 import {AppColors} from '../../theme';
 
 import {styles} from './howToPlayScreen-styles';
+import {AccordionItem} from '../../components/Accordian/Accordian';
+import {FAQ} from '../../constant/contants';
 
 export default function HowToPlayScreen() {
   const [activeTab, setActiveTab] = useState('Select');
@@ -61,6 +63,16 @@ export default function HowToPlayScreen() {
       <BottomSheetAccordian title="checkYourProgress" />
       <BottomSheetAccordian title="getYourWinnings" />
       {renderTitle('FA', 'Q')}
+      <View
+        style={{
+          margin: 15,
+          borderRadius: 10,
+          overflow: 'hidden',
+        }}>
+        {FAQ.map(detail => (
+          <AccordionItem title={detail?.title} children={detail?.description} />
+        ))}
+      </View>
     </ScrollView>
   );
 }

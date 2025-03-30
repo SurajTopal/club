@@ -33,17 +33,25 @@ const BottomSheetComponent = ({isVisible, toggleSheet}) => {
             <Text style={styles.optionText}>How to play</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.optionButton}>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={() =>
+              navigation.navigate('Terms and Condition')
+            }>
             <FontAwesome name="file-text-o" size={20} color="white" />
             <Text style={styles.optionText}>Terms & Conditions</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.optionButton}>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={() => navigation.navigate('Privacy Policy')}>
             <FontAwesome name="shield" size={20} color="white" />
             <Text style={styles.optionText}>Privacy Policy</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.optionButton}>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={() => navigation.navigate('Support')}>
             <FontAwesome name="headphones" size={20} color="white" />
             <Text style={styles.optionText}>Help & Support</Text>
           </TouchableOpacity>

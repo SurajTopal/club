@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import Button from '../components/Button/Button';
 import {AppColors} from '../theme';
@@ -10,7 +11,7 @@ import {useAuth} from '../auth-context';
 
 const CustomDrawer = props => {
   const navigation = useNavigation();
-  const {signOut} = useAuth();
+  const {signOut, totalBalance} = useAuth();
 
   return (
     <LinearGradient colors={['#1B242E', 'black']} style={styles.container}>
@@ -23,7 +24,7 @@ const CustomDrawer = props => {
             source={require('../assets/icons/profile.png')}
             style={styles.profileImage}
           />
-          <Text style={styles.username}>KSRQRH HEROES</Text>
+          <Text style={styles.username}>User Name </Text>
         </View>
 
         {/* Menu Items */}
@@ -33,7 +34,7 @@ const CustomDrawer = props => {
           <Icon name="credit-card" size={20} color="#fff" />
           <View style={styles.menuItemContent}>
             <Text style={styles.menuText}>My Balance</Text>
-            <Text style={styles.menuAmount}>₹0</Text>
+            <Text style={styles.menuAmount}>₹{totalBalance || 0}</Text>
           </View>
         </TouchableOpacity>
 
@@ -49,9 +50,25 @@ const CustomDrawer = props => {
           <Text style={styles.menuText}>How to Play</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('Privacy Policy')}>
           <Icon name="shield" size={20} color="white" />
           <Text style={styles.menuText}>Privacy Policy</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('Fair Play Policy')}>
+          <Icon name="shield" size={20} color="white" />
+          <Text style={styles.menuText}>Fair Play Policy</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => navigation.navigate('Terms and Condition')}>
+          <Icon name="shield" size={20} color="white" />
+          <Text style={styles.menuText}>Terms and Condition</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
