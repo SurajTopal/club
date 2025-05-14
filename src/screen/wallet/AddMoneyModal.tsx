@@ -13,6 +13,7 @@ import {useDispatch} from 'react-redux';
 import {addMoney} from '../../features/wallet/addMoneySlice';
 import {fetchWalletBalance} from '../../features/wallet/walletBalanceSlice';
 import {useAuth} from '../../auth-context';
+import {Linking} from 'react-native';
 
 const {width} = Dimensions.get('window');
 
@@ -27,19 +28,31 @@ const AddMoneyModal = props => {
     if (amount) {
       let amountDetails = {
         amount: Number(amount),
-        gateway_name: 'example_gateway',
-        is_captuzed: true,
-        gateway_response: 'success',
-        created_at: '2024-09-12T15:04:05Z',
+        currency: 'inr',
+        order_description: `Add ${amount}rs into wallet`,
       };
 
       dispatch(addMoney({amountDetails, signOut}))
-        .then(_ => {
+        .then(response => {
+          console.log('Reponse', response?.payload?.data?.URL);
+         
+          // Assuming response contains a field like: response.data.payment_url
+          const paymentURL = response?.payload?.data?.URL;
+
+          if (paymentURL) {
+            Linking.openURL(paymentURL).catch(err =>
+              console.error('Failed to open payment URL:', err),
+            );
+          } else {
+            console.warn('Payment URL not found in response.');
+          }
+
           dispatch(fetchWalletBalance());
         })
         .catch(error =>
           console.log('Getting Error in fetch Wallet Balance :', error),
         );
+
       setIsVisible(false);
     }
   };

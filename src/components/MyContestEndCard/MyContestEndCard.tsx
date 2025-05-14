@@ -27,7 +27,7 @@ const MyContestEndCard = ({contest}) => {
             <Icon
               name="line-chart"
               size={14}
-              color={AppColors.palette.osloGrey}
+              color={AppColors.palette.lightLimeGreen}
             />
             <Text style={styles.title}>{contest?.category_name}</Text>
           </View>

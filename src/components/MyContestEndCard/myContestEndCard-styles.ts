@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '400',
+    marginLeft: 5,
     color: AppColors.palette.osloGrey,
   },
   prizePool: {

@@ -49,6 +49,7 @@ const LoginScreen = () => {
     }
   };
 
+
   const handleLogin = () => {
     if (phoneNumber.length === 10) {
       if (isCertifyChecked) sendOTP();
