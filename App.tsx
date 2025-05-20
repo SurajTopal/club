@@ -18,24 +18,24 @@ Sentry.init({
   // spotlight: __DEV__,
 });
 
-// const saveAuthToken = async () => {
-//   try {
-//     await AsyncStorage.setItem(
-//       'authToken',
-//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDY1Mjg4OTIsImlkIjoiMDNlZDcyY2QtMzRlMC00ZjM0LThhYjgtNTcxM2ZlMjdlY2VlIiwicm9sZV9pZCI6InVzZXIifQ.5uIAuFtHWofT4Cw-xBNhn3WTAOaCcVJNfqwNR68EDUA',
-//     );
-//     console.log('Auth token saved successfully!');
-//   } catch (error) {
-//     console.error('Failed to save auth token:', error);
-//   }
-// };
+const saveAuthToken = async () => {
+  try {
+    await AsyncStorage.setItem(
+      'authToken',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDc3NDI2NTIsImlkIjoiMDNlZDcyY2QtMzRlMC00ZjM0LThhYjgtNTcxM2ZlMjdlY2VlIiwicm9sZV9pZCI6InVzZXIifQ.uQSQ3b4WCH0PfGhUci963bVUIZ0cC66Rd-YzENmLBC8',
+    );
+    console.log('Auth token saved successfully!');
+  } catch (error) {
+    console.error('Failed to save auth token:', error);
+  }
+};
 
 export default Sentry.wrap(function App() {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();
     }, 2000);
-    // saveAuthToken();
+    saveAuthToken();
   }, []);
 
   return (
